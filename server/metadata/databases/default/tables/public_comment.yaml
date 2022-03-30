@@ -1,0 +1,21 @@
+table:
+  name: comment
+  schema: public
+insert_permissions:
+- permission:
+    backend_only: false
+    check: {}
+    columns:
+    - content
+    - post_id
+    - username
+  role: anon
+select_permissions:
+- permission:
+    columns:
+    - content
+    - id
+    - post_id
+    - username
+    filter: {}
+  role: anon
