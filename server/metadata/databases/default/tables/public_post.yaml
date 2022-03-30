@@ -1,0 +1,12 @@
+table:
+  name: post
+  schema: public
+select_permissions:
+- permission:
+    columns:
+    - content
+    - created_at
+    - id
+    - title
+    filter: {}
+  role: anon
