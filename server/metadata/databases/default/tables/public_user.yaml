@@ -1,6 +1,14 @@
 table:
   name: user
   schema: public
+array_relationships:
+- name: posts
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: post
+        schema: public
 select_permissions:
 - permission:
     columns:

@@ -1,6 +1,10 @@
 table:
   name: comment
   schema: public
+object_relationships:
+- name: post
+  using:
+    foreign_key_constraint_on: post_id
 insert_permissions:
 - permission:
     backend_only: false
