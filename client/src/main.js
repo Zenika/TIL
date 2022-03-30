@@ -39,11 +39,11 @@ const authMiddleware = new ApolloLink(async (operation, forward) => {
 })
 
 const httpLink = createHttpLink({
-  uri: 'https://bloggin-app.hasura.app/v1/graphql',
+  uri: process.env.VUE_APP_HASURA_HTTP,
 })
 
 const wsLink = new WebSocketLink({
-  uri: `wss://bloggin-app.hasura.app/v1/graphql`,
+  uri: process.env.VUE_APP_HASURA_WSS,
   options: {
     reconnect: true
   }
@@ -76,7 +76,7 @@ createApp({
   .use(createAuth0({
     domain: process.env.VUE_APP_AUTH0_DOMAIN,
     client_id: process.env.VUE_APP_AUTH0_CLIENT_ID,
-    audience: process.env.VUE_APP_AUTH0_AUDIENCE,
+    audience: process.env.VUE_APP_HASURA_HTTP,
     redirect_uri: window.location.origin
   }))
   .use(PrimeVue)
