@@ -28,9 +28,26 @@ jobs:
             clever link $CLEVER_APP_ID
             clever deploy --force
 
+  run-hasura-migrations:
+    docker:
+      - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
+    steps:
+      - checkout
+      - run:
+          name: Apply migrations
+          working_directory: hasura
+          command: hasura-cli migrate apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+      - run:
+          name: Apply metadata
+          working_directory: hasura
+          command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   deploy-prod:
     jobs:
       - deploy-hasura
+      - run-hasura-migrations:
+        requires:
+              - deploy-hasura
