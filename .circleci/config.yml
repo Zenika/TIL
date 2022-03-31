@@ -30,17 +30,20 @@ jobs:
 
   run-hasura-migrations:
     docker:
-      - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
+      - image: cimg/base
     steps:
       - checkout
       - run:
+          name: install hasura cli
+          command: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+      - run:
           name: Apply migrations
           working_directory: server
-          command: hasura-cli migrate apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT --database-name default
+          command: hasura migrate apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT --database-name default
       - run:
           name: Apply metadata
           working_directory: server
-          command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT --database-name default
+          command: hasura metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT --database-name default
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
