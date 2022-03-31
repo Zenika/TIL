@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Apply metadata
           working_directory: server
-          command: hasura metadata apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+          command: hasura metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
