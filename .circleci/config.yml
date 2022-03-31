@@ -50,10 +50,11 @@ jobs:
 workflows:
   deploy-prod:
     jobs:
-      - deploy-hasura
+      - deploy-hasura:
+          filters: &deploy-filters
+            branches:
+              only: main
       - run-hasura-migrations:
           requires:
             - deploy-hasura
-          filters:
-            branches:
-              only: main
+          filters: *deploy-filters
