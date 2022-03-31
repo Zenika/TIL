@@ -30,7 +30,7 @@ jobs:
 
   run-hasura-migrations:
     docker:
-      - image: cimg/base
+      - image: cimg/base:stable
     steps:
       - checkout
       - run:
