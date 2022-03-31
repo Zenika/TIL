@@ -51,6 +51,6 @@ workflows:
   deploy-prod:
     jobs:
       # - deploy-hasura
-      - run-hasura-migrations:
-          requires:
-            - deploy-hasura
+      - run-hasura-migrations
+          # requires:
+          #   - deploy-hasura
