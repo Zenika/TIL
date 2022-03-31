@@ -59,7 +59,7 @@ jobs:
 workflows:
   test-workflow:
     jobs:
-      - uni-test
+      - unit-test
 
   deploy-prod:
     jobs:
