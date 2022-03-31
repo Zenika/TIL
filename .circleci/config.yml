@@ -35,11 +35,11 @@ jobs:
       - checkout
       - run:
           name: Apply migrations
-          working_directory: hasura
+          working_directory: server
           command: hasura-cli migrate apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
       - run:
           name: Apply metadata
-          working_directory: hasura
+          working_directory: server
           command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
 
 # Invoke jobs via workflows
