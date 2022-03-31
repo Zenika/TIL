@@ -39,11 +39,11 @@ jobs:
       - run:
           name: Apply migrations
           working_directory: server
-          command: hasura migrate apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT --all-databases
+          command: hasura migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
       - run:
           name: Apply metadata
           working_directory: server
-          command: hasura metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT --all-databases
+          command: hasura metadata apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
