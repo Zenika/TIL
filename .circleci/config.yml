@@ -15,8 +15,18 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "ls -l"
+          name: Deploy Hasura
+          working_directory: server
+          command: |
+            git config --global user.email "vincent.landais@zenika.com"
+            git config --global user.name "VincentLANDAIS"
+            git init
+            git add .
+            git commit -m "deploy!"
+            sudo npm install --global clever-tools
+            clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
+            clever link $CLEVER_APP_ID
+            clever deploy --force
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
