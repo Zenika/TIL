@@ -37,6 +37,9 @@ jobs:
           name: install hasura cli
           command: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
       - run:
+          name: test
+          command: hasura migrate apply --help
+      - run:
           name: Apply migrations
           working_directory: server
           command: hasura migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
