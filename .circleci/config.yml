@@ -57,7 +57,7 @@ jobs:
       - store_artifacts:
           path: client/dist
 
-  build:
+  deploy:
     docker:
       - image: circleci/node:lts
     steps:
@@ -139,6 +139,9 @@ workflows:
       - build:
           requires:
             - unit-test
+      - deploy:
+          requires:
+            - build
       - deploy-hasura:
           requires:
             - build
