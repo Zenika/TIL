@@ -73,10 +73,12 @@ jobs:
               curl -H "Circle-Token: $CIRCLECI_TOKEN" https://circleci.com/api/v1.1/project/github/Zenika/TIL/latest/artifacts \
               | grep -o 'https://[^"]*' \
               | wget --verbose --header "Circle-Token: $CIRCLECI_TOKEN" --input-file -
+              ls -l
       - run:
           name: Deploy frontend
           working_directory: client/dist
           command: |
+            ls -l
             git config --global user.email "vincent.landais@zenika.com"
             git config --global user.name "VincentLANDAIS"
             git init
