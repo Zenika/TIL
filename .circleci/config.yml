@@ -135,22 +135,22 @@ workflows:
   deploy-prod:
     jobs:
       # - install-dependencies
-      - unit-test
+      # - unit-test
           # requires:
           #   - install-dependencies
-      - build:
-          requires:
-            - unit-test
+      - build
+          # requires:
+          #   - unit-test
       - deploy:
           requires:
             - build
-      - deploy-hasura:
-          requires:
-            - build
+      # - deploy-hasura:
+      #     requires:
+      #       - build
           # filters: &deploy-filters
           #   branches:
           #     only: main
-      - run-hasura-migrations:
-          requires:
-            - deploy-hasura
+      # - run-hasura-migrations:
+      #     requires:
+      #       - deploy-hasura
           # filters: *deploy-filters
