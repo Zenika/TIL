@@ -8,15 +8,15 @@ jobs:
   install-dependencies:
     docker:
       - image: circleci/node:lts
+    working_directory: client
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
-            - v4-packaging-dependencies-
+      # - restore_cache:
+      #     keys:
+      #       - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
+      #       - v4-packaging-dependencies-
       - run:
           name: Install dependencies
-          working_directory: client
           command: npm ci
       - save_cache:
           paths:
@@ -26,6 +26,7 @@ jobs:
   unit-test:
     docker:
       - image: circleci/node:lts
+    working_directory: client
     steps:
       - checkout
       - restore_cache:
@@ -34,12 +35,12 @@ jobs:
             - v4-packaging-dependencies-
       - run:
           name: Run unit tests
-          working_directory: client
           command: npm run test:unit
 
   build:
     docker:
       - image: circleci/node:lts
+    working_directory: client
     steps:
       - checkout
       - restore_cache:
@@ -48,7 +49,6 @@ jobs:
             - v4-packaging-dependencies-
       - run:
           name: Build frontend
-          working_directory: client
           command: npm run build
 
 
@@ -59,11 +59,11 @@ jobs:
       - image: circleci/node:lts
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    working_directory: server
     steps:
       - checkout
       - run:
           name: Deploy Hasura
-          working_directory: server
           command: |
             git config --global user.email "vincent.landais@zenika.com"
             git config --global user.name "VincentLANDAIS"
@@ -78,6 +78,7 @@ jobs:
   run-hasura-migrations:
     docker:
       - image: cimg/base:stable
+    working_directory: server
     steps:
       - checkout
       - run:
@@ -85,11 +86,9 @@ jobs:
           command: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
       - run:
           name: Apply migrations
-          working_directory: server
           command: hasura migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
       - run:
           name: Apply metadata
-          working_directory: server
           command: hasura metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
 
 # Invoke jobs via workflows
