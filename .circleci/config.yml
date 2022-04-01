@@ -54,6 +54,8 @@ jobs:
           command: |
             npm ci
             npm run build
+      - store_artifacts:
+          path: /client/dist
 
 
   deploy-hasura:
