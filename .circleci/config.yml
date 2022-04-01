@@ -10,8 +10,7 @@ jobs:
       - image: circleci/node:lts
     working_directory: client
     steps:
-      - checkout:
-          path: ..
+      - checkout
       # - restore_cache:
       #     keys:
       #       - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
@@ -22,7 +21,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v4-packaging-dependencies-{{ checksum "package-lock.json" }}
+          key: v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
 
   unit-test:
     docker:
