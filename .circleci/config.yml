@@ -102,9 +102,9 @@ workflows:
   deploy-prod:
     jobs:
       # - install-dependencies
-      - unit-test:
-          requires:
-            - install-dependencies
+      - unit-test
+          # requires:
+          #   - install-dependencies
       - build:
           requires:
             - unit-test
