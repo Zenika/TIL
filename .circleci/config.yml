@@ -33,6 +33,8 @@ jobs:
             - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
             - v4-packaging-dependencies-
       - run:
+        command: ls -l
+      - run:
           name: Run unit tests
           working_directory: client
           command: npm run test:unit
