@@ -8,20 +8,20 @@ jobs:
   install-dependencies:
     docker:
       - image: circleci/node:lts
+    working_directory: client
     steps:
-      - checkout
+      - checkout: ..
       # - restore_cache:
       #     keys:
       #       - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
       #       - v4-packaging-dependencies-
       - run:
           name: Install dependencies
-          working_directory: client
           command: npm ci
       - save_cache:
           paths:
             - node_modules
-          key: v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+          key: v4-packaging-dependencies-{{ checksum "package-lock.json" }}
 
   unit-test:
     docker:
