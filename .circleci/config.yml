@@ -10,7 +10,7 @@ jobs:
       - image: circleci/node:lts
     working_directory: client
     steps:
-      - checkout: ..
+      - checkout: '..'
       # - restore_cache:
       #     keys:
       #       - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
