@@ -35,6 +35,9 @@ jobs:
       - run:
           command: ls -l
       - run:
+          working_directory: client
+          command: ls -l
+      - run:
           name: Run unit tests
           working_directory: client
           command: npm run test:unit
