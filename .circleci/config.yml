@@ -5,29 +5,51 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  install-dependencies:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
+            - v4-packaging-dependencies-
+      - run:
+          name: Install dependencies
+          working_directory: client
+          command: npm ci
+      - save_cache:
+          paths:
+            - node_modules
+          key: v4-packaging-dependencies-{{ checksum "package-lock.json" }}
+
   unit-test:
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
+            - v4-packaging-dependencies-
       - run:
           name: Run unit tests
           working_directory: client
-          command: |
-            npm i
-            npm run test:unit
+          command: npm run test:unit
 
   build:
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
+            - v4-packaging-dependencies-
       - run:
           name: Build frontend
           working_directory: client
-          command: |
-            npm i
-            npm run build
+          command: npm run build
 
 
   deploy-hasura:
@@ -75,7 +97,10 @@ jobs:
 workflows:
   deploy-prod:
     jobs:
-      - unit-test
+      - install-dependencies
+      - unit-test:
+          requires:
+            - install-dependencies
       - build:
           requires:
             - unit-test
