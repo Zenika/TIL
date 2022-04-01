@@ -17,6 +17,19 @@ jobs:
             npm i
             npm run test:unit
 
+  build:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Build frontend
+          working_directory: client
+          command: |
+            npm i
+            npm run build
+
+
   deploy-hasura:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -63,7 +76,12 @@ workflows:
   deploy-prod:
     jobs:
       - unit-test
-      - deploy-hasura
+      - build:
+          requires:
+            - unit-test
+      - deploy-hasura:
+          requires:
+            - build
           # filters: &deploy-filters
           #   branches:
           #     only: main
