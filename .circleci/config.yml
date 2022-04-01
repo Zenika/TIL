@@ -28,33 +28,32 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
-            - v4-packaging-dependencies-
-      - run:
-          command: ls -l
-      - run:
-          working_directory: client
-          command: ls -l
+      # - restore_cache:
+      #     keys:
+      #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+      #       - v4-packaging-dependencies-
       - run:
           name: Run unit tests
           working_directory: client
-          command: npm run test:unit
+          command: |
+            npm ci
+            npm run test:unit
 
   build:
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
-            - v4-packaging-dependencies-
+      # - restore_cache:
+      #     keys:
+      #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+      #       - v4-packaging-dependencies-
       - run:
           name: Build frontend
           working_directory: client
-          command: npm run build
+          command: |
+            npm ci
+            npm run build
 
 
   deploy-hasura:
@@ -102,7 +101,7 @@ jobs:
 workflows:
   deploy-prod:
     jobs:
-      - install-dependencies
+      # - install-dependencies
       - unit-test:
           requires:
             - install-dependencies
