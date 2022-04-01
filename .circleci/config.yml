@@ -63,7 +63,7 @@ workflows:
   deploy-prod:
     jobs:
       - unit-test
-      - deploy-hasura:
+      - deploy-hasura
           # filters: &deploy-filters
           #   branches:
           #     only: main
