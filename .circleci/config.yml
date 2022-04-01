@@ -64,10 +64,10 @@ workflows:
     jobs:
       - unit-test
       - deploy-hasura:
-          filters: &deploy-filters
-            branches:
-              only: main
+          # filters: &deploy-filters
+          #   branches:
+          #     only: main
       - run-hasura-migrations:
           requires:
             - deploy-hasura
-          filters: *deploy-filters
+          # filters: *deploy-filters
