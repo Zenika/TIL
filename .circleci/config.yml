@@ -55,7 +55,7 @@ jobs:
             npm ci
             npm run build
       - persist_to_workspace:
-          root: client/build
+          root: client/dist
           # Must be relative path from root
           paths:
             - ./*
@@ -73,13 +73,13 @@ jobs:
       #       - v4-packaging-dependencies-
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: client/build
-      - run:
-          working_directory: client
-          command: |
-              ls -l
-              cd build
-              ls -l
+          at: client/dist
+      # - run:
+      #     working_directory: client
+      #     command: |
+      #         ls -l
+      #         cd dist
+      #         ls -l
       # - run:
       #     name: Download build artifact
       #     working_directory: client/build
@@ -90,7 +90,7 @@ jobs:
       #         ls -l
       - run:
           name: Deploy frontend
-          working_directory: client/build
+          working_directory: client/dist
           command: |
             ls -l
             git config --global user.email "vincent.landais@zenika.com"
