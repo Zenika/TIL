@@ -68,7 +68,7 @@ jobs:
       #       - v4-packaging-dependencies-
       - run:
           name: Download build artifact
-          working_directory: client/dist
+          working_directory: client/build
           command: |
               curl -H "Circle-Token: $CIRCLECI_TOKEN" https://circleci.com/api/v1.1/project/github/Zenika/TIL/latest/artifacts \
               | grep -o 'https://[^"]*' \
@@ -76,7 +76,7 @@ jobs:
               ls -l
       - run:
           name: Deploy frontend
-          working_directory: client/dist
+          working_directory: client/build
           command: |
             ls -l
             git config --global user.email "vincent.landais@zenika.com"
