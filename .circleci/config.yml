@@ -58,7 +58,7 @@ jobs:
           root: build
           # Must be relative path from root
           paths:
-            - *
+            - ./*
       # - store_artifacts:
       #     path: client/build
 
