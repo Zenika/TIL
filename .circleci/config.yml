@@ -56,11 +56,8 @@ jobs:
             npm run build
       - persist_to_workspace:
           root: client/dist
-          # Must be relative path from root
           paths:
             - ./*
-      # - store_artifacts:
-      #     path: client/build
 
   deploy:
     docker:
@@ -72,22 +69,7 @@ jobs:
       #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       #       - v4-packaging-dependencies-
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
           at: client/dist
-      # - run:
-      #     working_directory: client
-      #     command: |
-      #         ls -l
-      #         cd dist
-      #         ls -l
-      # - run:
-      #     name: Download build artifact
-      #     working_directory: client/build
-      #     command: |
-      #         curl -H "Circle-Token: $CIRCLECI_TOKEN" https://circleci.com/api/v1.1/project/github/Zenika/TIL/latest/artifacts \
-      #         | grep -o 'https://[^"]*' \
-      #         | wget --verbose --header "Circle-Token: $CIRCLECI_TOKEN" --input-file -
-      #         ls -l
       - run:
           name: Deploy frontend
           working_directory: client/dist
