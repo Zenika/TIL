@@ -50,6 +50,7 @@ jobs:
       #       - v4-packaging-dependencies-
       - run:
           name: Create .env.local file
+          working_directory: client
           command: echo -e "VUE_APP_AUTH0_DOMAIN=$AUTH0_DOMAIN\nVUE_APP_AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID\nVUE_APP_HASURA_HTTP=$HASURA_ENDPOINT/v1/graphql\nVUE_APP_HASURA_WSS=$HASURA_WSS\n" >> .env.local
       - run:
           name: Build frontend
