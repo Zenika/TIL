@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "app_id": "app_69b10a53-7ef0-4368-bff4-2e80645c5bc2",
+      "org_id": "user_d99e14ef-bdf8-4431-b58a-2d5971fec509",
+      "deploy_url": "https://github.com/Zenika/TIL.git",
+      "name": "TIL",
+      "alias": "TIL"
+    },
+    {
+      "app_id": "app_efbb5087-17c3-4a7e-a803-b3780d2b2439",
+      "org_id": "orga_6bf89bba-cabf-4a31-960a-c062a9f42b96",
+      "deploy_url": "https://push-n2-par-clevercloud-customers.services.clever-cloud.com/app_efbb5087-17c3-4a7e-a803-b3780d2b2439.git",
+      "name": "til-front",
+      "alias": "til-front"
+    }
+  ]
+}
