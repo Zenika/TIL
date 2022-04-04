@@ -55,7 +55,7 @@ jobs:
             npm ci
             npm run build
       - persist_to_workspace:
-          root: build
+          root: client/build
           # Must be relative path from root
           paths:
             - ./*
@@ -73,8 +73,9 @@ jobs:
       #       - v4-packaging-dependencies-
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: build
+          at: client/build
       - run:
+          working_directory: client
           command: |
               ls -l
               cd build
