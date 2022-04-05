@@ -41,6 +41,22 @@ jobs:
       - store_test_results:
           path: client/reports
 
+  lint:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      # - restore_cache:
+      #     keys:
+      #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+      #       - v4-packaging-dependencies-
+      - run:
+          name: Run linter
+          working_directory: client
+          command: |
+            npm ci
+            npm run lint
+
   build:
     docker:
       - image: circleci/node:lts
@@ -136,20 +152,25 @@ workflows:
       - unit-test
           # requires:
           #   - install-dependencies
+      - lint
+          # requires:
+          #   - install-dependencies
       - build:
           requires:
             - unit-test
-      - deploy:
-          requires:
-            - build
+            - lint
+      - deploy-hasura:
           filters: &deploy-filters
             branches:
               only: main
-      - deploy-hasura:
-          requires:
-            - build
-          filters: *deploy-filters
       - run-hasura-migrations:
           requires:
             - deploy-hasura
           filters: *deploy-filters
+      - deploy:
+          requires:
+            - build
+            - deploy-hasura
+            - run-hasura-migrations
+          filters: *deploy-filters
+
