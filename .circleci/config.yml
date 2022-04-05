@@ -37,7 +37,9 @@ jobs:
           working_directory: client
           command: |
             npm ci
-            npm run test:unit
+            npm run test:ci
+      - store_test_results:
+          path: client/coverage
 
   build:
     docker:
@@ -116,9 +118,6 @@ jobs:
       - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
     steps:
       - checkout
-      # - run:
-      #     name: install hasura cli
-      #     command: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
       - run:
           name: Apply migrations
           working_directory: server
@@ -146,11 +145,11 @@ workflows:
           filters: &deploy-filters
             branches:
               only: main
-      # - deploy-hasura:
-      #     requires:
-      #       - build
-          # filters: *deploy-filters
+      - deploy-hasura:
+          requires:
+            - build
+          filters: *deploy-filters
       - run-hasura-migrations
-          # requires:
-          #   - deploy-hasura
-          # filters: *deploy-filters
+          requires:
+            - deploy-hasura
+          filters: *deploy-filters
