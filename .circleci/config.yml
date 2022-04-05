@@ -1,0 +1,152 @@
+version: 2.1
+
+jobs:
+  install-dependencies:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+      - run:
+          name: Install dependencies
+          working_directory: client
+          command: npm ci
+      - save_cache:
+          paths:
+            - client/node_modules
+          key: v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+
+  unit-test:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+      - run:
+          name: Run unit tests
+          working_directory: client
+          command: npm run test:ci
+      - store_test_results:
+          path: client/reports
+
+  lint:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+      - run:
+          name: Run linter
+          working_directory: client
+          command: npm run lint
+
+  build:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+      - run:
+          name: Create .env.local file
+          working_directory: client
+          command: echo -e "VUE_APP_AUTH0_DOMAIN=$AUTH0_DOMAIN\nVUE_APP_AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID\nVUE_APP_HASURA_HTTP=$HASURA_ENDPOINT/v1/graphql\nVUE_APP_HASURA_WSS=$HASURA_WSS\n" >> .env.local
+      - run:
+          name: Build frontend
+          working_directory: client
+          command: npm run build
+      - persist_to_workspace:
+          root: client/dist
+          paths:
+            - ./*
+
+  deploy:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - attach_workspace:
+          at: client/dist
+      - run:
+          name: Deploy frontend
+          working_directory: client/dist
+          command: |
+            git config --global user.email "vincent.landais@zenika.com"
+            git config --global user.name "VincentLANDAIS"
+            git init
+            git add .
+            git commit -m "deploy!"
+            sudo npm install --global clever-tools
+            clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
+            clever link $CLEVER_FRONT_APP_ID
+            clever deploy --force
+
+  deploy-hasura:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Deploy Hasura
+          working_directory: server
+          command: |
+            git config --global user.email "vincent.landais@zenika.com"
+            git config --global user.name "VincentLANDAIS"
+            git init
+            git add .
+            git commit -m "deploy!"
+            sudo npm install --global clever-tools
+            clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
+            clever link $CLEVER_HASURA_APP_ID
+            clever deploy --force
+
+  run-hasura-migrations:
+    docker:
+      - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
+    steps:
+      - checkout
+      - run:
+          name: Apply migrations
+          working_directory: server
+          command: hasura-cli migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+      - run:
+          name: Apply metadata
+          working_directory: server
+          command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+
+workflows:
+  deploy-prod:
+    jobs:
+      - install-dependencies
+      - unit-test:
+          requires:
+            - install-dependencies
+      - lint:
+          requires:
+            - install-dependencies
+      - build:
+          requires:
+            - unit-test
+            - lint
+      - deploy-hasura:
+          filters: &deploy-filters
+            branches:
+              only: main
+      - run-hasura-migrations:
+          requires:
+            - deploy-hasura
+          filters: *deploy-filters
+      - deploy:
+          requires:
+            - build
+            - deploy-hasura
+            - run-hasura-migrations
+          filters: *deploy-filters
+
