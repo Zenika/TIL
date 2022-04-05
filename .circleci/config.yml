@@ -39,7 +39,7 @@ jobs:
             npm ci
             npm run test:ci
       - store_test_results:
-          path: client/coverage
+          path: client/reports
 
   build:
     docker:
