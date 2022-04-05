@@ -8,7 +8,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Install dependencies
           working_directory: client
@@ -16,7 +16,7 @@ jobs:
       - save_cache:
           paths:
             - client/node_modules
-          key: v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+          key: v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
 
   unit-test:
     docker:
@@ -25,7 +25,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Run unit tests
           working_directory: client
@@ -41,7 +41,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Run linter
           working_directory: client
@@ -55,7 +55,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+            - v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Create .env.local file
           working_directory: client
