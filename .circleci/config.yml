@@ -78,7 +78,6 @@ jobs:
           name: Deploy frontend
           working_directory: client/dist
           command: |
-            ls -l
             git config --global user.email "vincent.landais@zenika.com"
             git config --global user.name "VincentLANDAIS"
             git init
@@ -114,12 +113,12 @@ jobs:
 
   run-hasura-migrations:
     docker:
-      - image: cimg/base:stable
+      - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
     steps:
       - checkout
-      - run:
-          name: install hasura cli
-          command: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+      # - run:
+      #     name: install hasura cli
+      #     command: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
       - run:
           name: Apply migrations
           working_directory: server
@@ -135,22 +134,23 @@ workflows:
   deploy-prod:
     jobs:
       # - install-dependencies
-      # - unit-test
+      - unit-test
           # requires:
           #   - install-dependencies
-      - build
-          # requires:
-          #   - unit-test
+      - build:
+          requires:
+            - unit-test
       - deploy:
           requires:
             - build
-      # - deploy-hasura:
-      #     requires:
-      #       - build
-          # filters: &deploy-filters
-          #   branches:
-          #     only: main
-      # - run-hasura-migrations:
-      #     requires:
-      #       - deploy-hasura
+          filters: &deploy-filters
+            branches:
+              only: main
+      - deploy-hasura:
+          requires:
+            - build
           # filters: *deploy-filters
+      - run-hasura-migrations:
+          requires:
+            - deploy-hasura
+          filters: *deploy-filters
