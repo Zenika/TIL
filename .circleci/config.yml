@@ -12,11 +12,10 @@ jobs:
       - run:
           name: Install dependencies
           working_directory: client
-          command: npm ci --cache .npm
+          command: npm ci
       - save_cache:
           paths:
             - client/node_modules
-            - client/.npm
           key: v2-packaging-dependencies-{{ checksum "client/package-lock.json" }}
 
   unit-test:
