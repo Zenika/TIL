@@ -42,9 +42,6 @@ const httpLink = createHttpLink({
   uri: process.env.VUE_APP_HASURA_HTTP,
 })
 
-console.log('env', process.env)
-console.log('wss', process.env.VUE_APP_HASURA_WSS)
-
 const wsLink = new WebSocketLink({
   uri: process.env.VUE_APP_HASURA_WSS,
   options: {
