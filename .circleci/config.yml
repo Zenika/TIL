@@ -15,7 +15,7 @@ jobs:
           command: npm ci
       - save_cache:
           paths:
-            - node_modules
+            - client/node_modules
           key: v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
 
   unit-test:
