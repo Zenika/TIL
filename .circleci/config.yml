@@ -153,4 +153,4 @@ workflows:
       - run-hasura-migrations:
           requires:
             - deploy-hasura
-          filters: *deploy-filters
+          # filters: *deploy-filters
