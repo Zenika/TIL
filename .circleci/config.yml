@@ -1,42 +1,35 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   install-dependencies:
     docker:
       - image: circleci/node:lts
-    working_directory: client
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v4-packaging-dependencies-{{ checksum "package-lock.json" }}
-      #       - v4-packaging-dependencies-
+      - restore_cache:
+          keys:
+            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Install dependencies
+          working_directory: client
           command: npm ci
       - save_cache:
           paths:
             - node_modules
-          key: v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
+          key: v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
 
   unit-test:
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
-      #       - v4-packaging-dependencies-
+      - restore_cache:
+          keys:
+            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Run unit tests
           working_directory: client
-          command: |
-            npm ci
+          command: |            # npm ci
             npm run test:ci
       - store_test_results:
           path: client/reports
@@ -46,15 +39,13 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
-      #       - v4-packaging-dependencies-
+      - restore_cache:
+          keys:
+            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Run linter
           working_directory: client
-          command: |
-            npm ci
+          command: | # npm ci
             npm run lint
 
   build:
@@ -62,10 +53,9 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
-      #       - v4-packaging-dependencies-
+      - restore_cache:
+          keys:
+            - v1-packaging-dependencies-{{ checksum "client/package-lock.json" }}
       - run:
           name: Create .env.local file
           working_directory: client
@@ -73,8 +63,7 @@ jobs:
       - run:
           name: Build frontend
           working_directory: client
-          command: |
-            npm ci
+          command: | # npm ci
             npm run build
       - persist_to_workspace:
           root: client/dist
@@ -86,10 +75,6 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v4-packaging-dependencies-{{ checksum "client/package-lock.json" }}
-      #       - v4-packaging-dependencies-
       - attach_workspace:
           at: client/dist
       - run:
@@ -107,12 +92,8 @@ jobs:
             clever deploy --force
 
   deploy-hasura:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: circleci/node:lts
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
@@ -148,13 +129,13 @@ jobs:
 workflows:
   deploy-prod:
     jobs:
-      # - install-dependencies
-      - unit-test
-          # requires:
-          #   - install-dependencies
-      - lint
-          # requires:
-          #   - install-dependencies
+      - install-dependencies
+      - unit-test:
+          requires:
+            - install-dependencies
+      - lint:
+          requires:
+            - install-dependencies
       - build:
           requires:
             - unit-test
