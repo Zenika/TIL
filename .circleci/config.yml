@@ -146,7 +146,7 @@ workflows:
       - deploy:
           requires:
             - build
-            # - deploy-hasura
-            # - run-hasura-migrations
-          # filters: *deploy-filters
+            - deploy-hasura
+            - run-hasura-migrations
+          filters: *deploy-filters
 
