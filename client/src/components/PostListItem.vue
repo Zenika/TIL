@@ -26,7 +26,6 @@
 const props = defineProps({
   post: Object,
 });
-
 </script>
 
 <style lang="scss" scoped>
