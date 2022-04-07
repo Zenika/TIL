@@ -1,42 +1,29 @@
 <template>
-  <div class="grid ">
-    <div class="col flex justify-content-center">
-      <ProgressSpinner v-if="loading" />
-      <code v-else-if="error">{{ error }}</code>
-      <div v-else-if="result.post">
-        <ArticleCard
-          class="article-card"
-          v-for="post of result.post"
-          :key="post.id"
-          :post="post"
-        />
-      </div>
-    </div>
+  <ProgressSpinner v-if="loading" />
+  <code v-else-if="error">{{ error }}</code>
+  <div v-else-if="result.post">
+    <DataView :value="result.post" :layout="'list'">
+      <template #list="slotProps">
+        <PostListItem :post="slotProps.data" />
+      </template>
+      <template #empty>
+        <div>No articles found.</div>
+      </template>
+    </DataView>
   </div>
 </template>
 
 <script setup>
 import { useSubscription } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import ArticleCard from "../components/ArticleCard.vue";
+import PostListItem from "../components/PostListItem.vue";
 
 const { result, loading, error } = useSubscription(gql`
   subscription getPosts {
-    post {
+    post(order_by: { created_at: desc }) {
       content
       created_at
-      title
-      id
-      user {
-        username
-      }
     }
   }
 `);
 </script>
-
-<style scoped>
-.article-card {
-  margin: 30px 500px 30px 500px;
-}
-</style>
