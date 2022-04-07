@@ -18,7 +18,7 @@ import { useSubscription } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 
-let { result, loading, error } = useSubscription(gql`
+const { result, loading, error } = useSubscription(gql`
   subscription getPosts {
     post(order_by: { created_at: desc }) {
       content
