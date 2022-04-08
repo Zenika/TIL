@@ -9,7 +9,10 @@ services:
       POSTGRES_PASSWORD: postgrespassword
 
   remote-schema:
-    build: remote-schema
+    build:
+      context: remote-schema
+      args:
+        - NODE_ENV=development
     command: nodemon index.js
     ports:
       - "8000:8080"
