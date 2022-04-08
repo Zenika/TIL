@@ -14,15 +14,19 @@
 </template>
 
 <script setup>
-import { useSubscription } from "@vue/apollo-composable";
+import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 
-const { result, loading, error } = useSubscription(gql`
-  subscription getPosts {
+const { result, loading, error } = useQuery(gql`
+  query getPosts {
     post(order_by: { created_at: desc }) {
-      content
+      url
       created_at
+      get_title {
+        error
+        title
+      }
     }
   }
 `);
