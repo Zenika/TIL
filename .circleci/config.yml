@@ -88,6 +88,25 @@ jobs:
             clever link $CLEVER_FRONT_APP_ID
             clever deploy --force
 
+  deploy-remote-schema:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Deploy remote schema
+          working_directory: server/remote-schema
+          command: |
+            git config --global user.email "vincent.landais@zenika.com"
+            git config --global user.name "VincentLANDAIS"
+            git init
+            git add .
+            git commit -m "deploy!"
+            sudo npm install --global clever-tools
+            clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
+            clever link $CLEVER_REMOTE_SCHEMA_APP_ID
+            clever deploy --force
+
   deploy-hasura:
     docker:
       - image: circleci/node:lts
@@ -135,6 +154,7 @@ workflows:
           requires:
             - unit-test
             - lint
+      - deploy-remote-schema
       - deploy-hasura:
           filters: &deploy-filters
             branches:
