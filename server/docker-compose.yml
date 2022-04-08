@@ -12,7 +12,7 @@ services:
     build: remote-schema
     command: nodemon index.js
     ports:
-      - "8000:8000"
+      - "8000:8080"
     volumes:
       - ./remote-schema:/server
 
@@ -38,7 +38,7 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_GRAPHQL_JWT_SECRET: '{"jwk_url":"https://dev-iagwdw5k.us.auth0.com/.well-known/jwks.json","type":"RS256"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anon
-      HASURA_GRAPHQL_ACTIONS_HANDLER_WEBHOOK_BASEURL: http://remote-schema:8000
+      HASURA_GRAPHQL_ACTIONS_HANDLER_WEBHOOK_BASEURL: http://remote-schema:8080
 
 volumes:
   db_data:

@@ -8,5 +8,5 @@ RUN npm install -g nodemon
 # RUN npm ci --only=production
 COPY . .
 
-EXPOSE 8000
+EXPOSE 8080
 CMD [ "node", "index.js" ]

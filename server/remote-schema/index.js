@@ -23,7 +23,6 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     get_title: (parent, args, context, info) => {
-      console.log("args", args)
       try {
         return axios(args.url)
           .then(res => res.data)
@@ -42,7 +41,7 @@ const resolvers = {
 // };
 
 const schema = new ApolloServer({ typeDefs, resolvers/*, context*/ });
-schema.listen({ port: 8000 }).then(({ url }) => {
+schema.listen({ port: 8080 }).then(({ url }) => {
   console.log(`schema ready at ${url}`);
 });
 
