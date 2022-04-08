@@ -6,6 +6,7 @@ const parseTitle = (body) => {
 }
 
 const { ApolloServer } = require('apollo-server');
+const { ApolloServerPluginLandingPageDisabled } = require('apollo-server-core');
 const gql = require('graphql-tag');
 const axios = require('axios').default;
 
@@ -40,7 +41,11 @@ const resolvers = {
 //   return { headers: req.headers };
 // };
 
-const schema = new ApolloServer({ typeDefs, resolvers/*, context*/ });
+const schema = new ApolloServer({
+  typeDefs, resolvers, /*context,*/ plugins: [
+    ApolloServerPluginLandingPageDisabled(),
+  ]
+});
 schema.listen({ port: 8080 }).then(({ url }) => {
   console.log(`schema ready at ${url}`);
 });
