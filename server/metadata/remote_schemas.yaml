@@ -1,1 +1,5 @@
-[]
+- name: remote-schema
+  definition:
+    url_from_env: HASURA_GRAPHQL_ACTIONS_HANDLER_WEBHOOK_BASEURL
+    timeout_seconds: 60
+  comment: ""
