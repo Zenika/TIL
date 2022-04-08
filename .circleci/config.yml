@@ -155,18 +155,20 @@ workflows:
             - unit-test
             - lint
       - deploy-remote-schema
+          # filters: &deploy-filters
+          #   branches:
+          #     only: main
       - deploy-hasura:
-          filters: &deploy-filters
-            branches:
-              only: main
+          requires:
+            - deploy-remote-schema
+          # filters: *deploy-filters
       - run-hasura-migrations:
           requires:
             - deploy-hasura
-          filters: *deploy-filters
+          # filters: *deploy-filters
       - deploy:
           requires:
             - build
-            - deploy-hasura
             - run-hasura-migrations
-          filters: *deploy-filters
+          # filters: *deploy-filters
 
