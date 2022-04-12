@@ -4,15 +4,25 @@ services:
     image: postgres:12
     restart: always
     volumes:
-    - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgrespassword
+
+  remote-schema:
+    build: remote-schema
+    command: nodemon index.js
+    ports:
+      - "8000:8080"
+    volumes:
+      - ./remote-schema:/server
+
   graphql-engine:
     image: hasura/graphql-engine:v2.3.1
     ports:
-    - "8080:8080"
+      - "8080:8080"
     depends_on:
-    - "postgres"
+      - "postgres"
+      - "remote-schema"
     restart: always
     environment:
       ## postgres database to store Hasura metadata
@@ -25,9 +35,10 @@ services:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
-      HASURA_GRAPHQL_ADMIN_SECRET: secret
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_GRAPHQL_JWT_SECRET: '{"jwk_url":"https://dev-iagwdw5k.us.auth0.com/.well-known/jwks.json","type":"RS256"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anon
+      HASURA_GRAPHQL_ACTIONS_HANDLER_WEBHOOK_BASEURL: http://remote-schema:8080
 
 volumes:
   db_data:
