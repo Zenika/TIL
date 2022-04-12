@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="product-list-item">
       <img
-        src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
+        :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
         :alt="post.content"
       />
       <div class="product-list-detail">
@@ -11,7 +11,8 @@
             :href="post.url"
             target="_blank"
             rel="noopener noreferrer"
-            >{{ post.get_title.title ? post.get_title.title : post.url }}</a
+            v-html="post.get_title.title ? post.get_title.title : post.url"
+            ></a
           >
         </div>
         {{
@@ -26,6 +27,8 @@
 const props = defineProps({
   post: Object,
 });
+
+const domainName = new URL(props.post.url).hostname;
 </script>
 
 <style lang="scss" scoped>
