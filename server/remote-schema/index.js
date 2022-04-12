@@ -1,25 +1,13 @@
-const parseTitle = (body) => {
-  let match = body.match(/<title.*?>(.*)<\/title>/) // regular expression to parse contents of the <title> tag
-  if (!match || typeof match[1] !== 'string')
-    throw new Error('Unable to parse the title tag')
-  return match[1]
-}
-
 const { ApolloServer } = require('apollo-server');
 const { ApolloServerPluginLandingPageDisabled } = require('apollo-server-core');
 const gql = require('graphql-tag');
 const axios = require('axios').default;
+const cheerio = require('cheerio');
 
-const typeDefs = gql`
-  type get_title_res {
-    title: String
-    error: String
-  }
-
-  type Query {
-    get_title(url: String): get_title_res
-  }
-`;
+const parseTitle = (body) => {
+  const $ = cheerio.load(body);
+  return $('head > title').text()
+}
 
 const resolvers = {
   Query: {
@@ -36,6 +24,17 @@ const resolvers = {
     },
   },
 };
+
+const typeDefs = gql`
+  type get_title_res {
+    title: String
+    error: String
+  }
+
+  type Query {
+    get_title(url: String): get_title_res
+  }
+`;
 
 // const context = ({ req }) => {
 //   return { headers: req.headers };
