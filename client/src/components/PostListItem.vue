@@ -8,10 +8,10 @@
       <div class="product-list-detail">
         <div class="product-name">
           <a
-            :href="post.content"
+            :href="post.url"
             target="_blank"
             rel="noopener noreferrer"
-            >{{ post.content }}</a
+            >{{ post.get_title.title ? post.get_title.title : post.url }}</a
           >
         </div>
         {{
