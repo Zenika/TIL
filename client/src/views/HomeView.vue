@@ -27,6 +27,9 @@ const { result, loading, error } = useQuery(gql`
         error
         title
       }
+      user {
+        username
+      }
     }
   }
 `);
