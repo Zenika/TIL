@@ -4,6 +4,8 @@
 
 Make sure to have [Docker](https://docs.docker.com/get-docker/), [Docker Compose](https://docs.docker.com/compose/install/) and the [Hasura CLI](https://hasura.io/docs/latest/graphql/core/hasura-cli/install-hasura-cli/) installed on your computer.
 
+Run `npm --prefix ./remote-schema i ./remote-schema`
+
 ## Set up environment variables
 
 Copy the `.env.dist` file and rename it to `.env`. Fill in the different environment variables:
@@ -22,6 +24,6 @@ To access the console, run `hasura console`.
 
 ## Run the hasura migrations
 ```
-hasura migrate apply
+hasura migrate apply --all-databases
 hasura metadata apply
 ```
