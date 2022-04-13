@@ -10,7 +10,7 @@ services:
 
   remote-schema:
     build: remote-schema
-    command: nodemon index.js
+    command: nodemon src/index.js
     ports:
       - "8000:8080"
     volumes:
