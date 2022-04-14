@@ -39,7 +39,7 @@
 import { useSubscription } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { ref, toRefs } from "vue";
-import { useMutationAuth0 } from '../composables/useMutationContext'
+import { useMutationAuth0 } from '../composables/useMutationAuth0'
 
 
 const props = defineProps({

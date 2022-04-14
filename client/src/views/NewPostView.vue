@@ -21,7 +21,7 @@
 import { reactive } from "vue";
 import router from "../router";
 
-import { useMutationAuth0 } from "@/composables/useMutationContext";
+import { useMutationAuth0 } from "@/composables/useMutationAuth0";
 import gql from "graphql-tag";
 
 import useVuelidate from "@vuelidate/core";
