@@ -2,8 +2,7 @@
   <ProgressSpinner v-if="loading" class="spinner" />
   <code v-else-if="error">{{ error }}</code>
   <div v-else-if="result.post">
-    <Button label="refetch" @click="refetch" />
-    <NewPostInput v-if="isAuthenticated" />
+    <NewPostInput v-if="isAuthenticated" @posted="refetch"/>
     <DataView :value="result.post" :layout="'list'">
       <template #list="slotProps">
         <PostListItem :post="slotProps.data" />
@@ -39,6 +38,8 @@ const { result, loading, error, refetch } = useQueryAuth0(gql`
     }
   }
 `);
+
+
 </script>
 
 <style scoped>
