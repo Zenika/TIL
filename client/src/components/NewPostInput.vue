@@ -24,6 +24,8 @@ import { useMutationAuth0 } from "../composables/useMutationAuth0";
 import { required, url } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
+const emit = defineEmits(['posted'])
+
 const state = reactive({
   url: null,
 });
@@ -47,6 +49,7 @@ const { loading, mutate, onDone } = useMutationAuth0(mutation);
 onDone(() => {
   state.url = "";
   v$.value.$reset()
+  emit('posted')
 });
 
 const postLink = () => {
