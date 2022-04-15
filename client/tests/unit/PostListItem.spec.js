@@ -21,9 +21,7 @@ describe('PostListItem.vue', () => {
     expect(html).toContain(post.get_title.title)
     expect(html).toContain(post.user.username)
   })
-})
 
-describe('PostListItem.vue', () => {
   it('renders one post with missing title', () => {
     const post = {
       url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",

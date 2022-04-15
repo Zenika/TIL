@@ -22,13 +22,13 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
-import { createAuth0, useAuth0 } from '@auth0/auth0-vue';
+import { createAuth0 } from '@auth0/auth0-vue';
+import { exposeAuth0, client } from './plugins/expose-auth0-client';
 
 const authMiddleware = new ApolloLink(async (operation, forward) => {
-  const { getAccessTokenSilently, isAuthenticated } = operation.getContext().auth0 || useAuth0();
+  if (client.value.isAuthenticated) {
+    const token = await client.value.getAccessTokenSilently()
 
-  if (isAuthenticated.value) {
-    const token = await getAccessTokenSilently()
     // add the authorization to the headers
     operation.setContext({
       headers: {
@@ -80,6 +80,7 @@ createApp({
     audience: process.env.VUE_APP_HASURA_HTTP,
     redirect_uri: window.location.origin
   }))
+  .use(exposeAuth0())
   .use(PrimeVue)
   .component('Button', Button)
   .component('ProgressSpinner', ProgressSpinner)
