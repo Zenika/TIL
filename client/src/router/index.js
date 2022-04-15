@@ -10,6 +10,11 @@ import NotFoundView from '../views/NotFoundView'
 const routes = [
   {
     path: '/',
+    name: 'test',
+    component: HomeView
+  },
+  {
+    path: '/:page',
     name: 'home',
     component: HomeView
   },
