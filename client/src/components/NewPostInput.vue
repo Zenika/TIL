@@ -8,6 +8,7 @@
         placeholder="Post a new link"
         v-model="state.url"
         :class="{ 'p-invalid': v$.url.$error }"
+        data-test="input"
       />
       <Button label="Post" @click="postLink" :loading="loading" />
     </div>
@@ -20,9 +21,10 @@
 <script setup>
 import gql from "graphql-tag";
 import { reactive } from "vue";
-import { useMutationAuth0 } from "../composables/useMutationAuth0";
+import { useUserInfo } from "../composables/useUserInfo";
 import { required, url } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import { useMutation } from "@vue/apollo-composable";
 
 const emit = defineEmits(['posted'])
 
@@ -44,7 +46,7 @@ const mutation = gql`
   }
 `;
 
-const { loading, mutate, onDone } = useMutationAuth0(mutation);
+const { loading, mutate, onDone } = useMutation(mutation);
 
 onDone(() => {
   state.url = "";
@@ -58,7 +60,7 @@ const postLink = () => {
   if (!v$.value.$error) {
     mutate({
       url: state.url,
-      user_id: JSON.parse(sessionStorage.getItem("user")).sub,
+      user_id: useUserInfo().sub,
     });
   }
 };
