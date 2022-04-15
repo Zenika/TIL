@@ -23,6 +23,7 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
+
 // import { createAuth0, useAuth0 } from '@auth0/auth0-vue';
 
 // const authMiddleware = new ApolloLink(async (operation, forward) => {
