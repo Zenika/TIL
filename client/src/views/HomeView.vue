@@ -54,19 +54,24 @@ const { result: total } = useSubscription(
 let totalRecords = ref(null);
 let currentPage = ref(route.params.page);
 if (currentPage == null) currentPage = 1;
+
+const checkPageNumber = (totalRecords) => {
+  let nPages = Math.ceil(totalRecords / 10);
+  if (currentPage.value > nPages) {
+    currentPage.value = 1;
+    variables.value = {
+      limit: 10,
+      offset: 0,
+    };
+
+    router.push(`/${1}`);
+  }
+};
+
 watch(total, (resultValue) => {
   if (resultValue) {
     totalRecords.value = resultValue.post_aggregate.aggregate.count;
-    let nPages = Math.ceil(totalRecords.value / 10);
-    if (currentPage.value > nPages) {
-      currentPage.value = 1;
-      variables.value = {
-        limit: 10,
-        offset: 0,
-      };
-
-      router.push(`/${1}`);
-    }
+    checkPageNumber(totalRecords.value)
   }
 });
 

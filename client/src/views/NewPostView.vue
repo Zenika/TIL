@@ -53,7 +53,7 @@ const mutation = gql`
 const { mutate, onDone, loading } = useMutationAuth0(mutation);
 
 onDone(() => {
-  router.push("/fhgfh?page=1");
+  router.push("/");
 });
 
 const submit = () => {

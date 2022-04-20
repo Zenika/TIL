@@ -10,7 +10,7 @@ import NotFoundView from '../views/NotFoundView'
 const routes = [
   {
     path: '/',
-    name: 'test',
+    name: 'homeFirstPage',
     component: HomeView
   },
   {
