@@ -140,35 +140,52 @@ jobs:
           working_directory: server
           command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
 
+  deploy-auth0:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Create .env.local file
+          working_directory: auth0
+          command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=$AUTH0_DEPLOY_CLIENT_ID\n" >> .env.local
+      - run:
+          name: Deploy Auth0 production tenant
+          working_directory: auth0
+          command: |
+            sudo npm i -g auth0-deploy-cli
+            export $(cat .env.local | xargs) && a0deploy import --config_file prod-config.json --input_file tenant.yaml -x $AUTH0_DEPLOY_SECRET
+
 workflows:
   deploy-prod:
     jobs:
-      - install-dependencies
-      - unit-test:
-          requires:
-            - install-dependencies
-      - lint:
-          requires:
-            - install-dependencies
-      - build:
-          requires:
-            - unit-test
-            - lint
-      - deploy-remote-schema:
-          filters: &deploy-filters
-            branches:
-              only: main
-      - deploy-hasura:
-          requires:
-            - deploy-remote-schema
-          filters: *deploy-filters
-      - run-hasura-migrations:
-          requires:
-            - deploy-hasura
-          filters: *deploy-filters
-      - deploy:
-          requires:
-            - build
-            - run-hasura-migrations
-          filters: *deploy-filters
+      # - install-dependencies
+      # - unit-test:
+      #     requires:
+      #       - install-dependencies
+      # - lint:
+      #     requires:
+      #       - install-dependencies
+      # - build:
+      #     requires:
+      #       - unit-test
+      #       - lint
+      - deploy-auth0
+      # - deploy-remote-schema:
+      #     filters: &deploy-filters
+      #       branches:
+      #         only: main
+      # - deploy-hasura:
+      #     requires:
+      #       - deploy-remote-schema
+      #     filters: *deploy-filters
+      # - run-hasura-migrations:
+      #     requires:
+      #       - deploy-hasura
+      #     filters: *deploy-filters
+      # - deploy:
+      #     requires:
+      #       - build
+      #       - run-hasura-migrations
+      #     filters: *deploy-filters
 
