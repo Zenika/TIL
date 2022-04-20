@@ -1,18 +1,22 @@
 table:
-  name: user
   schema: public
+  name: user
 array_relationships:
-- name: posts
-  using:
-    foreign_key_constraint_on:
-      column: user_id
-      table:
-        name: post
-        schema: public
+  - name: posts
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: post
 select_permissions:
-- permission:
-    columns:
-    - id
-    - username
-    filter: {}
-  role: anon
+  - role: anon
+    permission:
+      columns:
+        - username
+      filter: {}
+  - role: user
+    permission:
+      columns:
+        - username
+      filter: {}
