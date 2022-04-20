@@ -1,0 +1,10 @@
+{
+    "AUTH0_DOMAIN": "today-i-learned.eu.auth0.com",
+    "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
+      "AUTH0_TENANT_NAME": "today-i-learned",
+      "HASURA_URL": "https://hasura.til.zenika.com/v1/graphql",
+      "FRONTEND_URL": "https://til.zenika.com/"
+    },
+    "AUTH0_ALLOW_DELETE": false,
+    "AUTH0_EXCLUDED": []
+  }

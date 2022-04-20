@@ -4,6 +4,13 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import { config } from '@vue/test-utils'
 
+jest.mock('@auth0/auth0-vue', () => ({
+    __esModule: true,
+    useAuth0: jest.fn(() => ({
+        isAuthenticated: true
+    })),
+}))
+
 config.global.components = {
     'Button': Button,
     'InputText': InputText
