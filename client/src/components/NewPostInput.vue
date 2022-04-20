@@ -46,7 +46,7 @@ const mutation = gql`
   }
 `;
 
-const { loading, mutate, onDone, onError } = useMutation(mutation);
+const { loading, mutate, onDone } = useMutation(mutation);
 
 onDone(() => {
   state.url = "";
