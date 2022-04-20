@@ -177,7 +177,7 @@ workflows:
       - deploy-remote-schema:
           requires:
             - deploy-auth0
-          fitlers: *deploy-filters
+          filters: *deploy-filters
       - deploy-hasura:
           requires:
             - deploy-remote-schema
