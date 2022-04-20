@@ -159,33 +159,36 @@ jobs:
 workflows:
   deploy-prod:
     jobs:
-      # - install-dependencies
-      # - unit-test:
-      #     requires:
-      #       - install-dependencies
-      # - lint:
-      #     requires:
-      #       - install-dependencies
-      # - build:
-      #     requires:
-      #       - unit-test
-      #       - lint
-      - deploy-auth0
-      # - deploy-remote-schema:
-      #     filters: &deploy-filters
-      #       branches:
-      #         only: main
-      # - deploy-hasura:
-      #     requires:
-      #       - deploy-remote-schema
-      #     filters: *deploy-filters
-      # - run-hasura-migrations:
-      #     requires:
-      #       - deploy-hasura
-      #     filters: *deploy-filters
-      # - deploy:
-      #     requires:
-      #       - build
-      #       - run-hasura-migrations
-      #     filters: *deploy-filters
+      - install-dependencies
+      - unit-test:
+          requires:
+            - install-dependencies
+      - lint:
+          requires:
+            - install-dependencies
+      - build:
+          requires:
+            - unit-test
+            - lint
+      - deploy-auth0:
+          filters: &deploy-filters
+            branches:
+              only: main
+      - deploy-remote-schema:
+          requires:
+            - deploy-auth0
+          fitlers: *deploy-filters
+      - deploy-hasura:
+          requires:
+            - deploy-remote-schema
+          filters: *deploy-filters
+      - run-hasura-migrations:
+          requires:
+            - deploy-hasura
+          filters: *deploy-filters
+      - deploy:
+          requires:
+            - build
+            - run-hasura-migrations
+          filters: *deploy-filters
 
