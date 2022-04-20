@@ -15,12 +15,11 @@
       </div>
     </div>
     <Paginator
-      
-      v-if="totalRecords"
       :first="offset"
       :totalRecords="totalRecords"
       :rows="10"   
-      @page="changePage($event)"      
+      @page="changePage($event)"  
+      data-test="pagination"
     >
    </Paginator>
     </div>
@@ -29,14 +28,13 @@
 
 <script setup>
 import { useQuery } from "@vue/apollo-composable";
-import { ref } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 
 import { onMounted, watch } from "@vue/runtime-core";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
-
 
 
 const route = useRoute();
