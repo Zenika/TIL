@@ -1,5 +1,5 @@
 <template>
-  <NewPostInput v-if="isAuthenticated" @posted="refetch"/>
+  <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
   <code v-else-if="error">{{ error }}</code>
   <div v-else-if="result.post">
@@ -16,30 +16,29 @@
 
 <script setup>
 import gql from "graphql-tag";
-import { useAuth0 } from "@auth0/auth0-vue";
 import PostListItem from "../components/PostListItem.vue";
 import NewPostInput from "../components/NewPostInput.vue";
-import { useQuery } from '@vue/apollo-composable';
+import { useQuery } from "@vue/apollo-composable";
 
-const { isAuthenticated } = useAuth0();
-
-const { result, loading, error, refetch } = useQuery(gql`
-  query getPosts {
-    post(order_by: { created_at: desc }) {
-      url
-      created_at
-      get_title {
-        error
-        title
-      }
-      user {
-        username
+const { result, loading, error, refetch } = useQuery(
+  gql`
+    query getPosts {
+      post(order_by: { created_at: desc }) {
+        url
+        created_at
+        get_title {
+          error
+          title
+        }
+        user {
+          username
+        }
       }
     }
-  }
-`, {}, { notifyOnNetworkStatusChange: true });
-
-
+  `,
+  {},
+  { notifyOnNetworkStatusChange: true }
+);
 </script>
 
 <style scoped>
