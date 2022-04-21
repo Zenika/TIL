@@ -13,6 +13,8 @@ Copy the `.env` file and rename it to `.env.local`. Fill in the different enviro
 - `ADMIN_USER_ID` auth0 user id to be used as admin.
 - `HASURA_SYNC_USER_RULE_URL` ngork generated URL to test user syncing with Hasura.
 - `AUTH0_CLIENT_ID` client id of your development `auth0-deploy-cli` application.
+- `AUTH0_DOMAIN` your auth0 development tenant domain
+- `AUTH0_TENANT_NAME` your auth0 development tenant name
 
 ## Deploy to development tenant
 

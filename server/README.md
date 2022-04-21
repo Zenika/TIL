@@ -11,6 +11,8 @@ Run `npm --prefix ./remote-schema i ./remote-schema`
 Copy the `.env.dist` file and rename it to `.env`. Fill in the different environment variables:
 
 - `HASURA_GRAPHQL_ADMIN_SECRET` can be anything. It will be used to log in the Hasura console.
+- `AUTH0_DOMAIN` your auth0 development tenant domain
+
 
 ## Run Hasura server
 
