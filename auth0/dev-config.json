@@ -1,0 +1,10 @@
+{
+    "AUTH0_DOMAIN": "dev-iagwdw5k.us.auth0.com",
+    "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
+      "AUTH0_TENANT_NAME": "dev-iagwdw5k",
+      "HASURA_URL": "http://localhost:8080/v1/graphql",
+      "FRONTEND_URL": "http://localhost:6058"
+    },
+    "AUTH0_ALLOW_DELETE": false,
+    "AUTH0_EXCLUDED": []
+  }

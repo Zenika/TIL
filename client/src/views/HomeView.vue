@@ -1,5 +1,5 @@
 <template>
-  <NewPostInput v-if="isAuthenticated" @posted="refetch" />
+  <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
   <code v-else-if="error">{{ error }}</code>
   <div v-else-if="result.post">
@@ -30,13 +30,10 @@ import { ref } from "@vue/reactivity";
 
 import { watch } from "@vue/runtime-core";
 import gql from "graphql-tag";
-import { useAuth0 } from "@auth0/auth0-vue";
 import PostListItem from "../components/PostListItem.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
 import NewPostInput from "../components/NewPostInput.vue";
-
-const { isAuthenticated } = useAuth0();
 
 const route = useRoute();
 const { result: total } = useSubscription(
@@ -69,6 +66,7 @@ const checkPageNumber = (totalRecords) => {
 };
 
 watch(total, (resultValue) => {
+  console.log("ayo")
   if (resultValue) {
     totalRecords.value = resultValue.post_aggregate.aggregate.count;
     checkPageNumber(totalRecords.value)
