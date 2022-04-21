@@ -15,6 +15,7 @@ import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import InlineMessage from 'primevue/inlinemessage';
 import DataView from 'primevue/dataview';
+import Paginator from 'primevue/paginator';
 import '/node_modules/primeflex/primeflex.css'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink, concat, split } from '@apollo/client/core'
@@ -91,4 +92,5 @@ createApp({
   .component('TextArea', TextArea)
   .component('InlineMessage', InlineMessage)
   .component('DataView', DataView)
+  .component('Paginator', Paginator)
   .mount('#app')
