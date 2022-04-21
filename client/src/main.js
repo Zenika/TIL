@@ -25,7 +25,7 @@ import { DefaultApolloClient } from '@vue/apollo-composable'
 
 import { createAuth0 } from '@auth0/auth0-vue';
 import { exposeAuth0, client } from './plugins/expose-auth0-client';
-import  BIcon  from 'bootstrap-vue-3'
+
 
 const authMiddleware = new ApolloLink(async (operation, forward) => {
   if (client.value.isAuthenticated) {
@@ -94,5 +94,4 @@ createApp({
   .component('InlineMessage', InlineMessage)
   .component('DataView', DataView)
   .component('Paginator', Paginator)
-  .component('B-icon',BIcon)
   .mount('#app')
