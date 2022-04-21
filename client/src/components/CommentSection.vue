@@ -7,16 +7,23 @@
   </div>
   <div
     v-else-if="result"
-    class="col-4 flex flex-column justify-content-center mt-2 border"
+    class="col-4 flex flex-column justify-content-center mt-2 border comment"
   >
-    <div class="w-full" v-if="result.comment.length > 0">
-      <div v-for="comment in result.comment" :key="comment.id">
-        <p class="m-0 border-bottom-1 border-300">
-          {{ comment.content }}<br /><b>{{ comment.username }}</b>
-        </p>
-      </div>
-    </div>
-    <p v-else>No comment yet</p>
+    <DataView :value="result.comment" :layout="'list'">
+      <template #list="slotProps">
+        <div class="col-12">
+          <div class="product-list-item">
+            <div class="col-12">
+              <b>{{ slotProps.data.username }}</b>
+            </div>
+
+            <div class="col-12">{{ slotProps.data.content }}</div>
+            <hr />
+          </div>
+        </div>
+      </template>
+    </DataView>
+    <!-- <p v-else>No comment yet</p> -->
     <div class="w-full">
       <TextArea
         class="w-full mt-1 mb-1"
@@ -27,20 +34,28 @@
     </div>
     <div class="w-full">
       <Button
+        v-if="isAuthenticated"
         @click="postComment"
         label="Post comment"
         :loading="mutationLoading"
+      />
+      <Button
+        v-else
+        label="Post comment"
+        disabled
+        title="Log in to post comments"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { useSubscription } from "@vue/apollo-composable";
+import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { ref, toRefs } from "vue";
-import { useMutationAuth0 } from '../composables/useMutationAuth0'
+import { useAuth0 } from "@auth0/auth0-vue";
 
+const { isAuthenticated } = useAuth0();
 
 const props = defineProps({
   postId: String,
@@ -52,7 +67,7 @@ const { loading, result, error } = useSubscription(
   gql`
     subscription getComments($postId: Int!) {
       comment(where: { post_id: { _eq: $postId } }) {
-        id
+        # id
         content
         username
       }
@@ -74,16 +89,12 @@ const mutation = gql`
     insert_comment_one(
       object: { content: $content, post_id: $post_id, username: $username }
     ) {
-      id
+      username
     }
   }
 `;
 
-const {
-  loading: mutationLoading,
-  mutate,
-  onDone,
-} = useMutationAuth0(mutation);
+const { loading: mutationLoading, mutate, onDone } = useMutation(mutation);
 
 onDone(() => {
   comment.value = "";
@@ -101,4 +112,7 @@ const postComment = () => {
 </script>
 
 <style scoped>
+.comment {
+  background-color: #f8f9fa;
+}
 </style>

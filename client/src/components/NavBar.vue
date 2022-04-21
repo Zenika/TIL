@@ -24,11 +24,11 @@ import { watch } from "@vue/runtime-core";
 import { ref } from "vue";
 
 const menuSchema = ref([
-  // {
-  //   label: "Home",
-  //   icon: "pi pi-fw pi-home",
-  //   to: "/"
-  // },
+  {
+    label: "Home",
+    icon: "pi pi-fw pi-home",
+    to: "/"
+  },
   // {
   //   label: "Authors",
   //   icon: "pi pi-fw pi-users",
