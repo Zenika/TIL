@@ -40,6 +40,7 @@ select_permissions:
         - id
         - url
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -47,3 +48,4 @@ select_permissions:
         - id
         - url
       filter: {}
+      allow_aggregations: true
