@@ -10,7 +10,8 @@
         :class="{ 'p-invalid': v$.url.$error }"
         data-test="input"
       />
-      <Button label="Post" @click="postLink" :loading="loading" />
+      <Button v-if="isAuthenticated" label="Post" @click="postLink" :loading="loading" />
+      <Button v-else label="Post" disabled title="Log in to post a new link" />
     </div>
   </div>
   <small id="username2-help" class="p-error" v-if="v$.url.$error">{{
@@ -21,10 +22,12 @@
 <script setup>
 import gql from "graphql-tag";
 import { reactive } from "vue";
-import { useUserInfo } from "../composables/useUserInfo";
 import { required, url } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import { useAuth0 } from "@auth0/auth0-vue";
 import { useMutation } from "@vue/apollo-composable";
+
+const { isAuthenticated } = useAuth0();
 
 const emit = defineEmits(['posted'])
 
@@ -60,7 +63,6 @@ const postLink = () => {
   if (!v$.value.$error) {
     mutate({
       url: state.url,
-      user_id: useUserInfo().sub,
     });
   }
 };
