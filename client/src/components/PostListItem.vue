@@ -19,21 +19,18 @@
         <p >
           {{ post.user.username }}
         </p> 
-     
-     
-             <p class="date">
+        <p class="date">
           {{
             new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
           }}
          </p>
          </div>
-          
-           <img @click="openArticle(post.id)"  class="col-2 comment" height="37"   src="../assets/chat-left-text.svg" />
+         <div class="comment">
+         <span @click="openArticle(post.id)"  class="pi pi-comments commentIcon"></span> </div>
+           <!-- <img @click="openArticle(post.id)"  class="col-2 comment" height="37"   src="../assets/chat-left-text.svg" /> -->
        </div>
          </div>  
       </div>
-    
-
   </div>
 </template>
 
@@ -53,10 +50,14 @@ const openArticle = (id)=>{
 <style lang="scss" scoped>
 .date-username {grid-row: 1;grid-column: 1/3;}
 .comment {grid-row: 1; grid-column: 2/3;
-margin-top: 2px;}
+margin-top: 10px;
+margin-right: 200px;}
 :hover.comment {
   background-color: #f8f9fa;
   cursor: pointer;
+}
+.commentIcon {
+  padding: 8px;
 }
 :deep(.post-list-item) {
   display: flex;
@@ -91,7 +92,6 @@ margin-top: 2px;}
     
   }
 }
-
 @media screen and (max-width: 576px) {
   .post-list-item {
     flex-direction: column;

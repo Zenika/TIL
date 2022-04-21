@@ -27,11 +27,15 @@
     <div class="w-full">
       <TextArea
         class="w-full mt-1 mb-1"
-        v-model="comment"
+        v-model="comment.text"
+        :class="{'p-invalid':v$.text.$error}"
         placeholder="Write your comment here"
         :autoResize="true"
       />
     </div>
+    <small id="username2-help" class="p-error" v-if="v$.text.$error">{{
+    v$.text.$errors[0].$message
+  }}</small>
     <div class="w-full">
       <Button
         v-if="isAuthenticated"
@@ -52,8 +56,10 @@
 <script setup>
 import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { ref, toRefs } from "vue";
+import { reactive, ref, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
+import { required , maxLength} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 
 const { isAuthenticated } = useAuth0();
 
@@ -63,7 +69,15 @@ const props = defineProps({
 
 const { postId } = toRefs(props);
 
-const { loading, result, error } = useSubscription(
+
+const comment = reactive({
+  text: ""
+});
+const rules = {
+  text: {required , maxLength: maxLength(400) }
+}
+const v$ = useVuelidate(rules, comment);
+const { loading, result, error  } = useSubscription(
   gql`
     subscription getComments($postId: Int!) {
       comment(where: { post_id: { _eq: $postId } }) {
@@ -78,7 +92,6 @@ const { loading, result, error } = useSubscription(
   }
 );
 
-let comment = ref("");
 
 const mutation = gql`
   mutation insertCommentOne(
@@ -97,17 +110,22 @@ const mutation = gql`
 const { loading: mutationLoading, mutate, onDone } = useMutation(mutation);
 
 onDone(() => {
-  comment.value = "";
+  comment.text = "";
+  v$.value.$reset();
 });
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 
+
 const postComment = () => {
+  v$.value.$validate();
+  if(!v$.value.$error){
   mutate({
-    content: comment.value,
+    content: comment.text,
     username: user ? user.nickname : "Anon",
     post_id: postId.value,
   });
+  }
 };
 </script>
 
