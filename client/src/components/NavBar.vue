@@ -2,7 +2,7 @@
   <div v-if="!isLoading">
     <MenuBar :model="menuSchema">
       <template #start>
-        <img alt="logo" src="../assets/logo-zenika.svg" height="40" />
+        <img alt="logo" src="../assets/logo-zenika.svg" height="40" class="mr-2"/>
       </template>
       <template #end>
         <div v-if="isAuthenticated">
@@ -30,11 +30,11 @@ import { watch } from "@vue/runtime-core";
 import { ref } from "vue";
 
 const menuSchema = ref([
-  // {
-  //   label: "Home",
-  //   icon: "pi pi-fw pi-home",
-  //   to: "/"
-  // },
+  {
+    label: "Home",
+    icon: "pi pi-fw pi-home",
+    to: "/"
+  },
   // {
   //   label: "Authors",
   //   icon: "pi pi-fw pi-users",

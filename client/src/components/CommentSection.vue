@@ -7,40 +7,70 @@
   </div>
   <div
     v-else-if="result"
-    class="col-4 flex flex-column justify-content-center mt-2 border"
+    class="
+      col-4
+      flex flex-column
+      justify-content-center
+      border-top-1 border-200
+    "
   >
-    <div class="w-full" v-if="result.comment.length > 0">
-      <div v-for="comment in result.comment" :key="comment.id">
-        <p class="m-0 border-bottom-1 border-300">
-          {{ comment.content }}<br /><b>{{ comment.username }}</b>
-        </p>
-      </div>
-    </div>
-    <p v-else>No comment yet</p>
+    <DataView :value="result.comment" :layout="'list'">
+      <template #list="slotProps">
+        <div class="col-12 p-2">
+          <div class="col-12 p-0 text-sm font-semibold">
+            {{ slotProps.data.username }}
+          </div>
+
+          <div class="col-12 p-0 font-light">
+            <p class="m-0 text-justify word-wrap-break">
+              {{ slotProps.data.content }}
+            </p>
+          </div>
+        </div>
+      </template>
+      <template #empty>
+        <div class="mb-2">No comments yet.</div>
+      </template>
+    </DataView>
     <div class="w-full">
       <TextArea
         class="w-full mt-1 mb-1"
-        v-model="comment"
+        v-model="comment.text"
+        :class="{ 'p-invalid': v$.text.$error }"
         placeholder="Write your comment here"
         :autoResize="true"
       />
     </div>
+    <small id="username2-help" class="p-error mb-1" v-if="v$.text.$error">{{
+      v$.text.$errors[0].$message
+    }}</small>
     <div class="w-full">
       <Button
+        v-if="isAuthenticated"
         @click="postComment"
         label="Post comment"
         :loading="mutationLoading"
+      />
+      <Button
+        v-else
+        label="Post comment"
+        disabled
+        title="Log in to post comments"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { useSubscription } from "@vue/apollo-composable";
+import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { ref, toRefs } from "vue";
-import { useMutationAuth0 } from '../composables/useMutationAuth0'
+import { reactive, ref, toRefs } from "vue";
+import { useAuth0 } from "@auth0/auth0-vue";
+import { required, maxLength } from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+import { useUserInfo } from "@/composables/useUserInfo";
 
+const { isAuthenticated } = useAuth0();
 
 const props = defineProps({
   postId: String,
@@ -48,11 +78,17 @@ const props = defineProps({
 
 const { postId } = toRefs(props);
 
+const comment = reactive({
+  text: "",
+});
+const rules = {
+  text: { required, maxLength: maxLength(400) },
+};
+const v$ = useVuelidate(rules, comment);
 const { loading, result, error } = useSubscription(
   gql`
     subscription getComments($postId: Int!) {
       comment(where: { post_id: { _eq: $postId } }) {
-        id
         content
         username
       }
@@ -63,8 +99,6 @@ const { loading, result, error } = useSubscription(
   }
 );
 
-let comment = ref("");
-
 const mutation = gql`
   mutation insertCommentOne(
     $content: String!
@@ -74,31 +108,34 @@ const mutation = gql`
     insert_comment_one(
       object: { content: $content, post_id: $post_id, username: $username }
     ) {
-      id
+      username
     }
   }
 `;
 
-const {
-  loading: mutationLoading,
-  mutate,
-  onDone,
-} = useMutationAuth0(mutation);
+const { loading: mutationLoading, mutate, onDone } = useMutation(mutation);
 
 onDone(() => {
-  comment.value = "";
+  comment.text = "";
+  v$.value.$reset();
 });
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 
 const postComment = () => {
-  mutate({
-    content: comment.value,
-    username: user ? user.nickname : "Anon",
-    post_id: postId.value,
-  });
+  v$.value.$validate();
+  if (!v$.value.$error) {
+    mutate({
+      content: comment.text,
+      username: useUserInfo().nickname,
+      post_id: postId.value,
+    });
+  }
 };
 </script>
 
 <style scoped>
+.word-wrap-break {
+  word-wrap: break-word;
+}
 </style>
