@@ -2,7 +2,7 @@
   <div v-if="!isLoading">
     <MenuBar :model="menuSchema">
       <template #start>
-        <img alt="logo" src="../assets/logo-zenika.svg" height="40" />
+        <img alt="logo" src="../assets/logo-zenika.svg" height="40" class="mr-2"/>
       </template>
       <template #end>
         <div v-if="isAuthenticated">
