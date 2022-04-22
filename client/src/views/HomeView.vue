@@ -66,10 +66,9 @@ const checkPageNumber = (totalRecords) => {
 };
 
 watch(total, (resultValue) => {
-  console.log("ayo")
   if (resultValue) {
     totalRecords.value = resultValue.post_aggregate.aggregate.count;
-    checkPageNumber(totalRecords.value)
+    checkPageNumber(totalRecords.value);
   }
 });
 
@@ -87,6 +86,7 @@ const { result, loading, error, refetch } = useQuery(
     query getPosts($limit: Int, $offset: Int) {
       post(order_by: { created_at: desc }, limit: $limit, offset: $offset) {
         url
+        id
         created_at
         get_title {
           error
@@ -94,6 +94,11 @@ const { result, loading, error, refetch } = useQuery(
         }
         user {
           username
+        }
+        comments_aggregate {
+          aggregate {
+            count
+          }
         }
       }
     }

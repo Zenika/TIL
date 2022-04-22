@@ -36,7 +36,7 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      HASURA_GRAPHQL_JWT_SECRET: '{"jwk_url":"https://dev-iagwdw5k.us.auth0.com/.well-known/jwks.json","type":"RS256"}'
+      HASURA_GRAPHQL_JWT_SECRET: '{"jwk_url":"https://${AUTH0_DOMAIN}/.well-known/jwks.json","type":"RS256"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anon
       HASURA_GRAPHQL_ACTIONS_HANDLER_WEBHOOK_BASEURL: http://remote-schema:8080
 

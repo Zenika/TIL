@@ -14,7 +14,7 @@
       <Button v-else label="Post" disabled title="Log in to post a new link" />
     </div>
   </div>
-  <small id="username2-help" class="p-error" v-if="v$.url.$error">{{
+  <small id="username2-help" class="p-error ml-3" v-if="v$.url.$error">{{
     v$.url.$errors[0].$message
   }}</small>
 </template>

@@ -26,6 +26,7 @@ import { DefaultApolloClient } from '@vue/apollo-composable'
 import { createAuth0 } from '@auth0/auth0-vue';
 import { exposeAuth0, client } from './plugins/expose-auth0-client';
 
+
 const authMiddleware = new ApolloLink(async (operation, forward) => {
   if (client.value.isAuthenticated) {
     const token = await client.value.getAccessTokenSilently()

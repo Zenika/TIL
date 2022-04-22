@@ -14,25 +14,38 @@
             v-html="post.get_title.title ? post.get_title.title : post.url"
           ></a>
         </div>
-        <p>
-          {{ post.user.username }}
-        </p>
-        <p class="date">
-          {{
-            new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
-          }}
-        </p>
+        <div>
+          <div class="flex align-items-center">
+            <span class="description">
+              <b>{{ post.user.username }}</b> posted on
+              {{
+                new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
+              }}
+            </span>
+          </div>
+        </div>
+        <Button
+          class="p-button-outlined p-button-secondary p-button-sm"
+          icon="pi pi-comments"
+          :label="`${post.comments_aggregate.aggregate.count} Comment${post.comments_aggregate.aggregate.count !== 1 ? 's' : ''}`"
+          @click="openArticle(post.id)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import router from "@/router";
+
 const props = defineProps({
   post: Object,
 });
 
 const domainName = new URL(props.post.url).hostname;
+const openArticle = (id) => {
+  router.push(`/post/${id}`);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -51,16 +64,12 @@ const domainName = new URL(props.post.url).hostname;
     flex: 1 1 0;
   }
 
-  p {
-    margin: 0;
-  }
-
-  .date {
-    font-size: 0.8rem;
+  .description {
+    font-size: 0.9rem;
     font-weight: lighter;
+    margin: 5px 0 5px 0;
   }
 }
-
 @media screen and (max-width: 576px) {
   .post-list-item {
     flex-direction: column;
