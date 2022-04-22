@@ -1,14 +1,20 @@
 <template>
   <div v-if="!isLoading">
     <MenuBar :model="menuSchema">
+      <template #start>
+        <img alt="logo" src="../assets/logo-zenika.svg" height="40" />
+      </template>
       <template #end>
         <div v-if="isAuthenticated">
-          <!-- <Button
+          <div class="flex align-items-center">
+            <span class="mr-2">{{ user.nickname }}</span>
+            <!-- <Button
             label="New post"
             class="p-button-text"
             @click="$router.push(`/post`)"
           /> -->
-          <Button label="Log out" @click="onLogoutClick" />
+            <Button label="Log out" @click="onLogoutClick" />
+          </div>
         </div>
         <div v-else>
           <Button label="Log in" @click="loginWithRedirect" />
@@ -36,13 +42,8 @@ const menuSchema = ref([
   // },
 ]);
 
-const {
-  logout,
-  loginWithRedirect,
-  user,
-  isAuthenticated,
-  isLoading,
-} = useAuth0();
+const { logout, loginWithRedirect, user, isAuthenticated, isLoading } =
+  useAuth0();
 
 const onLogoutClick = () => {
   logout({ returnTo: window.location.origin });
