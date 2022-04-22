@@ -27,7 +27,7 @@
         <Button
           class="p-button-outlined p-button-secondary p-button-sm"
           icon="pi pi-comments"
-          label="Comments"
+          :label="`${post.comments_aggregate.aggregate.count} Comment${post.comments_aggregate.aggregate.count !== 1 ? 's' : ''}`"
           @click="openArticle(post.id)"
         />
       </div>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-const { default: router } = require("@/router");
+import router from "@/router";
 
 const props = defineProps({
   post: Object,
