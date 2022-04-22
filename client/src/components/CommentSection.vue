@@ -7,35 +7,43 @@
   </div>
   <div
     v-else-if="result"
-    class="col-4 flex flex-column justify-content-center mt-2 border comment"
+    class="
+      col-4
+      flex flex-column
+      justify-content-center
+      border-top-1 border-200
+    "
   >
     <DataView :value="result.comment" :layout="'list'">
       <template #list="slotProps">
-        <div class="col-12">
-          <div class="product-list-item">
-            <div class="col-12">
-              <b>{{ slotProps.data.username }}</b>
-            </div>
+        <div class="col-12 p-2">
+          <div class="col-12 p-0 text-sm font-semibold">
+            {{ slotProps.data.username }}
+          </div>
 
-            <div class="col-12">{{ slotProps.data.content }}</div>
-            <hr />
+          <div class="col-12 p-0 font-light">
+            <p class="m-0 text-justify word-wrap-break">
+              {{ slotProps.data.content }}
+            </p>
           </div>
         </div>
       </template>
+      <template #empty>
+        <div class="mb-2">No comments yet.</div>
+      </template>
     </DataView>
-    <!-- <p v-else>No comment yet</p> -->
     <div class="w-full">
       <TextArea
         class="w-full mt-1 mb-1"
         v-model="comment.text"
-        :class="{'p-invalid':v$.text.$error}"
+        :class="{ 'p-invalid': v$.text.$error }"
         placeholder="Write your comment here"
         :autoResize="true"
       />
     </div>
-    <small id="username2-help" class="p-error" v-if="v$.text.$error">{{
-    v$.text.$errors[0].$message
-  }}</small>
+    <small id="username2-help" class="p-error mb-1" v-if="v$.text.$error">{{
+      v$.text.$errors[0].$message
+    }}</small>
     <div class="w-full">
       <Button
         v-if="isAuthenticated"
@@ -58,8 +66,9 @@ import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { reactive, ref, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
-import { required , maxLength} from "@vuelidate/validators";
+import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import { useUserInfo } from "@/composables/useUserInfo";
 
 const { isAuthenticated } = useAuth0();
 
@@ -69,19 +78,17 @@ const props = defineProps({
 
 const { postId } = toRefs(props);
 
-
 const comment = reactive({
-  text: ""
+  text: "",
 });
 const rules = {
-  text: {required , maxLength: maxLength(400) }
-}
+  text: { required, maxLength: maxLength(400) },
+};
 const v$ = useVuelidate(rules, comment);
-const { loading, result, error  } = useSubscription(
+const { loading, result, error } = useSubscription(
   gql`
     subscription getComments($postId: Int!) {
       comment(where: { post_id: { _eq: $postId } }) {
-        # id
         content
         username
       }
@@ -91,7 +98,6 @@ const { loading, result, error  } = useSubscription(
     postId: postId.value,
   }
 );
-
 
 const mutation = gql`
   mutation insertCommentOne(
@@ -116,21 +122,20 @@ onDone(() => {
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 
-
 const postComment = () => {
   v$.value.$validate();
-  if(!v$.value.$error){
-  mutate({
-    content: comment.text,
-    username: user ? user.nickname : "Anon",
-    post_id: postId.value,
-  });
+  if (!v$.value.$error) {
+    mutate({
+      content: comment.text,
+      username: useUserInfo().nickname,
+      post_id: postId.value,
+    });
   }
 };
 </script>
 
 <style scoped>
-.comment {
-  background-color: #f8f9fa;
+.word-wrap-break {
+  word-wrap: break-word;
 }
 </style>
