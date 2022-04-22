@@ -68,7 +68,7 @@ const checkPageNumber = (totalRecords) => {
 watch(total, (resultValue) => {
   if (resultValue) {
     totalRecords.value = resultValue.post_aggregate.aggregate.count;
-    checkPageNumber(totalRecords.value)
+    checkPageNumber(totalRecords.value);
   }
 });
 
@@ -94,6 +94,11 @@ const { result, loading, error, refetch } = useQuery(
         }
         user {
           username
+        }
+        comments_aggregate {
+          aggregate {
+            count
+          }
         }
       }
     }
