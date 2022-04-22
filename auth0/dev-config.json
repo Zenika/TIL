@@ -1,8 +1,8 @@
 {
-    "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
-      "HASURA_URL": "http://localhost:8080/v1/graphql",
-      "FRONTEND_URL": "http://localhost:6058"
-    },
-    "AUTH0_ALLOW_DELETE": false,
-    "AUTH0_EXCLUDED": []
-  }
+  "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
+    "HASURA_URL": "http://localhost:8080/v1/graphql",
+    "FRONTEND_URL": "http://localhost:6058"
+  },
+  "AUTH0_ALLOW_DELETE": false,
+  "AUTH0_EXCLUDED": []
+}

@@ -1,6 +1,6 @@
 <template>
-  <div class="col-10">
-    <div class="post-list-item ">
+  <div class="col-12">
+    <div class="post-list-item">
       <img
         :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
         :alt="post.content"
@@ -14,51 +14,41 @@
             v-html="post.get_title.title ? post.get_title.title : post.url"
           ></a>
         </div>
-          <div class="date-comment">
-         <div class="date-username">   
-        <p >
-          {{ post.user.username }}
-        </p> 
-        <p class="date">
-          {{
-            new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
-          }}
-         </p>
-         </div>
-         <div class="comment">
-         <span @click="openArticle(post.id)"  class="pi pi-comments commentIcon"></span> </div>
-           <!-- <img @click="openArticle(post.id)"  class="col-2 comment" height="37"   src="../assets/chat-left-text.svg" /> -->
-       </div>
-         </div>  
+        <div>
+          <div class="flex align-items-center">
+            <span class="description">
+              <b>{{ post.user.username }}</b> posted on
+              {{
+                new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
+              }}
+            </span>
+          </div>
+        </div>
+        <Button
+          class="p-button-outlined p-button-secondary p-button-sm"
+          icon="pi pi-comments"
+          label="Comments"
+          @click="openArticle(post.id)"
+        />
       </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-const { default: router }=require("@/router");
+const { default: router } = require("@/router");
 
 const props = defineProps({
   post: Object,
 });
 
 const domainName = new URL(props.post.url).hostname;
-const openArticle = (id)=>{
-  router.push(`/post/${id}`)
-}
+const openArticle = (id) => {
+  router.push(`/post/${id}`);
+};
 </script>
 
 <style lang="scss" scoped>
-.date-username {grid-row: 1;grid-column: 1/3;}
-.comment {grid-row: 1; grid-column: 2/3;
-margin-top: 10px;
-margin-right: 200px;}
-:hover.comment {
-  background-color: #f8f9fa;
-  cursor: pointer;
-}
-.commentIcon {
-  padding: 8px;
-}
 :deep(.post-list-item) {
   display: flex;
   align-items: center;
@@ -74,22 +64,10 @@ margin-right: 200px;}
     flex: 1 1 0;
   }
 
-  p {
-    margin: 0;
-  }
-
-  .date {
-    font-size: 0.8rem;
+  .description {
+    font-size: 0.9rem;
     font-weight: lighter;
-  }
-  .date-comment {
-    display: grid;
-    grid-template-areas: repeat(1, 1fr);
-    grid-template-columns: minmax(80px, auto) 1fr 1fr 1fr 1fr 1fr ;
-    grid-template-rows: minmax(20px, auto);
-    margin-top: 3px;
-    
-    
+    margin: 5px 0 5px 0;
   }
 }
 @media screen and (max-width: 576px) {
@@ -104,8 +82,6 @@ margin-right: 200px;}
     .post-detail {
       text-align: center;
     }
-
   }
-
 }
 </style>
