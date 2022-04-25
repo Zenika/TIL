@@ -201,11 +201,11 @@ workflows:
           requires:
             - deploy-auth0-staging
           app-id: $CLEVER_REMOTE_SCHEMA_APP_ID_STAGING
-      - deploy-hasura:
-          name: deploy-hasura-staging
-          requires:
-            - deploy-remote-schema-staging
-          app-id: $CLEVER_HASURA_APP_ID_STAGING
+      # - deploy-hasura:
+      #     name: deploy-hasura-staging
+      #     requires:
+      #       - deploy-remote-schema-staging
+      #     app-id: $CLEVER_HASURA_APP_ID_STAGING
       - run-hasura-migrations:
           name: run-hasura-migrations-staging
           requires:
