@@ -159,13 +159,16 @@ jobs:
 workflows:
   main:
     jobs:
-      - install-dependencies
+      # - install-dependencies
       - unit-test:
-          requires:
-            - install-dependencies
+          # requires:
+          #   - install-dependencies
+          test: 'premier job'
       - unit-test:
-          requires:
-            - install-dependencies
+          # requires:
+          #   - install-dependencies
+          test: 'deuxième job'
+
       # - lint:
       #     requires:
       #       - install-dependencies
