@@ -23,7 +23,7 @@
 
           <div class="col-12 p-0 font-light">
             <p class="m-0 text-justify word-wrap-break">
-              {{ slotProps.data.content }}
+              <span v-html="slotProps.data.content"></span>
             </p>
           </div>
         </div>
@@ -85,7 +85,7 @@ const rules = {
   text: { required, maxLength: maxLength(400) },
 };
 const v$ = useVuelidate(rules, comment);
-const { loading, result, error } = useSubscription(
+const { loading, result, error, onResult } = useSubscription(
   gql`
     subscription getComments($postId: Int!) {
       comment(where: { post_id: { _eq: $postId } }) {
@@ -98,6 +98,12 @@ const { loading, result, error } = useSubscription(
     postId: postId.value,
   }
 );
+
+onResult(({ data }) => {
+  data.comment.forEach(comment => {
+    comment.content = processComment(comment.content)
+  });
+});
 
 const mutation = gql`
   mutation insertCommentOne(
@@ -120,17 +126,24 @@ onDone(() => {
   v$.value.$reset();
 });
 
-const user = JSON.parse(sessionStorage.getItem("user"));
-
 const postComment = () => {
   v$.value.$validate();
   if (!v$.value.$error) {
     mutate({
       content: comment.text,
-      username: useUserInfo().nickname,
+      username: useUserInfo()?.nickname,
       post_id: postId.value,
     });
   }
+};
+
+const processComment = (content) => {
+  content = content.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // PREVENT HTML INJECTION
+  content = content.replace(
+    /(https?:\/\/)([^ ]+)/g,
+    '<a target="_blank" href="$&">$2</a>'
+  ); // INSERT ANCHOR TAGS AROUND LINKS
+  return content
 };
 </script>
 
