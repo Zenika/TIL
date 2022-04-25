@@ -158,16 +158,13 @@ jobs:
           working_directory: auth0
           command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
       - run:
-          working_directory: auth0
-          command: cat .env.local
-      - run:
           name: Install auth0 CLI
           working_directory: auth0
           command: sudo npm i -g auth0-deploy-cli
       - run:
           name: Deploy Auth0 tenant
           working_directory: auth0
-          command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >> --debug
+          command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
 
 workflows:
   main:
@@ -188,14 +185,14 @@ workflows:
           config-file: staging-config.json
           deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID_STAGING
           deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
-      - deploy-auth0:
-          name: deploy-auth0-prod
-          filters: &prod-filters
-            branches:
-              only: main
-          config-file: prod-config.json
-          deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID
-          deploy-secret: $AUTH0_DEPLOY_SECRET
+      # - deploy-auth0:
+      #     name: deploy-auth0-prod
+      #     filters: &prod-filters
+      #       branches:
+      #         only: main
+      #     config-file: prod-config.json
+      #     deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID
+      #     deploy-secret: $AUTH0_DEPLOY_SECRET
       # - deploy-remote-schema:
       #     requires:
       #       - deploy-auth0
