@@ -169,7 +169,7 @@ jobs:
       - run:
           name: Deploy Auth0 tenant
           working_directory: auth0
-          command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
+          command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >> --debug
 
 workflows:
   main:
