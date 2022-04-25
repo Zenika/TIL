@@ -136,16 +136,19 @@ jobs:
   run-hasura-migrations:
     docker:
       - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
+    parameters:
+      hasura-endpoint:
+        type: string
     steps:
       - checkout
       - run:
           name: Apply migrations
           working_directory: server
-          command: hasura-cli migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+          command: hasura-cli migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint << parameters.hasura-endpoint >>
       - run:
           name: Apply metadata
           working_directory: server
-          command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+          command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint << parameters.hasura-endpoint >>
 
   deploy-auth0:
     docker:
@@ -203,11 +206,12 @@ workflows:
           requires:
             - deploy-remote-schema-staging
           app-id: $CLEVER_HASURA_APP_ID_STAGING
+      - run-hasura-migrations:
+          name: run-hasura-migrations-staging
+          requires:
+            - deploy-hasura-staging
+          hasura-endpoint: $HASURA_ENDPOINT_STAGING
 
-      # - run-hasura-migrations:
-      #     name: run-hasura-migrations-staging
-      #     requires:
-      #       - deploy-hasura-staging
       # - deploy:
       #     name: deploy-staging
       #     requires:
