@@ -208,8 +208,8 @@ workflows:
       #     app-id: $CLEVER_HASURA_APP_ID_STAGING
       - run-hasura-migrations:
           name: run-hasura-migrations-staging
-          requires:
-            - deploy-hasura-staging
+          # requires:
+          #   - deploy-hasura-staging
           hasura-endpoint: $HASURA_ENDPOINT_STAGING
 
       # - deploy:
