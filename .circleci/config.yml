@@ -158,12 +158,12 @@ jobs:
           working_directory: auth0
           command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
       - run:
+          working_directory: auth0
+          command: cat .env.local
+      - run:
           name: Install auth0 CLI
           working_directory: auth0
           command: sudo npm i -g auth0-deploy-cli
-      - run:
-          working_directory: auth0
-          command: cat .env
       - run:
           name: Deploy Auth0 tenant
           working_directory: auth0
