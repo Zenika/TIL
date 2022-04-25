@@ -92,6 +92,9 @@ jobs:
   deploy-remote-schema:
     docker:
       - image: circleci/node:lts
+    parameters:
+      app-id:
+        type: string
     steps:
       - checkout
       - run:
@@ -105,7 +108,7 @@ jobs:
             git commit -m "deploy!"
             sudo npm install --global clever-tools
             clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
-            clever link $CLEVER_REMOTE_SCHEMA_APP_ID
+            clever link << parameters.app-id >>
             clever deploy --force
 
   deploy-hasura:
@@ -157,14 +160,14 @@ jobs:
           name: Create .env.local file
           working_directory: auth0
           command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
-      - run:
-          name: Install auth0 CLI
-          working_directory: auth0
-          command: sudo npm i -g auth0-deploy-cli
-      - run:
-          name: Deploy Auth0 tenant
-          working_directory: auth0
-          command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
+      # - run:
+      #     name: Install auth0 CLI
+      #     working_directory: auth0
+      #     command: sudo npm i -g auth0-deploy-cli
+      # - run:
+      #     name: Deploy Auth0 tenant
+      #     working_directory: auth0
+      #     command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
 
 workflows:
   main:
@@ -180,19 +183,28 @@ workflows:
       #     requires:
       #       - unit-test
       #       - lint
-      # - deploy-auth0:
-      #     name: deploy-auth0-staging
-      #     config-file: staging-config.json
-      #     deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID_STAGING
-      #     deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
+
+      # STAGING
       - deploy-auth0:
-          name: deploy-auth0-prod
+          name: deploy-auth0-staging
+          config-file: staging-config.json
+          deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID_STAGING
+          deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
+      - deploy-remote-schema:
+          name: deploy-remote-schema-staging
+          requires:
+            - deploy-auth0
+          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID
+
+      # PROD
+      # - deploy-auth0:
+          # name: deploy-auth0-prod
           # filters: &prod-filters
           #   branches:
           #     only: main
-          config-file: prod-config.json
-          deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID
-          deploy-secret: $AUTH0_DEPLOY_SECRET
+          # config-file: prod-config.json
+          # deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID
+          # deploy-secret: $AUTH0_DEPLOY_SECRET
       # - deploy-remote-schema:
       #     requires:
       #       - deploy-auth0
