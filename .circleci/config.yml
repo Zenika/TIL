@@ -163,11 +163,11 @@ workflows:
       - unit-test:
           # requires:
           #   - install-dependencies
-          test: 'premier job'
+          test: $HASURA_ADMIN_SECRET
       - unit-test:
           # requires:
           #   - install-dependencies
-          test: 'deuxième job'
+          test: $ADMIN_USER_ID
 
       # - lint:
       #     requires:
