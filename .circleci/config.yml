@@ -160,7 +160,7 @@ jobs:
           name: Deploy Auth0 tenant
           working_directory: auth0
           command: |
-            sudo npm i -g auth0-deploy-cli
+            npm i -g auth0-deploy-cli
             export $(cat .env.local | xargs) && a0deploy import --config_file staging-config.json --input_file tenant.yaml -x $AUTH0_DEPLOY_SECRET_STAGING
 
 workflows:
