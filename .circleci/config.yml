@@ -157,38 +157,41 @@ jobs:
             export $(cat .env.local | xargs) && a0deploy import --config_file prod-config.json --input_file tenant.yaml -x $AUTH0_DEPLOY_SECRET
 
 workflows:
-  deploy-prod:
+  main:
     jobs:
       - install-dependencies
       - unit-test:
           requires:
             - install-dependencies
-      - lint:
+      - unit-test:
           requires:
             - install-dependencies
-      - build:
-          requires:
-            - unit-test
-            - lint
-      - deploy-auth0:
-          filters: &deploy-filters
-            branches:
-              only: main
-      - deploy-remote-schema:
-          requires:
-            - deploy-auth0
-          filters: *deploy-filters
-      - deploy-hasura:
-          requires:
-            - deploy-remote-schema
-          filters: *deploy-filters
-      - run-hasura-migrations:
-          requires:
-            - deploy-hasura
-          filters: *deploy-filters
-      - deploy:
-          requires:
-            - build
-            - run-hasura-migrations
-          filters: *deploy-filters
+      # - lint:
+      #     requires:
+      #       - install-dependencies
+      # - build:
+      #     requires:
+      #       - unit-test
+      #       - lint
+      # - deploy-auth0:
+      #     filters: &prod-filters
+      #       branches:
+      #         only: main
+      # - deploy-remote-schema:
+      #     requires:
+      #       - deploy-auth0
+      #     filters: *prod-filters
+      # - deploy-hasura:
+      #     requires:
+      #       - deploy-remote-schema
+      #     filters: *prod-filters
+      # - run-hasura-migrations:
+      #     requires:
+      #       - deploy-hasura
+      #     filters: *prod-filters
+      # - deploy:
+      #     requires:
+      #       - build
+      #       - run-hasura-migrations
+      #     filters: *prod-filters
 
