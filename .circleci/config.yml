@@ -162,10 +162,8 @@ jobs:
           working_directory: auth0
           command: sudo npm i -g auth0-deploy-cli
       - run:
-          command: |
-            echo << parameters.config-file >>
-            echo << parameters.deploy-secret >>
-            echo << parameters.deploy-client-id >>
+          working_directory: auth0
+          command: cat .env
       - run:
           name: Deploy Auth0 tenant
           working_directory: auth0
