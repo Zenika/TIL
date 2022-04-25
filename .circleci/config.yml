@@ -194,7 +194,7 @@ workflows:
           name: deploy-remote-schema-staging
           requires:
             - deploy-auth0-staging
-          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID
+          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID_STAGING
 
       # PROD
       # - deploy-auth0:
