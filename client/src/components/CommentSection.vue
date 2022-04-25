@@ -125,13 +125,21 @@ const user = JSON.parse(sessionStorage.getItem("user"));
 const postComment = () => {
   v$.value.$validate();
   if (!v$.value.$error) {
-    comment.text = comment.text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    processComment();
     mutate({
       content: comment.text,
       username: useUserInfo().nickname,
       post_id: postId.value,
     });
   }
+};
+
+const processComment = () => {
+  comment.text = comment.text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  comment.text = comment.text.replace(
+    /(https?:\/\/)([^ ]+)/g,
+    '<a target="_blank" href="$&">$2</a>'
+  );
 };
 </script>
 
