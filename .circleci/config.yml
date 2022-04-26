@@ -66,13 +66,7 @@ jobs:
       - run:
           name: Create .env.local file
           working_directory: client
-          command: |
-            |
-              echo -e "VUE_APP_AUTH0_DOMAIN=<< parameters.auth0-domain >>\nVUE_APP_AUTH0_CLIENT_ID=<< parameters.auth0-client-id >>\nVUE_APP_HASURA_HTTP=<< parameters.hasura-endpoint >>/v1/graphql\nVUE_APP_HASURA_WSS=<< parameters.hasura-wss >>\n" >> .env.local
-              cat .env.local
-      - run:
-          working_directory: client
-          command: cat .env.local
+          command: echo -e "VUE_APP_AUTH0_DOMAIN=<< parameters.auth0-domain >>\nVUE_APP_AUTH0_CLIENT_ID=<< parameters.auth0-client-id >>\nVUE_APP_HASURA_HTTP=<< parameters.hasura-endpoint >>/v1/graphql\nVUE_APP_HASURA_WSS=<< parameters.hasura-wss >>\n" >> .env.local
       - run:
           name: Build frontend
           working_directory: client
