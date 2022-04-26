@@ -67,7 +67,9 @@ jobs:
           name: Create .env.local file
           working_directory: client
           command: |
-            echo -e "VUE_APP_AUTH0_DOMAIN=<< parameters.auth0-domain >>\nVUE_APP_AUTH0_CLIENT_ID=<< parameters.auth0-client-id >>\nVUE_APP_HASURA_HTTP=<< parameters.hasura-endpoint >>/v1/graphql\nVUE_APP_HASURA_WSS=<< parameters.hasura-wss >>\n" >> .env.local
+            |
+              echo -e "VUE_APP_AUTH0_DOMAIN=<< parameters.auth0-domain >>\nVUE_APP_AUTH0_CLIENT_ID=<< parameters.auth0-client-id >>\nVUE_APP_HASURA_HTTP=<< parameters.hasura-endpoint >>/v1/graphql\nVUE_APP_HASURA_WSS=<< parameters.hasura-wss >>\n" >> .env.local
+              cat .env.local
       - run:
           working_directory: client
           command: cat .env.local
@@ -180,7 +182,9 @@ jobs:
       - run:
           name: Create .env.local file
           working_directory: auth0
-          command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
+          command: |
+            echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
+            cat .env.local
       - run:
           name: Install auth0 CLI
           working_directory: auth0
@@ -193,50 +197,50 @@ jobs:
 workflows:
   main:
     jobs:
-      # - install-dependencies
-      # - unit-test:
-      #     requires:
-      #       - install-dependencies
-      # - lint:
-      #     requires:
-      #       - install-dependencies
+      - install-dependencies
+      - unit-test:
+          requires:
+            - install-dependencies
+      - lint:
+          requires:
+            - install-dependencies
 
       # STAGING
-      # - deploy-auth0:
-      #     name: deploy-auth0-staging
-      #     config-file: staging-config.json
-      #     deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID_STAGING
-      #     deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
-      # - deploy-remote-schema:
-      #     name: deploy-remote-schema-staging
-      #     requires:
-      #       - deploy-auth0-staging
-      #     app-id: $CLEVER_REMOTE_SCHEMA_APP_ID_STAGING
-      # - deploy-hasura:
-      #     name: deploy-hasura-staging
-      #     requires:
-      #       - deploy-remote-schema-staging
-      #     app-id: $CLEVER_HASURA_APP_ID_STAGING
-      # - run-hasura-migrations:
-      #     name: run-hasura-migrations-staging
-      #     requires:
-      #       - deploy-hasura-staging
-      #     hasura-endpoint: $HASURA_ENDPOINT_STAGING
-      # - build:
-      #     name: build-staging
-      #     requires:
-      #       - unit-test
-      #       - lint
-      #     hasura-endpoint: $HASURA_ENDPOINT_STAGING
-      #     hasura-wss: $HASURA_WSS_STAGING
-      #     auth0-domain: $AUTH0_DOMAIN_STAGING
-      #     auth0-client-id: $AUTH0_CLIENT_ID_STAGING
-      # - deploy:
-      #     name: deploy-staging
-      #     requires:
-      #       - build-staging
-      #       - run-hasura-migrations-staging
-      #     app-id: $CLEVER_FRONT_APP_ID_STAGING
+      - deploy-auth0:
+          name: deploy-auth0-staging
+          config-file: staging-config.json
+          deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID_STAGING
+          deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
+      - deploy-remote-schema:
+          name: deploy-remote-schema-staging
+          requires:
+            - deploy-auth0-staging
+          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID_STAGING
+      - deploy-hasura:
+          name: deploy-hasura-staging
+          requires:
+            - deploy-remote-schema-staging
+          app-id: $CLEVER_HASURA_APP_ID_STAGING
+      - run-hasura-migrations:
+          name: run-hasura-migrations-staging
+          requires:
+            - deploy-hasura-staging
+          hasura-endpoint: $HASURA_ENDPOINT_STAGING
+      - build:
+          name: build-staging
+          requires:
+            - unit-test
+            - lint
+          hasura-endpoint: $HASURA_ENDPOINT_STAGING
+          hasura-wss: $HASURA_WSS_STAGING
+          auth0-domain: $AUTH0_DOMAIN_STAGING
+          auth0-client-id: $AUTH0_CLIENT_ID_STAGING
+      - deploy:
+          name: deploy-staging
+          requires:
+            - build-staging
+            - run-hasura-migrations-staging
+          app-id: $CLEVER_FRONT_APP_ID_STAGING
 
       # PROD
       - deploy-auth0:
