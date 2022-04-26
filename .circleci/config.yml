@@ -182,14 +182,6 @@ jobs:
           working_directory: auth0
           command: sudo npm i -g auth0-deploy-cli
       - run:
-          name: Install auth0 CLI
-          working_directory: auth0
-          command: |
-            unset AUTH0_DEPLOY_SECRET_STAGING
-            unset AUTH0_DEPLOY_SECRET
-            env
-            cat << parameters.config-file >>
-      - run:
           name: Deploy Auth0 tenant
           working_directory: auth0
           command: a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
@@ -232,7 +224,7 @@ workflows:
       #       - lint
       #     hasura-endpoint: $HASURA_ENDPOINT_STAGING
       #     hasura-wss: $HASURA_WSS_STAGING
-      #     auth0-domain: $AUTH0_DOMAIN_STAGING
+      #     auth0-domain: $AUTH0_DOMAIN_NAME_STAGING
       #     auth0-client-id: $AUTH0_CLIENT_ID_STAGING
       # - deploy:
       #     name: deploy-staging
