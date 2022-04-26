@@ -189,58 +189,58 @@ jobs:
 workflows:
   main:
     jobs:
-      # - install-dependencies
-      # - unit-test:
-      #     requires:
-      #       - install-dependencies
-      # - lint:
-      #     requires:
-      #       - install-dependencies
+      - install-dependencies
+      - unit-test:
+          requires:
+            - install-dependencies
+      - lint:
+          requires:
+            - install-dependencies
 
       # STAGING
       - deploy-auth0:
           name: deploy-auth0-staging
           config-file: staging-config.json
           deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
-      # - deploy-remote-schema:
-      #     name: deploy-remote-schema-staging
-      #     requires:
-      #       - deploy-auth0-staging
-      #     app-id: $CLEVER_REMOTE_SCHEMA_APP_ID_STAGING
-      # - deploy-hasura:
-      #     name: deploy-hasura-staging
-      #     requires:
-      #       - deploy-remote-schema-staging
-      #     app-id: $CLEVER_HASURA_APP_ID_STAGING
-      # - run-hasura-migrations:
-      #     name: run-hasura-migrations-staging
-      #     requires:
-      #       - deploy-hasura-staging
-      #     hasura-endpoint: $HASURA_ENDPOINT_STAGING
-      # - build:
-      #     name: build-staging
-      #     requires:
-      #       - unit-test
-      #       - lint
-      #     hasura-endpoint: $HASURA_ENDPOINT_STAGING
-      #     hasura-wss: $HASURA_WSS_STAGING
-      #     auth0-domain: $AUTH0_DOMAIN_NAME_STAGING
-      #     auth0-client-id: $AUTH0_CLIENT_ID_STAGING
-      # - deploy:
-      #     name: deploy-staging
-      #     requires:
-      #       - build-staging
-      #       - run-hasura-migrations-staging
-      #     app-id: $CLEVER_FRONT_APP_ID_STAGING
+      - deploy-remote-schema:
+          name: deploy-remote-schema-staging
+          requires:
+            - deploy-auth0-staging
+          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID_STAGING
+      - deploy-hasura:
+          name: deploy-hasura-staging
+          requires:
+            - deploy-remote-schema-staging
+          app-id: $CLEVER_HASURA_APP_ID_STAGING
+      - run-hasura-migrations:
+          name: run-hasura-migrations-staging
+          requires:
+            - deploy-hasura-staging
+          hasura-endpoint: $HASURA_ENDPOINT_STAGING
+      - build:
+          name: build-staging
+          requires:
+            - unit-test
+            - lint
+          hasura-endpoint: $HASURA_ENDPOINT_STAGING
+          hasura-wss: $HASURA_WSS_STAGING
+          auth0-domain: $AUTH0_DOMAIN_NAME_STAGING
+          auth0-client-id: $AUTH0_CLIENT_ID_FRONT_STAGING
+      - deploy:
+          name: deploy-staging
+          requires:
+            - build-staging
+            - run-hasura-migrations-staging
+          app-id: $CLEVER_FRONT_APP_ID_STAGING
 
       # PROD
-      - deploy-auth0:
-          name: deploy-auth0-prod
+      # - deploy-auth0:
+      #     name: deploy-auth0-prod
           # filters: &prod-filters
           #   branches:
           #     only: main
-          config-file: prod-config.json
-          deploy-secret: $AUTH0_DEPLOY_SECRET
+          # config-file: prod-config.json
+          # deploy-secret: $AUTH0_DEPLOY_SECRET
       # - deploy-remote-schema:
       #     requires:
       #       - deploy-auth0
