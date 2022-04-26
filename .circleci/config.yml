@@ -146,7 +146,7 @@ jobs:
             sudo npm install --global clever-tools
             clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
             clever link << parameters.app-id >>
-          # clever deploy --force
+            clever deploy --force
 
   run-hasura-migrations:
     docker:
@@ -181,14 +181,14 @@ jobs:
           name: Create .env.local file
           working_directory: auth0
           command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
-      # - run:
-      #     name: Install auth0 CLI
-      #     working_directory: auth0
-      #     command: sudo npm i -g auth0-deploy-cli
-      # - run:
-      #     name: Deploy Auth0 tenant
-      #     working_directory: auth0
-      #     command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
+      - run:
+          name: Install auth0 CLI
+          working_directory: auth0
+          command: sudo npm i -g auth0-deploy-cli
+      - run:
+          name: Deploy Auth0 tenant
+          working_directory: auth0
+          command: export $(cat .env.local | xargs) && a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
 
 workflows:
   main:
@@ -200,7 +200,6 @@ workflows:
       - lint:
           requires:
             - install-dependencies
-
 
       # STAGING
       - deploy-auth0:
@@ -238,12 +237,6 @@ workflows:
             - build-staging
             - run-hasura-migrations-staging
           app-id: $CLEVER_FRONT_APP_ID_STAGING
-
-      # - deploy:
-      #     name: deploy-staging
-      #     requires:
-      #       - build
-      #       - run-hasura-migrations-staging
 
       # PROD
       # - deploy-auth0:
