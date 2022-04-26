@@ -4,6 +4,8 @@
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
     "AUTH0_TENANT_NAME": "today-i-learned",
     "HASURA_URL": "https://hasura.til.zenika.com/v1/graphql",
+    "HASURA_SYNC_USER_RULE_URL": "https://hasura.til.zenika.com/v1/graphql",
+    "ADMIN_USER_ID": "google-oauth2|102968485799807560898",
     "FRONTEND_URL": "https://til.zenika.com/"
   },
   "AUTH0_ALLOW_DELETE": false,
