@@ -228,6 +228,49 @@ workflows:
           app-id: $CLEVER_FRONT_APP_ID_STAGING
 
       # PROD
+      - deploy-auth0:
+          name: deploy-auth0-prod
+          config-file: prod-config.json
+          deploy-secret: $AUTH0_DEPLOY_SECRET
+          # filters: &prod-filters
+          #   branches:
+          #     only: main
+      - deploy-remote-schema:
+          name: deploy-remote-schema-prod
+          requires:
+            - deploy-auth0-prod
+          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID
+          # filters: *prod-filters
+      - deploy-hasura:
+          name: deploy-hasura-prod
+          requires:
+            - deploy-remote-schema-prod
+          app-id: $CLEVER_HASURA_APP_ID
+          # filters: *prod-filters
+      - run-hasura-migrations:
+          name: run-hasura-migrations-prod
+          requires:
+            - deploy-hasura-prod
+          hasura-endpoint: $HASURA_ENDPOINT
+          # filters: *prod-filters
+      - build:
+          name: build-prod
+          requires:
+            - unit-test
+            - lint
+          hasura-endpoint: $HASURA_ENDPOINT
+          hasura-wss: $HASURA_WSS
+          auth0-domain: $AUTH0_DOMAIN_NAME
+          auth0-client-id: $AUTH0_CLIENT_ID_FRONT
+          # filters: *prod-filters
+      - deploy:
+          name: deploy-prod
+          requires:
+            - build-prod
+            - run-hasura-migrations-prod
+          app-id: $CLEVER_FRONT_APP_ID
+          # filters: *prod-filters
+
       # - deploy-auth0:
       #     name: deploy-auth0-prod
           # filters: &prod-filters
