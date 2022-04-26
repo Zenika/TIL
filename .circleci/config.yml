@@ -243,14 +243,14 @@ workflows:
           app-id: $CLEVER_FRONT_APP_ID_STAGING
 
       # PROD
-      - deploy-auth0:
-          name: deploy-auth0-prod
+      # - deploy-auth0:
+      #     name: deploy-auth0-prod
           # filters: &prod-filters
           #   branches:
           #     only: main
-          config-file: prod-config.json
-          deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID
-          deploy-secret: $AUTH0_DEPLOY_SECRET
+          # config-file: prod-config.json
+          # deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID
+          # deploy-secret: $AUTH0_DEPLOY_SECRET
       # - deploy-remote-schema:
       #     requires:
       #       - deploy-auth0
