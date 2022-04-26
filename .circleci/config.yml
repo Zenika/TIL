@@ -180,7 +180,7 @@ jobs:
       - run:
           name: Create .env.local file
           working_directory: auth0
-          command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
+          command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=$AUTH0_DEPLOY_CLIENT_ID_STAGING\n" >> .env.local
       - run:
           name: Install auth0 CLI
           working_directory: auth0
