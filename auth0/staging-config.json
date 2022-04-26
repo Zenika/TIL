@@ -1,7 +1,7 @@
 {
-    "AUTH0_DOMAIN": "staging-today-i-learned.eu.auth0.com",
+    "AUTH0_DOMAIN": "today-i-learned-staging.eu.auth0.com",
     "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
-      "AUTH0_TENANT_NAME": "staging-today-i-learned",
+      "AUTH0_TENANT_NAME": "today-i-learned-staging",
       "HASURA_URL": "https://staging.hasura.til.zenika.com/v1/graphql",
       "FRONTEND_URL": "https://staging.til.zenika.com/"
     },
