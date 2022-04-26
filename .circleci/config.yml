@@ -185,6 +185,8 @@ jobs:
           name: Install auth0 CLI
           working_directory: auth0
           command: |
+            unset AUTH0_DEPLOY_SECRET_STAGING
+            unset AUTH0_DEPLOY_SECRET
             env
             cat << parameters.config-file >>
       - run:
