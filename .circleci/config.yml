@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   install-dependencies:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
     steps:
       - checkout
       - restore_cache:
@@ -20,7 +20,7 @@ jobs:
 
   unit-test:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
     steps:
       - checkout
       - restore_cache:
@@ -35,7 +35,7 @@ jobs:
 
   lint:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
     steps:
       - checkout
       - restore_cache:
@@ -48,7 +48,16 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
+    parameters:
+      hasura-endpoint:
+        type: string
+      hasura-wss:
+        type: string
+      auth0-domain:
+        type: string
+      auth0-client-id:
+        type: string
     steps:
       - checkout
       - restore_cache:
@@ -57,7 +66,7 @@ jobs:
       - run:
           name: Create .env.local file
           working_directory: client
-          command: echo -e "VUE_APP_AUTH0_DOMAIN=$AUTH0_DOMAIN\nVUE_APP_AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID\nVUE_APP_HASURA_HTTP=$HASURA_ENDPOINT/v1/graphql\nVUE_APP_HASURA_WSS=$HASURA_WSS\n" >> .env.local
+          command: echo -e "VUE_APP_AUTH0_DOMAIN=<< parameters.auth0-domain >>\nVUE_APP_AUTH0_CLIENT_ID=<< parameters.auth0-client-id >>\nVUE_APP_HASURA_HTTP=<< parameters.hasura-endpoint >>/v1/graphql\nVUE_APP_HASURA_WSS=<< parameters.hasura-wss >>\n" >> .env.local
       - run:
           name: Build frontend
           working_directory: client
@@ -69,7 +78,10 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
+    parameters:
+      app-id:
+        type: string
     steps:
       - checkout
       - attach_workspace:
@@ -85,12 +97,15 @@ jobs:
             git commit -m "deploy!"
             sudo npm install --global clever-tools
             clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
-            clever link $CLEVER_FRONT_APP_ID
+            clever link << parameters.app-id >>
             clever deploy --force
 
   deploy-remote-schema:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
+    parameters:
+      app-id:
+        type: string
     steps:
       - checkout
       - run:
@@ -104,12 +119,15 @@ jobs:
             git commit -m "deploy!"
             sudo npm install --global clever-tools
             clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
-            clever link $CLEVER_REMOTE_SCHEMA_APP_ID
+            clever link << parameters.app-id >>
             clever deploy --force
 
   deploy-hasura:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
+    parameters:
+      app-id:
+        type: string
     steps:
       - checkout
       - run:
@@ -123,41 +141,47 @@ jobs:
             git commit -m "deploy!"
             sudo npm install --global clever-tools
             clever login --secret=$CLEVER_SECRET --token=$CLEVER_TOKEN
-            clever link $CLEVER_HASURA_APP_ID
+            clever link << parameters.app-id >>
             clever deploy --force
 
   run-hasura-migrations:
     docker:
       - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
+    parameters:
+      hasura-endpoint:
+        type: string
     steps:
       - checkout
       - run:
           name: Apply migrations
           working_directory: server
-          command: hasura-cli migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+          command: hasura-cli migrate apply --all-databases --admin-secret $HASURA_ADMIN_SECRET --endpoint << parameters.hasura-endpoint >>
       - run:
           name: Apply metadata
           working_directory: server
-          command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint $HASURA_ENDPOINT
+          command: hasura-cli metadata apply --admin-secret $HASURA_ADMIN_SECRET --endpoint << parameters.hasura-endpoint >>
 
   deploy-auth0:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
+    parameters:
+      config-file:
+        type: string
+      deploy-secret:
+        type: string
     steps:
       - checkout
       - run:
-          name: Create .env.local file
+          name: Install auth0 CLI
           working_directory: auth0
-          command: echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=$AUTH0_DEPLOY_CLIENT_ID\n" >> .env.local
+          command: sudo npm i -g auth0-deploy-cli
       - run:
-          name: Deploy Auth0 production tenant
+          name: Deploy Auth0 tenant
           working_directory: auth0
-          command: |
-            sudo npm i -g auth0-deploy-cli
-            export $(cat .env.local | xargs) && a0deploy import --config_file prod-config.json --input_file tenant.yaml -x $AUTH0_DEPLOY_SECRET
+          command: a0deploy import --config_file << parameters.config-file >> --input_file tenant.yaml -x << parameters.deploy-secret >>
 
 workflows:
-  deploy-prod:
+  main:
     jobs:
       - install-dependencies
       - unit-test:
@@ -166,29 +190,83 @@ workflows:
       - lint:
           requires:
             - install-dependencies
+
+      # STAGING
+      - deploy-auth0:
+          name: deploy-auth0-staging
+          config-file: staging-config.json
+          deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
+      - deploy-remote-schema:
+          name: deploy-remote-schema-staging
+          requires:
+            - deploy-auth0-staging
+          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID_STAGING
+      - deploy-hasura:
+          name: deploy-hasura-staging
+          requires:
+            - deploy-remote-schema-staging
+          app-id: $CLEVER_HASURA_APP_ID_STAGING
+      - run-hasura-migrations:
+          name: run-hasura-migrations-staging
+          requires:
+            - deploy-hasura-staging
+          hasura-endpoint: $HASURA_ENDPOINT_STAGING
       - build:
+          name: build-staging
           requires:
             - unit-test
             - lint
+          hasura-endpoint: $HASURA_ENDPOINT_STAGING
+          hasura-wss: $HASURA_WSS_STAGING
+          auth0-domain: $AUTH0_DOMAIN_NAME_STAGING
+          auth0-client-id: $AUTH0_CLIENT_ID_FRONT_STAGING
+      - deploy:
+          name: deploy-staging
+          requires:
+            - build-staging
+            - run-hasura-migrations-staging
+          app-id: $CLEVER_FRONT_APP_ID_STAGING
+
+      # PROD
       - deploy-auth0:
-          filters: &deploy-filters
+          name: deploy-auth0-prod
+          config-file: prod-config.json
+          deploy-secret: $AUTH0_DEPLOY_SECRET
+          filters: &prod-filters
             branches:
               only: main
       - deploy-remote-schema:
+          name: deploy-remote-schema-prod
           requires:
-            - deploy-auth0
-          filters: *deploy-filters
+            - deploy-auth0-prod
+          app-id: $CLEVER_REMOTE_SCHEMA_APP_ID
+          filters: *prod-filters
       - deploy-hasura:
+          name: deploy-hasura-prod
           requires:
-            - deploy-remote-schema
-          filters: *deploy-filters
+            - deploy-remote-schema-prod
+          app-id: $CLEVER_HASURA_APP_ID
+          filters: *prod-filters
       - run-hasura-migrations:
+          name: run-hasura-migrations-prod
           requires:
-            - deploy-hasura
-          filters: *deploy-filters
+            - deploy-hasura-prod
+          hasura-endpoint: $HASURA_ENDPOINT
+          filters: *prod-filters
+      - build:
+          name: build-prod
+          requires:
+            - unit-test
+            - lint
+          hasura-endpoint: $HASURA_ENDPOINT
+          hasura-wss: $HASURA_WSS
+          auth0-domain: $AUTH0_DOMAIN_NAME
+          auth0-client-id: $AUTH0_CLIENT_ID_FRONT
+          filters: *prod-filters
       - deploy:
+          name: deploy-prod
           requires:
-            - build
-            - run-hasura-migrations
-          filters: *deploy-filters
-
+            - build-prod
+            - run-hasura-migrations-prod
+          app-id: $CLEVER_FRONT_APP_ID
+          filters: *prod-filters
