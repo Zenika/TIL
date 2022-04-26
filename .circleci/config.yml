@@ -173,8 +173,6 @@ jobs:
     parameters:
       config-file:
         type: string
-      deploy-client-id:
-        type: string
       deploy-secret:
         type: string
     steps:
@@ -183,7 +181,7 @@ jobs:
           name: Create .env.local file
           working_directory: auth0
           command: |
-            echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\nAUTH0_CLIENT_ID=<< parameters.deploy-client-id >>\n" >> .env.local
+            echo -e "HASURA_ADMIN_SECRET=$HASURA_ADMIN_SECRET\nADMIN_USER_ID=$ADMIN_USER_ID\nHASURA_SYNC_USER_RULE_URL=$HASURA_ENDPOINT/v1/graphql\n" >> .env.local
       - run:
           name: Install auth0 CLI
           working_directory: auth0
@@ -212,7 +210,6 @@ workflows:
       - deploy-auth0:
           name: deploy-auth0-staging
           config-file: staging-config.json
-          deploy-client-id: $AUTH0_DEPLOY_CLIENT_ID_STAGING
           deploy-secret: $AUTH0_DEPLOY_SECRET_STAGING
       # - deploy-remote-schema:
       #     name: deploy-remote-schema-staging
