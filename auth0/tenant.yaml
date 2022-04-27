@@ -1,9 +1,14 @@
 rules:
+  - name: Email domain whitelist
+    script: ./rules/Email domain whitelist.js
+    stage: login_success
+    enabled: true
+    order: 1
   - name: sync-hasura-user
     script: ./rules/sync-hasura-user.js
     stage: login_success
     enabled: true
-    order: 1
+    order: 2
 rulesConfigs:
   - key: "HASURA_ADMIN_SECRET"
     value: ##HASURA_ADMIN_SECRET##
@@ -112,12 +117,11 @@ databases:
     strategy: auth0
     enabled_clients:
       - auth0-deploy-cli
-      - TIL Client
       - TIL Server (Test Application)
     is_domain_connection: false
     options:
       mfa:
-        active: true
+        active: false
         return_enroll_settings: true
       passwordPolicy: good
       strategy_version: 2
@@ -239,3 +243,4 @@ attackProtection:
       pre-user-registration:
         max_attempts: 50
         rate: 1200
+logStreams: []
