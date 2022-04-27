@@ -1,5 +1,6 @@
 function emailDomainWhitelist(user, context, callback) {
-  const encodedRedirectUrl = encodeURI(`##FRONTEND_URL##?msg=access_denied`);
+  const encodedRedirectUrl = encodeURIComponent(`##FRONTEND_URL##?p=1&msg=access_denied`);
+  console.log(encodedRedirectUrl);
   const logoutUrl = `https://##AUTH0_DOMAIN##/v2/logout?returnTo=${encodedRedirectUrl}&client_id=${context.clientID}`;
   if (!user.email || !user.email_verified) {
     context.redirect = { url: logoutUrl };

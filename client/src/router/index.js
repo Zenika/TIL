@@ -11,14 +11,14 @@ import PostView from '../views/PostView'
 const routes = [
   {
     path: '/',
-    name: 'homeFirstPage',
-    component: HomeView
-  },
-  {
-    path: '/:page',
     name: 'home',
     component: HomeView
   },
+  // {
+  //   path: '/:page',
+  //   name: 'home',
+  //   component: HomeView
+  // },
   {
     path: '/post/:id',
     name: 'Post',
