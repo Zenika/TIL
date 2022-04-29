@@ -33,14 +33,6 @@ insert_permissions:
         - url
       backend_only: false
 select_permissions:
-  - role: anon
-    permission:
-      columns:
-        - created_at
-        - id
-        - url
-      filter: {}
-      allow_aggregations: true
   - role: user
     permission:
       columns:
