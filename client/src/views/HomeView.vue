@@ -1,19 +1,10 @@
 <template>
-  <Message
-    class="mb-0 mt-2 mr-5 ml-5"
-    severity="error"
-    :life="5000"
-    :sticky="false"
-    :closable="true"
-    v-if="route.query.msg"
-  >
-    Please log in with a Zenika email address
-  </Message>
+  <NavBar/>
   <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
-  <code v-else-if="error">{{ error }}</code>
+  <Message  v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
-    <div class="A">
+    <div>
       <DataView :value="result.post" :layout="'list'">
         <template #list="slotProps">
           <PostListItem :post="slotProps.data" />
@@ -36,7 +27,7 @@
 <script setup>
 import { useQuery, useSubscription } from "@vue/apollo-composable";
 import { ref } from "@vue/reactivity";
-
+import NavBar from "@/components/NavBar.vue";
 import { watch } from "@vue/runtime-core";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";

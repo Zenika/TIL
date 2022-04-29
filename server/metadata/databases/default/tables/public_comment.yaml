@@ -15,15 +15,6 @@ insert_permissions:
         - username
       backend_only: false
 select_permissions:
-  - role: anon
-    permission:
-      columns:
-        - content
-        - id
-        - post_id
-        - username
-      filter: {}
-      allow_aggregations: true
   - role: user
     permission:
       columns:
