@@ -1,4 +1,5 @@
 <template>
+  <NavBar/>
   <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
   <code v-else-if="error">{{ error }}</code>
@@ -26,7 +27,7 @@
 <script setup>
 import { useQuery, useSubscription } from "@vue/apollo-composable";
 import { ref } from "@vue/reactivity";
-
+import NavBar from "@/components/NavBar.vue";
 import { watch } from "@vue/runtime-core";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
