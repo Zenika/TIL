@@ -3,7 +3,7 @@
     <ProgressSpinner />
   </div>
   <div v-else-if="error" class="col-12 flex justify-content-center mt-6">
-    <p>{{ error }}</p>
+    <Message severity="error">Internal error</Message>
   </div>
   <div
     v-else-if="result"
@@ -100,8 +100,8 @@ const { loading, result, error, onResult, onError } = useSubscription(
 );
 
 onResult(({ data }) => {
-  data.comment.forEach(comment => {
-    comment.content = processComment(comment.content)
+  data.comment.forEach((comment) => {
+    comment.content = processComment(comment.content);
   });
 });
 
@@ -143,7 +143,7 @@ const processComment = (content) => {
     /(https?:\/\/)([^ ]+)/g,
     '<a target="_blank" href="$&">$2</a>'
   ); // INSERT ANCHOR TAGS AROUND LINKS
-  return content
+  return content;
 };
 </script>
 
