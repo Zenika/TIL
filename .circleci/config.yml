@@ -174,7 +174,7 @@ jobs:
       - run:
           name: Install auth0 CLI
           working_directory: auth0
-          command: sudo npm i -g auth0-deploy-cli && a0deploy --version
+          command: sudo npm i -g auth0-deploy-cli@7.9.0 && a0deploy --version
       - run:
           name: Deploy Auth0 tenant
           working_directory: auth0
