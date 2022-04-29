@@ -49,11 +49,20 @@ const httpLink = createHttpLink({
 const wsLink = new WebSocketLink({
   uri: process.env.VUE_APP_HASURA_WSS,
   options: {
-    reconnect: true
+    reconnect: true,
+    connectionParams: async () => {
+      const token = await client.value.getAccessTokenSilently()
+
+      return {
+        headers: {
+          ...(token ? { authorization: `Bearer ${token}` } : {}),
+        }
+      }
+    }
   }
 });
 
-const link = split(
+const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
@@ -66,7 +75,7 @@ const link = split(
 );
 
 const apolloClient = new ApolloClient({
-  link: concat(authMiddleware, link),
+  link: concat(authMiddleware, splitLink),
   cache: new InMemoryCache(),
 })
 

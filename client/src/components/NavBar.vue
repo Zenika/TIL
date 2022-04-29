@@ -21,7 +21,6 @@
 
 <script setup>
 import { useAuth0 } from "@auth0/auth0-vue";
-import { watch } from "@vue/runtime-core";
 import { ref } from "vue";
 
 const menuSchema = ref([
@@ -38,7 +37,7 @@ const onLogoutClick = () => {
   logout({ returnTo: window.location.origin });
 };
 
-if (!sessionStorage.getItem('user'))
+if (!sessionStorage.getItem("user"))
   sessionStorage.setItem("user", JSON.stringify(user.value));
 </script>
 

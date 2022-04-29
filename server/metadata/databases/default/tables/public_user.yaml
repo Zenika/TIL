@@ -10,11 +10,6 @@ array_relationships:
           schema: public
           name: post
 select_permissions:
-  - role: anon
-    permission:
-      columns:
-        - username
-      filter: {}
   - role: user
     permission:
       columns:
