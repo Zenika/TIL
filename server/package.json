@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "hasura-cli": "^2.6.0"
+  },
+  "scripts": {
+    "hasura-migrate": "hasura migrate apply --all-databases",
+    "hasura-metadata": "hasura metadata apply"
+  }
+}
