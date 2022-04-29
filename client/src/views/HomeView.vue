@@ -1,19 +1,9 @@
 <template>
-  <Message
-    class="mb-0 mt-2 mr-5 ml-5"
-    severity="error"
-    :life="5000"
-    :sticky="false"
-    :closable="true"
-    v-if="route.query.msg"
-  >
-    Please log in with a Zenika email address
-  </Message>
   <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
   <code v-else-if="error">{{ error }}</code>
   <div v-else-if="result.post">
-    <div class="A">
+    <div>
       <DataView :value="result.post" :layout="'list'">
         <template #list="slotProps">
           <PostListItem :post="slotProps.data" />

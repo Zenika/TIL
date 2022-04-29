@@ -6,13 +6,14 @@ import PostView from '../views/PostView'
 // import PostView from '../views/PostView'
 // import AuthorListView from '../views/AuthorListView'
 // import AuthorProfileView from '../views/AuthorProfileView'
-// import { authGuard } from '@auth0/auth0-vue'
+import { authGuard } from '@auth0/auth0-vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    beforeEnter: authGuard
   },
   // {
   //   path: '/:page',
@@ -22,7 +23,8 @@ const routes = [
   {
     path: '/post/:id',
     name: 'Post',
-    component: PostView
+    component: PostView,
+    beforeEnter: authGuard
   },
   // {
   //   path: '/post',
