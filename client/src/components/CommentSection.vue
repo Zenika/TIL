@@ -85,7 +85,7 @@ const rules = {
   text: { required, maxLength: maxLength(400) },
 };
 const v$ = useVuelidate(rules, comment);
-const { loading, result, error, onResult } = useSubscription(
+const { loading, result, error, onResult, onError } = useSubscription(
   gql`
     subscription getComments($postId: Int!) {
       comment(where: { post_id: { _eq: $postId } }) {
