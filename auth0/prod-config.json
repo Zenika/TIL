@@ -1,7 +1,7 @@
 {
   "AUTH0_CLIENT_ID": "pSiaZXTLy2xjIg6flS0MnvTyvGK2yxcX",
-  "AUTH0_DOMAIN": "today-i-learned.eu.auth0.com",
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
+    "AUTH0_DOMAIN": "today-i-learned.eu.auth0.com",
     "AUTH0_TENANT_NAME": "today-i-learned",
     "HASURA_URL": "https://hasura.til.zenika.com/v1/graphql",
     "HASURA_SYNC_USER_RULE_URL": "https://hasura.til.zenika.com/v1/graphql",
