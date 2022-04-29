@@ -38,11 +38,8 @@ const onLogoutClick = () => {
   logout({ returnTo: window.location.origin });
 };
 
-watch(user, async (newVal) => {
-  if (newVal) {
-    sessionStorage.setItem("user", JSON.stringify(newVal));
-  } else sessionStorage.clear();
-});
+if (!sessionStorage.getItem('user'))
+  sessionStorage.setItem("user", JSON.stringify(user.value));
 </script>
 
 <style>
