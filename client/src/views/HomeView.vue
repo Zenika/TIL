@@ -2,7 +2,7 @@
   <NavBar/>
   <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
-  <code v-else-if="error">{{ error }}</code>
+  <Message  v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
     <div>
       <DataView :value="result.post" :layout="'list'">

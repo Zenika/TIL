@@ -1,7 +1,7 @@
 <template>
-  <NavBar/>
+  <NavBar />
   <ProgressSpinner v-if="loading" class="spinner" />
-  <p v-else-if="error">{{ error }}</p>
+  <Message v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result" class="grid">
     <div class="col-12 flex justify-content-center mt-6">
       <a
