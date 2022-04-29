@@ -1,6 +1,7 @@
 <template>
+  <NavBar />
   <ProgressSpinner v-if="loading" class="spinner" />
-  <p v-else-if="error">{{ error }}</p>
+  <Message v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result" class="grid">
     <div class="col-12 flex justify-content-center mt-6">
       <a
@@ -32,6 +33,7 @@ import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import CommentSection from "../components/CommentSection.vue";
+import NavBar from "@/components/NavBar.vue";
 import { ref, watch } from "@vue/runtime-core";
 
 const route = useRoute();
