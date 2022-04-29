@@ -163,7 +163,7 @@ jobs:
 
   deploy-auth0:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:lts
     parameters:
       config-file:
         type: string
