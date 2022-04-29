@@ -4,6 +4,7 @@
   },
   "scripts": {
     "hasura-migrate": "hasura migrate apply --all-databases",
-    "hasura-metadata": "hasura metadata apply"
+    "hasura-metadata": "hasura metadata apply",
+    "hasura-console": "hasura console"
   }
 }
