@@ -1,56 +1,83 @@
 <template>
+  <NavBar />
   <div class="grid">
-    <div class="col-12 flex justify-content-center mt-6">
-      <h1>Write a new article:</h1>
+    <div class="col-7 col-offset-3">
+      <h1 class="font-normal">Post a new link</h1>
     </div>
-    <div class="col-12 flex justify-content-center mt-2">
-      <InputText v-model="state.title" placeholder="title" />
-      <InlineMessage class="ml-2" v-if="v$.title.$error">{{ v$.title.$errors[0].$message }}</InlineMessage>
+
+    <div class="col-7 col-offset-3">
+      <Card class="p-0">
+        <template #content>
+          <div class="field">
+            <label for="url">URL</label>
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-link"></i>
+              </span>
+              <InputText
+                id="url"
+                v-model="state.url"
+                placeholder="https://www.your-url.com/"
+                :class="{ 'p-invalid': v$.url.$error }"
+              />
+              <small
+                id="username2-help"
+                class="p-error ml-3"
+                v-if="v$.url.$error"
+                >{{ v$.url.$errors[0].$message }}</small
+              >
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="editor">Description</label>
+            <Editor
+              id="editor"
+              v-model="state.description"
+              editorStyle="height: 320px"
+            />
+          </div>
+        </template>
+      </Card>
     </div>
-    <div class="col-12 flex justify-content-center">
-      <TextArea v-model="state.content" placeholder="content" />
-      <InlineMessage class="ml-2" v-if="v$.content.$error">{{ v$.content.$errors[0].$message }}</InlineMessage>
-    </div>
-    <div class="col-12 flex justify-content-center mt-2">
+    <div class="col-7 col-offset-3">
       <Button label="Post" :loading="loading" @click="submit" />
     </div>
   </div>
 </template>
 
 <script setup>
+import NavBar from "@/components/NavBar.vue";
 import { reactive } from "vue";
 import router from "../router";
 
-import { useMutationAuth0 } from "@/composables/useMutationAuth0";
+import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
 import useVuelidate from "@vuelidate/core";
-import { required, maxLength, minLength } from "@vuelidate/validators";
-
+import { required, maxLength, url } from "@vuelidate/validators";
 
 const state = reactive({
-  title: null,
-  content: null,
+  url: null,
+  description: null,
 });
 
 const rules = {
-  title: { required }, // Matches state.firstName
-  content: { required, minLength: minLength(140), maxLength: maxLength(1000) }, // Matches state.lastName
+  url: { required, url },
+  description: { maxLength: maxLength(1000) },
 };
 
 const v$ = useVuelidate(rules, state);
 
 const mutation = gql`
-  mutation MyMutation($title: String!, $content: String!, $user_id: String!) {
-    insert_post_one(
-      object: { content: $content, title: $title, user_id: $user_id }
-    ) {
+  mutation MyMutation($url: String!, $description: String!) {
+    insert_post_one(object: { description: $description, url: $url }) {
       id
     }
   }
 `;
 
-const { mutate, onDone, loading } = useMutationAuth0(mutation);
+const { mutate, onDone, loading } = useMutation(mutation);
 
 onDone(() => {
   router.push("/");
@@ -61,13 +88,16 @@ const submit = () => {
 
   if (!v$.value.$error) {
     mutate({
-      title: state.title,
-      content: state.content,
-      user_id: JSON.parse(sessionStorage.getItem("user")).sub,
+      url: state.url,
+      description: state.description,
     });
   }
 };
 </script>
 
 <style>
+.p-card-body {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 </style>

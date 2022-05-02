@@ -29,6 +29,11 @@ const menuSchema = ref([
     icon: "pi pi-fw pi-home",
     to: "/",
   },
+  {
+    label: "New post",
+    icon: "pi pi-fw pi-link",
+    to: "/post",
+  },
 ]);
 
 const { logout, user, isLoading } = useAuth0();
