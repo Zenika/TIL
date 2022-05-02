@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   install-dependencies:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     steps:
       - checkout
       - restore_cache:
@@ -20,7 +20,7 @@ jobs:
 
   unit-test:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     steps:
       - checkout
       - restore_cache:
@@ -35,7 +35,7 @@ jobs:
 
   lint:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     steps:
       - checkout
       - restore_cache:
@@ -48,7 +48,7 @@ jobs:
 
   build:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     parameters:
       hasura-endpoint:
         type: string
@@ -78,7 +78,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     parameters:
       app-id:
         type: string
@@ -102,7 +102,7 @@ jobs:
 
   deploy-remote-schema:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     parameters:
       app-id:
         type: string
@@ -124,7 +124,7 @@ jobs:
 
   deploy-hasura:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     parameters:
       app-id:
         type: string
@@ -163,7 +163,7 @@ jobs:
 
   deploy-auth0:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/node:16.14.0
     parameters:
       config-file:
         type: string
@@ -174,7 +174,7 @@ jobs:
       - run:
           name: Install auth0 CLI
           working_directory: auth0
-          command: sudo npm i -g auth0-deploy-cli
+          command: sudo npm i -g auth0-deploy-cli@7.9.0 && a0deploy --version
       - run:
           name: Deploy Auth0 tenant
           working_directory: auth0

@@ -1,9 +1,10 @@
 <template>
+  <NavBar/>
   <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
-  <code v-else-if="error">{{ error }}</code>
+  <Message  v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
-    <div class="A">
+    <div>
       <DataView :value="result.post" :layout="'list'">
         <template #list="slotProps">
           <PostListItem :post="slotProps.data" />
@@ -16,18 +17,17 @@
   </div>
   <Paginator
     :first="offset"
-    :totalRecords="totalRecords"
+    :totalRecords="aggregateResult?.post_aggregate.aggregate.count"
     :rows="10"
     @page="changePage($event)"
     data-test="pagination"
-  >
-  </Paginator>
+  />
 </template>
 
 <script setup>
 import { useQuery, useSubscription } from "@vue/apollo-composable";
 import { ref } from "@vue/reactivity";
-
+import NavBar from "@/components/NavBar.vue";
 import { watch } from "@vue/runtime-core";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
@@ -36,7 +36,8 @@ import { useRoute } from "vue-router";
 import NewPostInput from "../components/NewPostInput.vue";
 
 const route = useRoute();
-const { result: total } = useSubscription(
+
+const { result: aggregateResult } = useSubscription(
   gql`
     subscription getPosts($limit: Int, $offset: Int) {
       post_aggregate {
@@ -48,38 +49,33 @@ const { result: total } = useSubscription(
   `
 );
 
-let totalRecords = ref(null);
-let currentPage = ref(route.params.page);
-if (currentPage == null) currentPage = 1;
+let currentPage = route.query.p
+
+if (isNaN(currentPage)) {
+  currentPage = 1;
+  router.push(`?p=1`);
+}
 
 const checkPageNumber = (totalRecords) => {
   let nPages = Math.ceil(totalRecords / 10);
-  if (currentPage.value > nPages) {
-    currentPage.value = 1;
-    variables.value = {
+  if (currentPage > nPages) {
+    currentPage = 1;
+    getPostsVariables.value = {
       limit: 10,
       offset: 0,
     };
 
-    router.push(`/${1}`);
+    router.push(`?p=1`);
   }
 };
 
-watch(total, (resultValue) => {
-  if (resultValue) {
-    totalRecords.value = resultValue.post_aggregate.aggregate.count;
-    checkPageNumber(totalRecords.value);
-  }
+watch(aggregateResult, (value) => {
+  checkPageNumber(value.post_aggregate.aggregate.count);
 });
 
-if (isNaN(currentPage.value)) {
-  currentPage.value = 1;
-  router.push(`${1}`);
-}
-
-const variables = ref({
+const getPostsVariables = ref({
   limit: 10,
-  offset: 10 * currentPage.value - 10,
+  offset: 10 * currentPage - 10,
 });
 const { result, loading, error, refetch } = useQuery(
   gql`
@@ -103,19 +99,18 @@ const { result, loading, error, refetch } = useQuery(
       }
     }
   `,
-  variables,
+  getPostsVariables,
   { notifyOnNetworkStatusChange: true }
 );
 
-function changePage(e) {
-  variables.value = {
+const changePage = (e) => {
+  getPostsVariables.value = {
     limit: 10,
     offset: e.page * 10,
   };
-  router.push(`/${e.page + 1}`);
+  router.push(`?p=${e.page + 1}`);
 }
-let currentOffset = variables.value.limit * currentPage.value - 10;
-let offset = ref(currentOffset);
+let offset = ref(getPostsVariables.value.limit * currentPage - 10);
 </script>
 
 <style scoped>
