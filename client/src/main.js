@@ -16,6 +16,7 @@ import TextArea from 'primevue/textarea';
 import InlineMessage from 'primevue/inlinemessage';
 import DataView from 'primevue/dataview';
 import Paginator from 'primevue/paginator';
+import Message from 'primevue/message';
 import '/node_modules/primeflex/primeflex.css'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink, concat, split } from '@apollo/client/core'
@@ -26,16 +27,18 @@ import { DefaultApolloClient } from '@vue/apollo-composable'
 import { createAuth0 } from '@auth0/auth0-vue';
 import { exposeAuth0, client } from './plugins/expose-auth0-client';
 
+const getHeaders = async () => {
+  const token = await client.value.getAccessTokenSilently()
+
+  return {
+    ...(token ? { authorization: `Bearer ${token}` } : {}),
+  }
+}
 
 const authMiddleware = new ApolloLink(async (operation, forward) => {
   if (client.value.isAuthenticated) {
-    const token = await client.value.getAccessTokenSilently()
-
-    // add the authorization to the headers
     operation.setContext({
-      headers: {
-        ...(token ? { authorization: `Bearer ${token}` } : {}),
-      }
+      headers: await getHeaders()
     });
   }
   return forward(operation);
@@ -48,11 +51,14 @@ const httpLink = createHttpLink({
 const wsLink = new WebSocketLink({
   uri: process.env.VUE_APP_HASURA_WSS,
   options: {
-    reconnect: true
+    reconnect: true,
+    connectionParams: async () => ({
+      headers: await getHeaders()
+    })
   }
 });
 
-const link = split(
+const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
@@ -65,7 +71,7 @@ const link = split(
 );
 
 const apolloClient = new ApolloClient({
-  link: concat(authMiddleware, link),
+  link: concat(authMiddleware, splitLink),
   cache: new InMemoryCache(),
 })
 
@@ -94,4 +100,5 @@ createApp({
   .component('InlineMessage', InlineMessage)
   .component('DataView', DataView)
   .component('Paginator', Paginator)
+  .component('Message', Message)
   .mount('#app')

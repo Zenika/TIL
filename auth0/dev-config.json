@@ -1,5 +1,8 @@
 {
+  "AUTH0_CLIENT_ID": "dLSOBBuhHgHfGJiQTUMVYixRtgIC6tEv",
+  "AUTH0_DOMAIN": "dev-iagwdw5k.us.auth0.com",
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
+    "AUTH0_DOMAIN": "dev-iagwdw5k.us.auth0.com",
     "HASURA_URL": "http://localhost:8080/v1/graphql",
     "FRONTEND_URL": "http://localhost:6058"
   },
