@@ -44,7 +44,7 @@ import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
 
-const props = defineProps({
+defineProps({
   loading: Boolean,
 });
 

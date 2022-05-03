@@ -68,7 +68,7 @@
 <script setup>
 import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { reactive, ref, toRefs } from "vue";
+import { reactive, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
