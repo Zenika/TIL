@@ -79,7 +79,7 @@ const mutation = gql`
 const { mutate, onDone, loading } = useMutation(mutation);
 
 onDone(() => {
-  router.push("/");
+  router.go(-1);
 });
 
 const submit = () => {

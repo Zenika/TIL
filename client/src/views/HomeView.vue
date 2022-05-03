@@ -1,6 +1,5 @@
 <template>
   <NavBar/>
-  <NewPostInput @posted="refetch" />
   <ProgressSpinner v-if="loading" class="spinner" />
   <Message  v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
@@ -34,6 +33,11 @@ import PostListItem from "../components/PostListItem.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
 import NewPostInput from "../components/NewPostInput.vue";
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  refetch()
+})
 
 const route = useRoute();
 
