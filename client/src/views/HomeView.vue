@@ -32,7 +32,6 @@ import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
-import NewPostInput from "../components/NewPostInput.vue";
 import { onMounted } from 'vue'
 
 onMounted(() => {
