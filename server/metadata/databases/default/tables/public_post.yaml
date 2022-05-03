@@ -38,6 +38,7 @@ select_permissions:
     permission:
       columns:
         - created_at
+        - description
         - id
         - url
       filter: {}

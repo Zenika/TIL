@@ -1,11 +1,10 @@
 <template>
   <NavBar />
-  <div class="grid">
-    <div class="col-7 col-offset-3">
+  <div class="grid m-0">
+    <div class="col-6 col-offset-3 mb-0">
       <h1 class="font-normal">Post a new link</h1>
     </div>
-
-    <div class="col-7 col-offset-3">
+    <div class="col-6 col-offset-3 card-container">
       <Card class="p-0">
         <template #content>
           <div class="field">
@@ -37,11 +36,11 @@
               editorStyle="height: 320px"
             />
           </div>
+          <div>
+            <Button label="Post" :loading="loading" @click="submit" />
+          </div>
         </template>
       </Card>
-    </div>
-    <div class="col-7 col-offset-3">
-      <Button label="Post" :loading="loading" @click="submit" />
     </div>
   </div>
 </template>
@@ -95,9 +94,8 @@ const submit = () => {
 };
 </script>
 
-<style>
-.p-card-body {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+<style scoped>
+.card-container >>> .p-card-content {
+  padding: 0;
 }
 </style>
