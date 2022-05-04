@@ -13,6 +13,7 @@
               v-model="state.url"
               placeholder="https://www.your-url.com/"
               :class="{ 'p-invalid': v$.url.$error }"
+              data-test="url"
             />
           </div>
           <small
@@ -32,7 +33,7 @@
           />
         </div>
         <div>
-          <Button label="Post" :loading="loading" @click="submit" />
+          <Button label="Post" :loading="loading" @click="submit" data-test="submit"/>
         </div>
       </template>
     </Card>
