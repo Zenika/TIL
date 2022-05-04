@@ -93,7 +93,7 @@ img {
   width: 50px;
 }
 
-.card-container >>> .p-card-content {
+.card-container :deep(.p-card-content) {
   padding: 0;
 }
 </style>
