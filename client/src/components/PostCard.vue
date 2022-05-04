@@ -1,5 +1,5 @@
 <template>
-  <div class="card-container">
+  <div v-if="post" class="card-container">
     <Card class="p-0">
       <template #content>
         <div class="grid">
@@ -65,6 +65,9 @@
       </template>
     </Card>
   </div>
+  <Message v-else class="mt-5" severity="error">
+    Internal error
+  </Message>
 </template>
 
 <script setup>
@@ -80,7 +83,9 @@ const props = defineProps({
 
 const { post } = toRefs(props);
 
-const domainName = new URL(post.value.post_by_pk.url).hostname;
+let domainName;
+if (post.value)
+  domainName = new URL(post.value.post_by_pk.url).hostname;
 </script>
 
 <style scoped>
