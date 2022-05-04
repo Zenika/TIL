@@ -1,73 +1,40 @@
 <template>
-  <div class="grid">
-    <div class="col-12 flex justify-content-center mt-6">
-      <h1>Write a new article:</h1>
+  <NavBar />
+  <div class="grid m-0">
+    <div class="col-6 col-offset-3 mb-0">
+      <h1 class="font-normal">Post a new link</h1>
     </div>
-    <div class="col-12 flex justify-content-center mt-2">
-      <InputText v-model="state.title" placeholder="title" />
-      <InlineMessage class="ml-2" v-if="v$.title.$error">{{ v$.title.$errors[0].$message }}</InlineMessage>
-    </div>
-    <div class="col-12 flex justify-content-center">
-      <TextArea v-model="state.content" placeholder="content" />
-      <InlineMessage class="ml-2" v-if="v$.content.$error">{{ v$.content.$errors[0].$message }}</InlineMessage>
-    </div>
-    <div class="col-12 flex justify-content-center mt-2">
-      <Button label="Post" :loading="loading" @click="submit" />
+    <div class="col-6 col-offset-3">
+      <NewPostCard @post-click="submit($event)" :loading="loading" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import NavBar from "@/components/NavBar.vue";
+import NewPostCard from "@/components/NewPostCard.vue";
 import router from "../router";
-
-import { useMutationAuth0 } from "@/composables/useMutationAuth0";
+import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
-import useVuelidate from "@vuelidate/core";
-import { required, maxLength, minLength } from "@vuelidate/validators";
-
-
-const state = reactive({
-  title: null,
-  content: null,
-});
-
-const rules = {
-  title: { required }, // Matches state.firstName
-  content: { required, minLength: minLength(140), maxLength: maxLength(1000) }, // Matches state.lastName
-};
-
-const v$ = useVuelidate(rules, state);
-
 const mutation = gql`
-  mutation MyMutation($title: String!, $content: String!, $user_id: String!) {
-    insert_post_one(
-      object: { content: $content, title: $title, user_id: $user_id }
-    ) {
+  mutation MyMutation($url: String!, $description: String!) {
+    insert_post_one(object: { description: $description, url: $url }) {
       id
     }
   }
 `;
 
-const { mutate, onDone, loading } = useMutationAuth0(mutation);
+const { mutate, onDone, loading } = useMutation(mutation);
+
+const submit = ({ url, description }) => {
+  mutate({
+    url,
+    description,
+  });
+};
 
 onDone(() => {
-  router.push("/");
+  router.go(-1);
 });
-
-const submit = () => {
-  v$.value.$validate();
-
-  if (!v$.value.$error) {
-    mutate({
-      title: state.title,
-      content: state.content,
-      user_id: JSON.parse(sessionStorage.getItem("user")).sub,
-    });
-  }
-};
 </script>
-
-<style>
-</style>

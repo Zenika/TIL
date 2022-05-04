@@ -30,6 +30,7 @@ insert_permissions:
       set:
         user_id: x-hasura-User-Id
       columns:
+        - description
         - url
       backend_only: false
 select_permissions:
@@ -37,6 +38,7 @@ select_permissions:
     permission:
       columns:
         - created_at
+        - description
         - id
         - url
       filter: {}

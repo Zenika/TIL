@@ -8,12 +8,38 @@
   <div
     v-else-if="result"
     class="
-      col-4
+      col-12
+      p-0
       flex flex-column
       justify-content-center
       border-top-1 border-200
     "
   >
+    <div class="w-full">
+      <TextArea
+        class="w-full mt-1 mb-1"
+        v-model="comment.text"
+        :class="{ 'p-invalid': v$.text.$error }"
+        placeholder="Write your comment here"
+        :autoResize="true"
+      />
+    </div>
+    <div class="w-full flex flex-row-reverse">
+      <Button
+        v-if="isAuthenticated"
+        @click="postComment"
+        label="Comment"
+        :loading="mutationLoading"
+        class="p-button-sm"
+      />
+      <Button
+        v-else
+        label="Comment"
+        disabled
+        title="Log in to post comments"
+        class="p-button-sm"
+      />
+    </div>
     <DataView :value="result.comment" :layout="'list'">
       <template #list="slotProps">
         <div class="col-12 p-2">
@@ -29,42 +55,20 @@
         </div>
       </template>
       <template #empty>
-        <div class="mb-2">No comments yet.</div>
+        <div class="mb-2 mt-2"><i>No comments yet.</i></div>
       </template>
     </DataView>
-    <div class="w-full">
-      <TextArea
-        class="w-full mt-1 mb-1"
-        v-model="comment.text"
-        :class="{ 'p-invalid': v$.text.$error }"
-        placeholder="Write your comment here"
-        :autoResize="true"
-      />
-    </div>
+
     <small id="username2-help" class="p-error mb-1" v-if="v$.text.$error">{{
       v$.text.$errors[0].$message
     }}</small>
-    <div class="w-full">
-      <Button
-        v-if="isAuthenticated"
-        @click="postComment"
-        label="Post comment"
-        :loading="mutationLoading"
-      />
-      <Button
-        v-else
-        label="Post comment"
-        disabled
-        title="Log in to post comments"
-      />
-    </div>
   </div>
 </template>
 
 <script setup>
 import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { reactive, ref, toRefs } from "vue";
+import { reactive, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";

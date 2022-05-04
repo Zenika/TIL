@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotFoundView from '../views/NotFoundView'
 import PostView from '../views/PostView'
-// import NewPostView from '../views/NewPostView'
+import NewPostView from '../views/NewPostView'
 // import PostView from '../views/PostView'
 // import AuthorListView from '../views/AuthorListView'
 // import AuthorProfileView from '../views/AuthorProfileView'
@@ -15,28 +15,18 @@ const routes = [
     component: HomeView,
     beforeEnter: authGuard
   },
-  // {
-  //   path: '/:page',
-  //   name: 'home',
-  //   component: HomeView
-  // },
   {
     path: '/post/:id',
-    name: 'Post',
+    name: 'post',
     component: PostView,
     beforeEnter: authGuard
   },
-  // {
-  //   path: '/post',
-  //   name: 'new-post',
-  //   component: NewPostView,
-  //   beforeEnter: authGuard
-  // },
-  // {
-  //   path: '/post/:id',
-  //   name: 'post',
-  //   component: PostView
-  // },
+  {
+    path: '/post',
+    name: 'new-post',
+    component: NewPostView,
+    beforeEnter: authGuard
+  },
   // {
   //   path: '/authors',
   //   name: 'authors',
