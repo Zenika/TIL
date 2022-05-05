@@ -19,47 +19,15 @@ import gql from "graphql-tag";
 
 const mutation = gql`
   mutation insertPostWithTags(
-    $url: String!
     $description: String!
-    $tag1: String
-    $tag2: String
-    $tag3: String
+    $url: String!
+    $post_tag_insert_input: [post_tag_insert_input!]!
   ) {
     insert_post_one(
       object: {
         url: $url
         description: $description
-        post_tags: {
-          data: [
-            {
-              tag: {
-                data: { name: $tag1 }
-                on_conflict: {
-                  constraint: tag_name_key
-                  update_columns: [name]
-                }
-              }
-            }
-            {
-              tag: {
-                data: { name: $tag2 }
-                on_conflict: {
-                  constraint: tag_name_key
-                  update_columns: [name]
-                }
-              }
-            }
-            {
-              tag: {
-                data: { name: $tag3 }
-                on_conflict: {
-                  constraint: tag_name_key
-                  update_columns: [name]
-                }
-              }
-            }
-          ]
-        }
+        post_tags: { data: $post_tag_insert_input }
       }
     ) {
       id
@@ -70,12 +38,24 @@ const mutation = gql`
 const { mutate, onDone, loading } = useMutation(mutation);
 
 const submit = ({ url, description, tags }) => {
+  let post_tag_insert_input = [];
+
+  tags.forEach((tag) => {
+    post_tag_insert_input.push({
+      tag: {
+        data: { name: tag.toLowerCase() },
+        on_conflict: {
+          constraint: "tag_name_key",
+          update_columns: ["name"],
+        },
+      },
+    });
+  });
+
   mutate({
     url,
     description,
-    tag1: tags[0] ? tags[0] : '',
-    tag2: tags[1] ? tags[1] : '',
-    tag3: tags[2] ? tags[2] : '',
+    post_tag_insert_input,
   });
 };
 

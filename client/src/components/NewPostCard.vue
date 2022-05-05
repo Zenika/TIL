@@ -34,8 +34,21 @@
         </div>
 
         <div class="field">
-          <label for="tags">Tags</label>
-          <Chips id="tags" v-model="state.tags" class="w-full" :max="3" :addOnBlur="true" :allowDuplicate="false" :separator="','"/>
+          <div class="flex flex-column">
+            <label for="tags">Tags</label>
+            <small
+              >Add up to 5 tags to describe what your question is about</small
+            >
+          </div>
+          <Chips
+            id="tags"
+            v-model="state.tags"
+            class="w-full"
+            :max="5"
+            :addOnBlur="true"
+            :allowDuplicate="false"
+            :separator="','"
+          />
         </div>
 
         <div>
@@ -65,7 +78,7 @@ const emit = defineEmits(["post-click"]);
 const state = reactive({
   url: null,
   description: null,
-  tags: []
+  tags: [],
 });
 
 const rules = {
@@ -87,5 +100,9 @@ const submit = () => {
 <style scoped>
 .card-container :deep(.p-card-content) {
   padding: 0;
+}
+
+.card-container :deep(.p-chips-multiple-container) {
+  width: 100%;
 }
 </style>

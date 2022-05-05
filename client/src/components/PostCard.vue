@@ -41,14 +41,12 @@
               }}
             </small>
             <div class="mt-2 mb-1">
-              <span v-for="tags in post.post_by_pk.post_tags" :key="tags.id">
-                <Tag
-                  class="mr-2"
-                  v-if="tags.tag.name.length > 0"
-                  :key="tags.id"
-                  :value="tags.tag.name"
-                />
-              </span>
+              <Tag
+                v-for="tags in post.post_by_pk.post_tags"
+                :key="tags.id"
+                class="mr-2"
+                :value="tags.tag.name"
+              />
             </div>
           </div>
           <div class="col">
