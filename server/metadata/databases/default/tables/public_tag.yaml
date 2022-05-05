@@ -17,9 +17,23 @@ array_relationships:
         table:
           schema: public
           name: post_tag
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - name
+      backend_only: false
 select_permissions:
   - role: user
     permission:
       columns:
         - name
       filter: {}
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - name
+      filter: {}
+      check: {}

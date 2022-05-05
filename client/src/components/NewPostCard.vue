@@ -32,8 +32,19 @@
             editorStyle="height: 320px"
           />
         </div>
+
+        <div class="field">
+          <label for="tags">Tags</label>
+          <Chips id="tags" v-model="state.tags" class="w-full" :max="3" :addOnBlur="true" :allowDuplicate="false" :separator="','"/>
+        </div>
+
         <div>
-          <Button label="Post" :loading="loading" @click="submit" data-test="submit"/>
+          <Button
+            label="Post"
+            :loading="loading"
+            @click="submit"
+            data-test="submit"
+          />
         </div>
       </template>
     </Card>
@@ -54,6 +65,7 @@ const emit = defineEmits(["post-click"]);
 const state = reactive({
   url: null,
   description: null,
+  tags: []
 });
 
 const rules = {

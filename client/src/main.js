@@ -19,6 +19,7 @@ import Paginator from 'primevue/paginator';
 import Message from 'primevue/message';
 import Editor from 'primevue/editor';
 import Tag from 'primevue/tag';
+import Chips from 'primevue/chips';
 import '/node_modules/primeflex/primeflex.css'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink, concat, split } from '@apollo/client/core'
@@ -105,4 +106,5 @@ createApp({
   .component('Message', Message)
   .component('Editor', Editor)
   .component('Tag', Tag)
+  .component('Chips', Chips)
   .mount('#app')

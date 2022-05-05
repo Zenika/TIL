@@ -18,8 +18,50 @@ import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
 const mutation = gql`
-  mutation MyMutation($url: String!, $description: String!) {
-    insert_post_one(object: { description: $description, url: $url }) {
+  mutation insertPostWithTags(
+    $url: String!
+    $description: String!
+    $tag1: String
+    $tag2: String
+    $tag3: String
+  ) {
+    insert_post_one(
+      object: {
+        url: $url
+        description: $description
+        post_tags: {
+          data: [
+            {
+              tag: {
+                data: { name: $tag1 }
+                on_conflict: {
+                  constraint: tag_name_key
+                  update_columns: [name]
+                }
+              }
+            }
+            {
+              tag: {
+                data: { name: $tag2 }
+                on_conflict: {
+                  constraint: tag_name_key
+                  update_columns: [name]
+                }
+              }
+            }
+            {
+              tag: {
+                data: { name: $tag3 }
+                on_conflict: {
+                  constraint: tag_name_key
+                  update_columns: [name]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ) {
       id
     }
   }
@@ -27,10 +69,13 @@ const mutation = gql`
 
 const { mutate, onDone, loading } = useMutation(mutation);
 
-const submit = ({ url, description }) => {
+const submit = ({ url, description, tags }) => {
   mutate({
     url,
     description,
+    tag1: tags[0] ? tags[0] : '',
+    tag2: tags[1] ? tags[1] : '',
+    tag3: tags[2] ? tags[2] : '',
   });
 };
 

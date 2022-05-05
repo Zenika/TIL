@@ -33,12 +33,9 @@
             }`"
             @click="openArticle(post.id)"
           />
-          <Tag
-            class="ml-2"
-            v-for="tags in post.post_tags"
-            :key="tags.id"
-            :value="tags.tag.name"
-          />
+          <span v-for="tags in post.post_tags" :key="tags.id">
+            <Tag class="ml-2" v-if="tags.tag.name.length > 0" :value="tags.tag.name" />
+          </span>
         </div>
       </div>
     </div>
