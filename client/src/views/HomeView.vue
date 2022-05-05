@@ -1,7 +1,7 @@
 <template>
-  <NavBar/>
+  <NavBar />
   <ProgressSpinner v-if="loading" class="spinner" />
-  <Message  v-else-if="error" severity="error">Internal error</Message>
+  <Message v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
     <div>
       <DataView :value="result.post" :layout="'list'">
@@ -32,11 +32,11 @@ import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
-import { onMounted } from 'vue'
+import { onMounted } from "vue";
 
 onMounted(() => {
-  refetch()
-})
+  refetch();
+});
 
 const route = useRoute();
 
@@ -52,7 +52,7 @@ const { result: aggregateResult } = useSubscription(
   `
 );
 
-let currentPage = route.query.p
+let currentPage = route.query.p;
 
 if (isNaN(currentPage)) {
   currentPage = 1;
@@ -99,6 +99,11 @@ const { result, loading, error, refetch } = useQuery(
             count
           }
         }
+        post_tags {
+          tag {
+            name
+          }
+        }
       }
     }
   `,
@@ -112,7 +117,7 @@ const changePage = (e) => {
     offset: e.page * 10,
   };
   router.push(`?p=${e.page + 1}`);
-}
+};
 let offset = ref(getPostsVariables.value.limit * currentPage - 10);
 </script>
 

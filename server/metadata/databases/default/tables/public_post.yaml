@@ -2,6 +2,13 @@ table:
   schema: public
   name: post
 object_relationships:
+  - name: post_tag
+    using:
+      foreign_key_constraint_on:
+        column: post_id
+        table:
+          schema: public
+          name: post_tag
   - name: user
     using:
       foreign_key_constraint_on: user_id
@@ -13,6 +20,13 @@ array_relationships:
         table:
           schema: public
           name: comment
+  - name: post_tags
+    using:
+      foreign_key_constraint_on:
+        column: post_id
+        table:
+          schema: public
+          name: post_tag
 remote_relationships:
   - definition:
       remote_field:

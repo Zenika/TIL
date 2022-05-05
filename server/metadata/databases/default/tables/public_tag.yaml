@@ -1,0 +1,25 @@
+table:
+  schema: public
+  name: tag
+object_relationships:
+  - name: post_tag
+    using:
+      foreign_key_constraint_on:
+        column: tag_id
+        table:
+          schema: public
+          name: post_tag
+array_relationships:
+  - name: post_tags
+    using:
+      foreign_key_constraint_on:
+        column: tag_id
+        table:
+          schema: public
+          name: post_tag
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - name
+      filter: {}

@@ -1,0 +1,1 @@
+CREATE TABLE "public"."post_tag" ("id" serial NOT NULL, "post_id" integer NOT NULL, "tag_id" integer NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("post_id") REFERENCES "public"."post"("id") ON UPDATE restrict ON DELETE restrict, FOREIGN KEY ("tag_id") REFERENCES "public"."tag"("id") ON UPDATE restrict ON DELETE restrict, UNIQUE ("id"), UNIQUE ("post_id"), UNIQUE ("tag_id"));
