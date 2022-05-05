@@ -45,6 +45,11 @@ const { loading, result, error } = useQuery(
         user {
           username
         }
+        post_tags {
+          tag {
+            name
+          }
+        }
       }
     }
   `,
