@@ -25,7 +25,7 @@
 
         <div class="field">
           <label for="editor">Description</label>
-          <CustomEditor
+          <EditorWrapper
             id="editor"
             v-model="state.description"
             editorStyle="height: 320px"
@@ -72,7 +72,7 @@
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
-import CustomEditor from "@/components/CustomEditor.vue";
+import EditorWrapper from "@/components/wrappers/EditorWrapper.vue";
 
 defineProps({
   loading: Boolean,

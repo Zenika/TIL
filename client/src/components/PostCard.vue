@@ -41,7 +41,7 @@
               }}
             </small>
             <div class="mt-2 mb-1">
-              <Tag
+              <TagWrapper
                 v-for="tags in post.post_by_pk.post_tags"
                 :key="tags.id"
                 class="mr-2"
@@ -79,6 +79,7 @@
 <script setup>
 import { toRefs } from "@vue/reactivity";
 import CommentSection from "../components/CommentSection.vue";
+import TagWrapper from '@/components/wrappers/TagWrapper.vue'
 import { useRoute } from "vue-router";
 
 const route = useRoute();

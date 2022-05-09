@@ -33,12 +33,11 @@
             }`"
             @click="openArticle(post.id)"
           />
-          <Tag
+          <TagWrapper
             class="ml-2"
             v-for="tags in post.post_tags"
             :key="tags.id"
             :value="tags.tag.name"
-            @click="$router.push(`/tags/${tags.tag.name}`)"
           />
         </div>
       </div>
@@ -47,6 +46,7 @@
 </template>
 
 <script setup>
+import TagWrapper from '@/components/wrappers/TagWrapper.vue'
 import router from "@/router";
 
 const props = defineProps({
