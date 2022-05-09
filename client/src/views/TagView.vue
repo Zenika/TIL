@@ -13,9 +13,21 @@
   </Message>
   <div v-else-if="result">
     <div
-      class="col-12 mb-0 flex justify-content-center border-bottom-1 border-200 pt-0 pb-10"
+      class="
+        col-12
+        mb-0
+        flex
+        justify-content-center
+        border-bottom-1 border-200
+        pt-0
+        pb-10
+      "
     >
-      <span>{{ result.post_aggregate.aggregate.count }} posts</span>
+      <span
+        >{{ result.post_aggregate.aggregate.count }} post{{
+          result.post_aggregate.aggregate.count !== 1 ? "s" : ""
+        }}</span
+      >
     </div>
 
     <DataView :value="result.post" :layout="'list'">
