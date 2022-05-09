@@ -13,73 +13,43 @@
     </DataView>
   </div>
   <Paginator
-    :first="offset"
-    :totalRecords="aggregateResult?.post_aggregate.aggregate.count"
-    :rows="10"
+    v-if="result"
+    :first="variables.offset"
+    :totalRecords="result.post_aggregate.aggregate.count"
+    :rows="rowsPerPage"
     @page="changePage($event)"
   />
 </template>
 
 <script setup>
-import { useQuery, useSubscription } from "@vue/apollo-composable";
-import { ref } from "@vue/reactivity";
+import { useQuery } from "@vue/apollo-composable";
+import { ref, watch } from "@vue/runtime-core";
 import NavBar from "@/components/NavBar.vue";
-import { watch } from "@vue/runtime-core";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
-import { onMounted } from "vue";
-
-onMounted(() => {
-  refetch();
-});
 
 const route = useRoute();
+const rowsPerPage = 10;
 
-const { result: aggregateResult } = useSubscription(
+if (isNaN(route.query.p) || route.query.p < 1) {
+  router.push(`/?p=1`);
+}
+
+const variables = ref({
+  limit: rowsPerPage,
+  offset: (route.query.p - 1) * rowsPerPage,
+});
+
+const { result, loading, error } = useQuery(
   gql`
-    subscription getPosts($limit: Int, $offset: Int) {
+    query getPosts($limit: Int, $offset: Int) {
       post_aggregate {
         aggregate {
           count
         }
       }
-    }
-  `
-);
-
-let currentPage = route.query.p;
-
-if (isNaN(currentPage)) {
-  currentPage = 1;
-  router.push(`?p=1`);
-}
-
-const checkPageNumber = (totalRecords) => {
-  let nPages = Math.ceil(totalRecords / 10);
-  if (currentPage > nPages) {
-    currentPage = 1;
-    getPostsVariables.value = {
-      limit: 10,
-      offset: 0,
-    };
-
-    router.push(`?p=1`);
-  }
-};
-
-watch(aggregateResult, (value) => {
-  checkPageNumber(value.post_aggregate.aggregate.count);
-});
-
-const getPostsVariables = ref({
-  limit: 10,
-  offset: 10 * currentPage - 10,
-});
-const { result, loading, error, refetch } = useQuery(
-  gql`
-    query getPosts($limit: Int, $offset: Int) {
       post(order_by: { created_at: desc }, limit: $limit, offset: $offset) {
         url
         id
@@ -104,21 +74,25 @@ const { result, loading, error, refetch } = useQuery(
       }
     }
   `,
-  getPostsVariables,
+  variables,
   {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "cache-and-network",
   }
 );
 
-const changePage = (e) => {
-  getPostsVariables.value = {
-    limit: 10,
-    offset: e.page * 10,
-  };
-  router.push(`?p=${e.page + 1}`);
+watch(result, (value) => {
+  if (
+    value &&
+    route.query.p > Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
+  ) {
+    router.push({ params: { p: 1 } });
+  }
+});
+
+const changePage = ({ page }) => {
+  router.push(`/?p=${page + 1}`);
 };
-let offset = ref(getPostsVariables.value.limit * currentPage - 10);
 </script>
 
 <style scoped>

@@ -26,7 +26,7 @@
   <Paginator
     v-if="result"
     :first="variables.offset"
-    :totalRecords="result?.post_aggregate.aggregate.count"
+    :totalRecords="result.post_aggregate.aggregate.count"
     :rows="rowsPerPage"
     @page="changePage($event)"
   />
@@ -54,9 +54,9 @@ const variables = ref({
   offset: (route.query.p - 1) * rowsPerPage,
 });
 
-const { loading, result, error, refetch } = useQuery(
+const { loading, result, error } = useQuery(
   gql`
-    query MyQuery($tag: String!, $limit: Int!, $offset: Int!) {
+    query getPostsByTag($tag: String!, $limit: Int!, $offset: Int!) {
       post_aggregate(where: { post_tag: { tag: { name: { _eq: $tag } } } }) {
         aggregate {
           count
@@ -101,7 +101,8 @@ const { loading, result, error, refetch } = useQuery(
 watch(result, (value) => {
   if (
     value &&
-    route.query.p > Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
+    route.query.p >
+      Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
   ) {
     router.push({ params: { p: 1 } });
   }
