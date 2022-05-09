@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import NotFoundView from '../views/NotFoundView'
-import PostView from '../views/PostView'
-import NewPostView from '../views/NewPostView'
-// import PostView from '../views/PostView'
-// import AuthorListView from '../views/AuthorListView'
-// import AuthorProfileView from '../views/AuthorProfileView'
+import HomeView from '@/views/HomeView.vue'
+import NotFoundView from '@/views/NotFoundView'
+import PostView from '@/views/PostView'
+import NewPostView from '@/views/NewPostView'
+import TagView from '@/views/TagView'
 import { authGuard } from '@auth0/auth0-vue'
 
 const routes = [
@@ -27,16 +25,12 @@ const routes = [
     component: NewPostView,
     beforeEnter: authGuard
   },
-  // {
-  //   path: '/authors',
-  //   name: 'authors',
-  //   component: AuthorListView
-  // },
-  // {
-  //   path: '/author/:id',
-  //   name: 'author',
-  //   component: AuthorProfileView
-  // },
+  {
+    path: '/tags/:tag',
+    name: 'tags',
+    component: TagView,
+    beforeEnter: authGuard
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',

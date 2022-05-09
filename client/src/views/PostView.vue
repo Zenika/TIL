@@ -25,7 +25,6 @@ import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
 import PostCard from "@/components/PostCard.vue"
-import { ref, watch } from "@vue/runtime-core";
 
 const route = useRoute();
 

@@ -3,23 +3,20 @@
   <ProgressSpinner v-if="loading" class="spinner" />
   <Message v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
-    <div>
-      <DataView :value="result.post" :layout="'list'">
-        <template #list="slotProps">
-          <PostListItem :post="slotProps.data" />
-        </template>
-        <template #empty>
-          <div>No articles found.</div>
-        </template>
-      </DataView>
-    </div>
+    <DataView :value="result.post" :layout="'list'">
+      <template #list="slotProps">
+        <PostListItem :post="slotProps.data" />
+      </template>
+      <template #empty>
+        <div>No articles found.</div>
+      </template>
+    </DataView>
   </div>
   <Paginator
     :first="offset"
     :totalRecords="aggregateResult?.post_aggregate.aggregate.count"
     :rows="10"
     @page="changePage($event)"
-    data-test="pagination"
   />
 </template>
 
@@ -108,7 +105,10 @@ const { result, loading, error, refetch } = useQuery(
     }
   `,
   getPostsVariables,
-  { notifyOnNetworkStatusChange: true }
+  {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "cache-and-network",
+  }
 );
 
 const changePage = (e) => {

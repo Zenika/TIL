@@ -2,7 +2,7 @@
   <NavBar />
   <div class="grid m-0">
     <div class="col-6 col-offset-3 mb-0">
-      <h1 class="font-normal">Post a new link</h1>
+      <h1 class="font-light">Post a new link</h1>
     </div>
     <div class="col-6 col-offset-3">
       <NewPostCard @post-click="submit($event)" :loading="loading" />

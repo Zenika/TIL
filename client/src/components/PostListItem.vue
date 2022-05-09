@@ -38,6 +38,7 @@
             v-for="tags in post.post_tags"
             :key="tags.id"
             :value="tags.tag.name"
+            @click="$router.push(`/tags/${tags.tag.name}`)"
           />
         </div>
       </div>
