@@ -44,20 +44,14 @@ import router from "../router";
 const route = useRoute();
 const rowsPerPage = 10;
 
-const processPageNb = (pageNb) => {
-    if (isNaN(pageNb) || pageNb < 1) {
-        router.push(`/tags/${route.params.tag}?p=1`);
-        return 1
-    }
-    return pageNb
+if (isNaN(route.query.p) || route.query.p < 1) {
+  router.push(`/tags/${route.params.tag}?p=1`);
 }
-
-const getOffset = (pageIndex) => pageIndex * rowsPerPage;
 
 const variables = ref({
   tag: route.params.tag,
   limit: rowsPerPage,
-  offset: getOffset(processPageNb(route.query.p) - 1),
+  offset: (route.query.p - 1) * rowsPerPage,
 });
 
 const { loading, result, error, refetch } = useQuery(
@@ -104,24 +98,17 @@ const { loading, result, error, refetch } = useQuery(
   }
 );
 
-watch(
-  () => route.params.tag,
-  (tag) => {
-    variables.value = {
-      ...variables.value,
-      tag,
-      offset: 0,
-    };
+watch(result, (value) => {
+  if (
+    value &&
+    route.query.p > Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
+  ) {
+    router.push({ params: { p: 1 } });
   }
-);
+});
 
 const changePage = ({ page }) => {
   router.push(`/tags/${route.params.tag}?p=${page + 1}`);
-  // refetch();
-  variables.value = {
-    ...variables.value,
-    offset: getOffset(page),
-  };
 };
 </script>
 
