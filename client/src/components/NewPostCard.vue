@@ -17,7 +17,6 @@
             />
           </div>
           <small
-            id="username2-help"
             class="p-error font-light"
             v-if="v$.url.$error"
             >{{ v$.url.$errors[0].$message }}</small
@@ -26,14 +25,24 @@
 
         <div class="field">
           <label for="editor">Description</label>
-          <Editor
+          <CustomEditor
             id="editor"
             v-model="state.description"
             editorStyle="height: 320px"
           />
+          <small
+            class="p-error font-light"
+            v-if="v$.description.$error"
+            >{{ v$.description.$errors[0].$message }}</small
+          >
         </div>
         <div>
-          <Button label="Post" :loading="loading" @click="submit" data-test="submit"/>
+          <Button
+            label="Post"
+            :loading="loading"
+            @click="submit"
+            data-test="submit"
+          />
         </div>
       </template>
     </Card>
@@ -44,6 +53,7 @@
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
+import CustomEditor from "@/components/CustomEditor.vue";
 
 defineProps({
   loading: Boolean,
