@@ -41,7 +41,7 @@
           <div class="flex flex-column">
             <label for="tags">Tags</label>
             <small
-              >Add up to 5 tags to describe what your question is about</small
+              >Add up to 5 tags to describe what your post is about</small
             >
           </div>
           <Chips

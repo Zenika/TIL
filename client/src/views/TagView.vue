@@ -1,10 +1,8 @@
 <template>
   <NavBar />
   <div class="grid m-0">
-    <div
-      class="col-12 mb-0 flex justify-content-center border-bottom-1 border-200"
-    >
-      <h1 class="font-light">
+    <div class="col-12 mb-0 flex justify-content-center">
+      <h1 class="font-light mb-0 mt-0">
         Posts tagged <span class="font-bold">{{ route.params.tag }}</span>
       </h1>
     </div>
@@ -14,6 +12,12 @@
     Internal error
   </Message>
   <div v-else-if="result">
+    <div
+      class="col-12 mb-0 flex justify-content-center border-bottom-1 border-200 pt-0 pb-10"
+    >
+      <span>{{ result.post_aggregate.aggregate.count }} posts</span>
+    </div>
+
     <DataView :value="result.post" :layout="'list'">
       <template #list="slotProps">
         <PostListItem :post="slotProps.data" />

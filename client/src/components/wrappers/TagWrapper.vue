@@ -1,6 +1,6 @@
 <template>
   <Tag
-    class="hover:text-100 cursor-hover"
+    class="hover:text-300 cursor-hover"
     :value="value"
     @click="$router.push(`/tags/${value}?p=1`)"
   />
