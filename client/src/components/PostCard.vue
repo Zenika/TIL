@@ -49,7 +49,7 @@
 
           <div class="col-12 border-top-1 border-200">
             <p
-              class="pt-0 pb-0"
+              class="pt-0 pb-0 overflow-auto text-justify"
               v-html="
                 post.post_by_pk.description
                   ? post.post_by_pk.description
