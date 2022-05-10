@@ -16,11 +16,9 @@
               data-test="url"
             />
           </div>
-          <small
-            class="p-error font-light"
-            v-if="v$.url.$error"
-            >{{ v$.url.$errors[0].$message }}</small
-          >
+          <small class="p-error font-light" v-if="v$.url.$error">{{
+            v$.url.$errors[0].$message
+          }}</small>
         </div>
 
         <div class="field">
@@ -30,19 +28,15 @@
             v-model="state.description"
             editorStyle="height: 320px"
           />
-          <small
-            class="p-error font-light"
-            v-if="v$.description.$error"
-            >{{ v$.description.$errors[0].$message }}</small
-          >
+          <small class="p-error font-light" v-if="v$.description.$error">{{
+            v$.description.$errors[0].$message
+          }}</small>
         </div>
 
         <div class="field">
           <div class="flex flex-column">
             <label for="tags">Tags</label>
-            <small
-              >Add up to 5 tags to describe what your post is about</small
-            >
+            <small>Add up to 5 tags to describe what your post is about</small>
           </div>
           <Chips
             id="tags"
