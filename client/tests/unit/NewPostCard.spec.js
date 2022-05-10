@@ -5,11 +5,13 @@ import Card from 'primevue/card';
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext';
 import Editor from 'primevue/editor';
+import Chips from 'primevue/chips';
 
 config.global.components = {
     'Button': Button,
     'Card': Card,
     'Editor': Editor,
+    'Chips': Chips,
     'InputText': InputText
   }
 
