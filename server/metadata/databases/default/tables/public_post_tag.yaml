@@ -1,0 +1,26 @@
+table:
+  schema: public
+  name: post_tag
+object_relationships:
+  - name: post
+    using:
+      foreign_key_constraint_on: post_id
+  - name: tag
+    using:
+      foreign_key_constraint_on: tag_id
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - post_id
+        - tag_id
+      backend_only: false
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - post_id
+        - tag_id
+      filter: {}

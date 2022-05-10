@@ -16,26 +16,39 @@
               data-test="url"
             />
           </div>
-          <small
-            class="p-error font-light"
-            v-if="v$.url.$error"
-            >{{ v$.url.$errors[0].$message }}</small
-          >
+          <small class="p-error font-light" v-if="v$.url.$error">{{
+            v$.url.$errors[0].$message
+          }}</small>
         </div>
 
         <div class="field">
           <label for="editor">Description</label>
-          <CustomEditor
+          <EditorWrapper
             id="editor"
             v-model="state.description"
             editorStyle="height: 320px"
           />
-          <small
-            class="p-error font-light"
-            v-if="v$.description.$error"
-            >{{ v$.description.$errors[0].$message }}</small
-          >
+          <small class="p-error font-light" v-if="v$.description.$error">{{
+            v$.description.$errors[0].$message
+          }}</small>
         </div>
+
+        <div class="field">
+          <div class="flex flex-column">
+            <label for="tags">Tags</label>
+            <small>Add up to 5 tags to describe what your post is about</small>
+          </div>
+          <Chips
+            id="tags"
+            v-model="state.tags"
+            class="w-full"
+            :max="5"
+            :addOnBlur="true"
+            :allowDuplicate="false"
+            :separator="','"
+          />
+        </div>
+
         <div>
           <Button
             label="Post"
@@ -53,7 +66,7 @@
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
-import CustomEditor from "@/components/CustomEditor.vue";
+import EditorWrapper from "@/components/wrappers/EditorWrapper.vue";
 
 defineProps({
   loading: Boolean,
@@ -64,6 +77,7 @@ const emit = defineEmits(["post-click"]);
 const state = reactive({
   url: null,
   description: null,
+  tags: [],
 });
 
 const rules = {
@@ -85,5 +99,9 @@ const submit = () => {
 <style scoped>
 .card-container :deep(.p-card-content) {
   padding: 0;
+}
+
+.card-container :deep(.p-chips-multiple-container) {
+  width: 100%;
 }
 </style>

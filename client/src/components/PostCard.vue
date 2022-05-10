@@ -40,6 +40,14 @@
                 ).toLocaleDateString()
               }}
             </small>
+            <div class="mt-2 mb-1">
+              <TagWrapper
+                v-for="tags in post.post_by_pk.post_tags"
+                :key="tags.id"
+                class="mr-2"
+                :value="tags.tag.name"
+              />
+            </div>
           </div>
           <div class="col">
             <img
@@ -65,14 +73,13 @@
       </template>
     </Card>
   </div>
-  <Message v-else class="mt-5" severity="error">
-    Internal error
-  </Message>
+  <Message v-else class="mt-5" severity="error"> Internal error </Message>
 </template>
 
 <script setup>
 import { toRefs } from "@vue/reactivity";
 import CommentSection from "../components/CommentSection.vue";
+import TagWrapper from '@/components/wrappers/TagWrapper.vue'
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -84,8 +91,7 @@ const props = defineProps({
 const { post } = toRefs(props);
 
 let domainName;
-if (post.value)
-  domainName = new URL(post.value.post_by_pk.url).hostname;
+if (post.value) domainName = new URL(post.value.post_by_pk.url).hostname;
 </script>
 
 <style scoped>

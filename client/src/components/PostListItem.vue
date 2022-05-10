@@ -24,18 +24,29 @@
             </span>
           </div>
         </div>
-        <Button
-          class="p-button-outlined p-button-secondary p-button-sm"
-          icon="pi pi-comments"
-          :label="`${post.comments_aggregate.aggregate.count} Comment${post.comments_aggregate.aggregate.count !== 1 ? 's' : ''}`"
-          @click="openArticle(post.id)"
-        />
+        <div class="flex align-items-center">
+          <Button
+            class="p-button-outlined p-button-secondary p-button-sm"
+            icon="pi pi-comments"
+            :label="`${post.comments_aggregate.aggregate.count} Comment${
+              post.comments_aggregate.aggregate.count !== 1 ? 's' : ''
+            }`"
+            @click="openArticle(post.id)"
+          />
+          <TagWrapper
+            class="ml-2"
+            v-for="tags in post.post_tags"
+            :key="tags.id"
+            :value="tags.tag.name"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import TagWrapper from '@/components/wrappers/TagWrapper.vue'
 import router from "@/router";
 
 const props = defineProps({
