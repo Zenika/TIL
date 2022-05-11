@@ -146,7 +146,7 @@ jobs:
 
   run-hasura-migrations:
     docker:
-      - image: hasura/graphql-engine:v2.3.1.cli-migrations-v3
+      - image: hasura/graphql-engine:v2.6.1.cli-migrations-v3
     parameters:
       hasura-endpoint:
         type: string

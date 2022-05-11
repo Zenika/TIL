@@ -4,23 +4,22 @@ table:
 object_relationships:
   - name: post
     using:
-      foreign_key_constraint_on: post_id
+      foreign_key_constraint_on: post_uuid
   - name: tag
     using:
-      foreign_key_constraint_on: tag_id
+      foreign_key_constraint_on: tag_uuid
 insert_permissions:
   - role: user
     permission:
       check: {}
       columns:
-        - post_id
-        - tag_id
+        - post_uuid
+        - tag_uuid
       backend_only: false
 select_permissions:
   - role: user
     permission:
       columns:
-        - id
-        - post_id
-        - tag_id
+        - post_uuid
+        - tag_uuid
       filter: {}

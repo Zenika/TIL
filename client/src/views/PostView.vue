@@ -30,8 +30,8 @@ const route = useRoute();
 
 const { loading, result, error } = useQuery(
   gql`
-    query getPost($id: Int!) {
-      post_by_pk(id: $id) {
+    query getPost($uuid: uuid!) {
+      post_by_pk(uuid: $uuid) {
         url
         description
         created_at
@@ -53,7 +53,7 @@ const { loading, result, error } = useQuery(
     }
   `,
   {
-    id: route.params.id,
+    uuid: route.params.id,
   }
 );
 </script>
