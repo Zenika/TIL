@@ -31,7 +31,7 @@
             :label="`${post.comments_aggregate.aggregate.count} Comment${
               post.comments_aggregate.aggregate.count !== 1 ? 's' : ''
             }`"
-            @click="openArticle(post.id)"
+            @click="openArticle(post.uuid)"
           />
           <TagWrapper
             class="ml-2"

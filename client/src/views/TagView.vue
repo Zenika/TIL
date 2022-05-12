@@ -73,19 +73,19 @@ const variables = ref({
 const { loading, result, error } = useQuery(
   gql`
     query getPostsByTag($tag: String!, $limit: Int!, $offset: Int!) {
-      post_aggregate(where: { post_tag: { tag: { name: { _eq: $tag } } } }) {
+      post_aggregate(where: { post_tags: { tag: { name: { _eq: $tag } } } }) {
         aggregate {
           count
         }
       }
       post(
         order_by: { created_at: desc }
-        where: { post_tag: { tag: { name: { _eq: $tag } } } }
+        where: { post_tags: { tag: { name: { _eq: $tag } } } }
         limit: $limit
         offset: $offset
       ) {
         url
-        id
+        uuid
         created_at
         get_title {
           error

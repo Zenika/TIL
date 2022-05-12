@@ -91,15 +91,15 @@ const rules = {
 const v$ = useVuelidate(rules, comment);
 const { loading, result, error, onResult } = useSubscription(
   gql`
-    subscription getComments($postId: Int!) {
-      comment(where: { post_id: { _eq: $postId } }) {
+    subscription MySubscription($post_uuid: uuid!) {
+      comment(where: { post_uuid: { _eq: $post_uuid } }) {
         content
         username
       }
     }
   `,
   {
-    postId: postId.value,
+    post_uuid: postId.value,
   }
 );
 
@@ -112,11 +112,11 @@ onResult(({ data }) => {
 const mutation = gql`
   mutation insertCommentOne(
     $content: String!
-    $post_id: Int!
+    $post_uuid: uuid!
     $username: String!
   ) {
     insert_comment_one(
-      object: { content: $content, post_id: $post_id, username: $username }
+      object: { content: $content, post_uuid: $post_uuid, username: $username }
     ) {
       username
     }
@@ -136,7 +136,7 @@ const postComment = () => {
     mutate({
       content: comment.text,
       username: useUserInfo()?.nickname,
-      post_id: postId.value,
+      post_uuid: postId.value,
     });
   }
 };

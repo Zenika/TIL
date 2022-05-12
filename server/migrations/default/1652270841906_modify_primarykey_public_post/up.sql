@@ -1,0 +1,6 @@
+BEGIN TRANSACTION;
+ALTER TABLE "public"."post" DROP CONSTRAINT "post_pkey";
+
+ALTER TABLE "public"."post"
+    ADD CONSTRAINT "post_pkey" PRIMARY KEY ("uuid");
+COMMIT TRANSACTION;

@@ -30,7 +30,7 @@ const mutation = gql`
         post_tags: { data: $post_tag_insert_input }
       }
     ) {
-      id
+      uuid
     }
   }
 `;
@@ -46,7 +46,7 @@ const submit = ({ url, description, tags }) => {
         data: { name: tag.toLowerCase() },
         on_conflict: {
           constraint: "tag_name_key",
-          update_columns: ["name"],
+          update_columns: ["blank"],
         },
       },
     });

@@ -52,7 +52,7 @@ const { result, loading, error } = useQuery(
       }
       post(order_by: { created_at: desc }, limit: $limit, offset: $offset) {
         url
-        id
+        uuid
         created_at
         get_title {
           error
