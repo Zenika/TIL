@@ -1,0 +1,10 @@
+table:
+  schema: public
+  name: bookmark
+object_relationships:
+  - name: post
+    using:
+      foreign_key_constraint_on: post_uuid
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
