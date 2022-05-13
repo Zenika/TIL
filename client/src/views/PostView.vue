@@ -13,8 +13,8 @@
         @click="$router.go(-1)"
       />
     </div>
-    <div class="col-6 col-offset-3 ">
-      <PostCard :post="result"/>
+    <div class="col-6 col-offset-3">
+      <PostCard :post="result" />
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
-import PostCard from "@/components/PostCard.vue"
+import PostCard from "@/components/PostCard.vue";
 
 const route = useRoute();
 
@@ -33,6 +33,7 @@ const { loading, result, error } = useQuery(
     query getPost($uuid: uuid!) {
       post_by_pk(uuid: $uuid) {
         url
+        uuid
         description
         created_at
         comments {
@@ -48,6 +49,9 @@ const { loading, result, error } = useQuery(
           tag {
             name
           }
+        }
+        bookmarks {
+          id
         }
       }
     }

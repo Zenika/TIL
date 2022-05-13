@@ -40,11 +40,15 @@
                 ).toLocaleDateString()
               }}
             </small>
-            <div class="mt-2 mb-1">
+            <div class="flex align-items-center mt-2 mb-1">
+              <BookmarkButton
+                :bookmarked="post.post_by_pk.bookmarks.length !== 0"
+                :uuid="post.post_by_pk.uuid"
+              />
               <TagWrapper
                 v-for="tags in post.post_by_pk.post_tags"
                 :key="tags.id"
-                class="mr-2"
+                class="ml-2"
                 :value="tags.tag.name"
               />
             </div>
@@ -79,7 +83,8 @@
 <script setup>
 import { toRefs } from "@vue/reactivity";
 import CommentSection from "../components/CommentSection.vue";
-import TagWrapper from '@/components/wrappers/TagWrapper.vue'
+import TagWrapper from "@/components/wrappers/TagWrapper.vue";
+import BookmarkButton from "@/components/BookmarkButton.vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
