@@ -4,6 +4,7 @@ import NotFoundView from '@/views/NotFoundView'
 import PostView from '@/views/PostView'
 import NewPostView from '@/views/NewPostView'
 import TagView from '@/views/TagView'
+import BookmarksView from '@/views/BookmarksView'
 import { authGuard } from '@auth0/auth0-vue'
 
 const routes = [
@@ -29,6 +30,12 @@ const routes = [
     path: '/tags/:tag',
     name: 'tags',
     component: TagView,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/bookmarks',
+    name: 'bookmarks',
+    component: BookmarksView,
     beforeEnter: authGuard
   },
   {

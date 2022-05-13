@@ -1,3 +1,4 @@
+- "!include public_bookmark.yaml"
 - "!include public_comment.yaml"
 - "!include public_post.yaml"
 - "!include public_post_tag.yaml"

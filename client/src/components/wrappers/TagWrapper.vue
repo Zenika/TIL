@@ -11,9 +11,3 @@ const props = defineProps({
   value: String,
 });
 </script>
-
-<style scoped>
-.cursor-hover:hover {
-  cursor: pointer;
-}
-</style>

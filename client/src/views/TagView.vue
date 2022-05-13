@@ -104,6 +104,9 @@ const { loading, result, error } = useQuery(
             name
           }
         }
+        bookmarks {
+          id
+        }
       }
     }
   `,

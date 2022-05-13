@@ -7,9 +7,12 @@ config.global.components = {
   'Button': Button
 }
 
+jest.mock('@/components/BookmarkButton.vue')
+
 describe('PostListItem.vue', () => {
   it('renders one post', () => {
     const post = {
+      uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
       url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
       created_at: "2022-03-31T07:26:36.473801+00:00",
       get_title: {
@@ -22,7 +25,8 @@ describe('PostListItem.vue', () => {
         aggregate: {
           count: 0
         }
-      }
+      },
+      bookmarks: []
     }
     const wrapper = mount(PostListItem, {
       props: { post },
@@ -36,6 +40,7 @@ describe('PostListItem.vue', () => {
 
   it('renders one post with missing title', () => {
     const post = {
+      uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
       url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
       created_at: "2022-03-31T07:26:36.473801+00:00",
       get_title: {},
@@ -46,7 +51,8 @@ describe('PostListItem.vue', () => {
         aggregate: {
           count: 0
         }
-      }
+      },
+      bookmarks: []
     }
     const wrapper = mount(PostListItem, {
       props: { post },
@@ -60,6 +66,7 @@ describe('PostListItem.vue', () => {
 
   it('renders one post with one comment', () => {
     const post = {
+      uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
       url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
       created_at: "2022-03-31T07:26:36.473801+00:00",
       get_title: {},
@@ -70,7 +77,8 @@ describe('PostListItem.vue', () => {
         aggregate: {
           count: 1
         }
-      }
+      },
+      bookmarks: []
     }
     const wrapper = mount(PostListItem, {
       props: { post },
@@ -81,6 +89,7 @@ describe('PostListItem.vue', () => {
 
   it('renders one post with multiple comments', () => {
     const post = {
+      uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
       url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
       created_at: "2022-03-31T07:26:36.473801+00:00",
       get_title: {},
@@ -91,7 +100,8 @@ describe('PostListItem.vue', () => {
         aggregate: {
           count: 15
         }
-      }
+      },
+      bookmarks: []
     }
     const wrapper = mount(PostListItem, {
       props: { post },

@@ -71,6 +71,9 @@ const { result, loading, error } = useQuery(
             name
           }
         }
+        bookmarks {
+          id
+        }
       }
     }
   `,
@@ -84,7 +87,8 @@ const { result, loading, error } = useQuery(
 watch(result, (value) => {
   if (
     value &&
-    route.query.p > Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
+    route.query.p >
+      Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
   ) {
     router.push({ params: { p: 1 } });
   }

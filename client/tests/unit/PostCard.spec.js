@@ -15,6 +15,7 @@ jest.mock('vue-router', () => ({
 }));
 
 jest.mock('@/components/CommentSection.vue')
+jest.mock('@/components/BookmarkButton.vue')
 
 config.global.components = {
     'Card': Card,
@@ -31,6 +32,7 @@ describe('PostCard.vue', () => {
     it('renders a regular post with description', async () => {
         const post = {
             post_by_pk: {
+                uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
                 url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
                 created_at: "2022-03-31T07:26:36.473801+00:00",
                 description: "Salut la description yooo",
@@ -40,6 +42,7 @@ describe('PostCard.vue', () => {
                 user: {
                     username: "test.user"
                 },
+                bookmarks: []
             }
         }
         const wrapper = mount(PostCard, {
@@ -54,6 +57,7 @@ describe('PostCard.vue', () => {
     it('renders a post without description', async () => {
         const post = {
             post_by_pk: {
+                uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
                 url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
                 created_at: "2022-03-31T07:26:36.473801+00:00",
                 get_title: {
@@ -62,6 +66,7 @@ describe('PostCard.vue', () => {
                 user: {
                     username: "test.user"
                 },
+                bookmarks: []
             }
         }
         const wrapper = mount(PostCard, {
@@ -76,6 +81,7 @@ describe('PostCard.vue', () => {
     it('renders a post with missing title', () => {
         const post = {
             post_by_pk: {
+                uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
                 url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
                 created_at: "2022-03-31T07:26:36.473801+00:00",
                 description: "Salut la description yooo",
@@ -83,6 +89,7 @@ describe('PostCard.vue', () => {
                 user: {
                     username: "test.user"
                 },
+                bookmarks: []
             }
         }
         const wrapper = mount(PostCard, {
