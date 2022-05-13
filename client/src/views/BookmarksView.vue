@@ -21,11 +21,11 @@
         pb-10
       "
     >
-      <span
-        >{{ result.bookmark_aggregate.aggregate.count }} bookmark{{
+      <span>
+        {{ result.bookmark_aggregate.aggregate.count }} bookmark{{
           result.bookmark_aggregate.aggregate.count !== 1 ? "s" : ""
-        }}</span
-      >
+        }}
+      </span>
     </div>
     <DataView :value="result.bookmark" :layout="'list'">
       <template #list="slotProps">
@@ -75,7 +75,7 @@ const { result, loading, error } = useQuery(
           count
         }
       }
-      bookmark(order_by: {created_at: desc}, limit: $limit, offset: $offset) {
+      bookmark(order_by: { created_at: desc }, limit: $limit, offset: $offset) {
         post {
           url
           uuid
