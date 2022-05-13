@@ -35,7 +35,8 @@ const routes = [
   {
     path: '/bookmarks',
     name: 'bookmarks',
-    component: BookmarksView
+    component: BookmarksView,
+    beforeEnter: authGuard
   },
   {
     path: '/:pathMatch(.*)*',
