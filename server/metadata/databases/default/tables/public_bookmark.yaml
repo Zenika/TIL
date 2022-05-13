@@ -22,6 +22,7 @@ select_permissions:
   - role: user
     permission:
       columns:
+        - created_at
         - id
         - post_uuid
         - user_id

@@ -74,7 +74,7 @@ const { result, loading, error } = useQuery(
           count
         }
       }
-      bookmark(order_by: {post: {created_at: asc}}, limit: $limit, offset: $offset) {
+      bookmark(order_by: {created_at: desc}, limit: $limit, offset: $offset) {
         post {
           url
           uuid
