@@ -33,6 +33,11 @@
             }`"
             @click="openArticle(post.uuid)"
           />
+          <i
+            class="pi pi-bookmark ml-2 cursor-hover"
+            :class="{ 'text-primary': bookmarked }"
+            @click="bookmark(post.uuid)"
+          ></i>
           <TagWrapper
             class="ml-2"
             v-for="tags in post.post_tags"
@@ -46,12 +51,22 @@
 </template>
 
 <script setup>
-import TagWrapper from '@/components/wrappers/TagWrapper.vue'
+import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import router from "@/router";
+import { ref } from "@vue/reactivity";
+
+let bookmarked = ref(props.post.bookmarks.length !== 0);
 
 const props = defineProps({
   post: Object,
 });
+
+const emit = defineEmits(["bookmark"]);
+
+const bookmark = (uuid) => {
+  bookmarked.value = !bookmarked.value
+  emit("bookmark", {uuid, state: bookmarked.value});
+};
 
 const domainName = new URL(props.post.url).hostname;
 const openArticle = (id) => {
