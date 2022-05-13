@@ -53,6 +53,7 @@ import { useRoute } from "vue-router";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 import { ref } from "@vue/reactivity";
+import { watch } from "@vue/runtime-core";
 
 const route = useRoute();
 const rowsPerPage = 10;
@@ -110,8 +111,18 @@ const { result, loading, error } = useQuery(
   }
 );
 
+watch(result, (value) => {
+  if (
+    value &&
+    route.query.p >
+      Math.ceil(value.bookmark_aggregate.aggregate.count / rowsPerPage)
+  ) {
+    router.push(`/bookmarks?p=1`);
+  }
+});
+
 const changePage = ({ page }) => {
-  router.push(`/tags/${route.params.tag}?p=${page + 1}`);
+  router.push(`/bookmarks?p=${page + 1}`);
 };
 </script>
 
