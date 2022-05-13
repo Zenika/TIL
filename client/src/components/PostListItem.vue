@@ -33,7 +33,11 @@
             }`"
             @click="openArticle(post.uuid)"
           />
-          <BookmarkButton class="ml-2" :bookmarked="post.bookmarks.length !== 0" :uuid="post.uuid"/>
+          <BookmarkButton
+            class="ml-2"
+            :bookmarked="post.bookmarks.length !== 0"
+            :uuid="post.uuid"
+          />
           <TagWrapper
             class="ml-2"
             v-for="tags in post.post_tags"
@@ -48,14 +52,12 @@
 
 <script setup>
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
-import BookmarkButton from "@/components/BookmarkButton.vue"
+import BookmarkButton from "@/components/BookmarkButton.vue";
 import router from "@/router";
 
 const props = defineProps({
   post: Object,
 });
-
-const emit = defineEmits(["bookmark"]);
 
 const domainName = new URL(props.post.url).hostname;
 const openArticle = (id) => {
