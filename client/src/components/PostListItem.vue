@@ -1,30 +1,41 @@
 <template>
-  <div class="col-12">
-    <div class="post-list-item">
-      <img
-        :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
-        :alt="post.content"
-      />
-      <div class="post-detail">
-        <div class="product-name">
-          <a
-            :href="post.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            v-html="post.get_title.title ? post.get_title.title : post.url"
-          ></a>
-        </div>
-        <div>
-          <div class="flex align-items-center">
-            <span class="description">
-              <b>{{ post.user.username }}</b> posted on
-              {{
-                new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
-              }}
-            </span>
-          </div>
-        </div>
-        <div class="flex align-items-center">
+  <div class="flex flex-column sm:flex-row align-items-center col-12 p-3">
+    <img
+      class="mb-3 sm:mr-3"
+      :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
+      :alt="post.content"
+    />
+    <div
+      class="
+        flex flex-column
+        w-full
+        justify-content-center
+        text-align-center text-center
+        overflow-hidden
+        sm:text-left
+      "
+    >
+      <a
+        :href="post.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="overflow-hidden text-overflow-ellipsis white-space-nowrap"
+      >
+        {{ post.get_title.title ? post.get_title.title : post.url }}
+      </a>
+      <span class="created-at text-sm my-1">
+        <b>{{ post.user.username }}</b> posted on
+        {{ new Date(post.created_at.replace(" ", "T")).toLocaleDateString() }}
+      </span>
+      <div
+        class="
+          flex flex-column
+          justify-content-center
+          sm:align-items-center
+          sm:flex-row sm:justify-content-start
+        "
+      >
+        <div class="flex align-items-center justify-content-center">
           <Button
             class="p-button-outlined p-button-secondary p-button-sm"
             icon="pi pi-comments"
@@ -38,13 +49,15 @@
             :bookmarked="post.bookmarks.length !== 0"
             :uuid="post.uuid"
           />
+        </div>
+        <span class="mt-2 sm:mt-0">
           <TagWrapper
-            class="ml-2"
+            class="mx-1 sm:ml-2 sm:mr-0"
             v-for="tags in post.post_tags"
             :key="tags.id"
             :value="tags.tag.name"
           />
-        </div>
+        </span>
       </div>
     </div>
   </div>
@@ -66,39 +79,11 @@ const openArticle = (id) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.post-list-item) {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  width: 100%;
-
-  img {
-    width: 50px;
-    margin-right: 2rem;
-  }
-
-  .post-detail {
-    flex: 1 1 0;
-  }
-
-  .description {
-    font-size: 0.9rem;
-    font-weight: lighter;
-    margin: 5px 0 5px 0;
-  }
+img {
+  width: 50px;
 }
-@media screen and (max-width: 576px) {
-  .post-list-item {
-    flex-direction: column;
-    align-items: center;
 
-    img {
-      margin: 0.5rem 0;
-    }
-
-    .post-detail {
-      text-align: center;
-    }
-  }
+.created-at {
+  font-weight: lighter;
 }
 </style>
