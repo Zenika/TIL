@@ -1,30 +1,54 @@
 <template>
-  <div class="col-12">
-    <div class="post-list-item">
-      <img
-        :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
-        :alt="post.content"
-      />
-      <div class="post-detail">
-        <div class="product-name">
-          <a
-            :href="post.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            v-html="post.get_title.title ? post.get_title.title : post.url"
-          ></a>
-        </div>
-        <div>
-          <div class="flex align-items-center">
-            <span class="description">
-              <b>{{ post.user.username }}</b> posted on
-              {{
-                new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
-              }}
-            </span>
-          </div>
-        </div>
-        <div class="flex align-items-center">
+  <div
+    class="
+      flex flex-column
+      sm:flex-row
+      align-items-center
+      col-12
+      py-2
+      px-3
+      sm:p-3
+    "
+  >
+    <img
+      class="mb-2 sm:mb-0 sm:mr-3"
+      :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
+      :alt="post.content"
+    />
+    <div
+      class="
+        flex flex-column
+        w-full
+        justify-content-center
+        text-center
+        overflow-hidden
+        sm:text-left
+      "
+    >
+      <p class="m-0 overflow-hidden text-overflow-ellipsis white-space-nowrap">
+        <a :href="post.url" target="_blank" rel="noopener noreferrer">
+          {{ post.get_title.title ? post.get_title.title : post.url }}
+        </a>
+      </p>
+      <span class="created-at text-xs mt-1">
+        <b>{{ post.user.username }}</b> posted on
+        {{ new Date(post.created_at.replace(" ", "T")).toLocaleDateString() }}
+      </span>
+      <p
+        v-if="post.description && post.description.length !== 0"
+        class="description text-sm my-2"
+      >
+        <span v-html="post.description"></span>
+      </p>
+      <div
+        class="
+          flex flex-column
+          mt-1
+          justify-content-center
+          sm:align-items-center sm:flex-row sm:justify-content-start
+        "
+      >
+        <div class="flex align-items-center justify-content-center">
           <Button
             class="p-button-outlined p-button-secondary p-button-sm"
             icon="pi pi-comments"
@@ -38,13 +62,15 @@
             :bookmarked="post.bookmarks.length !== 0"
             :uuid="post.uuid"
           />
+        </div>
+        <span class="mt-2 sm:mt-0">
           <TagWrapper
-            class="ml-2"
+            class="mx-1 sm:ml-2 sm:mr-0"
             v-for="tags in post.post_tags"
             :key="tags.id"
             :value="tags.tag.name"
           />
-        </div>
+        </span>
       </div>
     </div>
   </div>
@@ -66,39 +92,36 @@ const openArticle = (id) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.post-list-item) {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  width: 100%;
-
-  img {
-    width: 50px;
-    margin-right: 2rem;
-  }
-
-  .post-detail {
-    flex: 1 1 0;
-  }
-
-  .description {
-    font-size: 0.9rem;
-    font-weight: lighter;
-    margin: 5px 0 5px 0;
-  }
+img {
+  width: 50px;
 }
-@media screen and (max-width: 576px) {
-  .post-list-item {
-    flex-direction: column;
-    align-items: center;
 
-    img {
-      margin: 0.5rem 0;
-    }
+.created-at {
+  font-weight: lighter;
+}
 
-    .post-detail {
-      text-align: center;
-    }
-  }
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.description :deep(p) {
+  margin: 0;
+}
+
+.description :deep(pre) {
+  margin: 0;
+}
+
+.description :deep(ol) {
+  padding: 0;
+  margin: 0;
+}
+
+.description :deep(ul) {
+  padding: 0;
+  margin: 0;
 }
 </style>

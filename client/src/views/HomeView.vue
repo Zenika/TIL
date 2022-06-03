@@ -54,6 +54,7 @@ const { result, loading, error } = useQuery(
         url
         uuid
         created_at
+        description
         get_title {
           error
           title

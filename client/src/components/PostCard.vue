@@ -8,7 +8,6 @@
               col-11
               flex flex-column
               justify-content-center
-              overflow-hidden
             "
           >
             <h3
