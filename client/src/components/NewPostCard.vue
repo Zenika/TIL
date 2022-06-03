@@ -68,6 +68,7 @@
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
+import { escapeHtml } from "@/filters/escapeHtmlFilter";
 
 defineProps({
   loading: Boolean,
@@ -92,7 +93,10 @@ const submit = () => {
   v$.value.$validate();
 
   if (!v$.value.$error) {
-    emit("post-click", state);
+    emit("post-click", {
+      ...state,
+      description: escapeHtml(state.description).value,
+    });
   }
 };
 </script>

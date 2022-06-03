@@ -80,7 +80,7 @@
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
 import router from "@/router";
-import { nlToBr } from '@/filters/nlToBrFilter'
+import { nlToBr } from "@/filters/nlToBrFilter";
 
 const props = defineProps({
   post: Object,
