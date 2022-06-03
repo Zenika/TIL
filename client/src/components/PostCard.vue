@@ -63,7 +63,7 @@
               class="pt-0 pb-0 overflow-auto text-justify"
               v-html="
                 post.post_by_pk.description
-                  ? post.post_by_pk.description
+                  ? nlToBr(post.post_by_pk.description).value
                   : '<i>No description</i>'
               "
             />
@@ -85,6 +85,7 @@ import CommentSection from "../components/CommentSection.vue";
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
 import { useRoute } from "vue-router";
+import { nlToBr } from '@/filters/nlToBrFilter'
 
 const route = useRoute();
 
