@@ -4,7 +4,7 @@ import NewPostCard from "@/components/NewPostCard.vue"
 import Card from 'primevue/card';
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext';
-import TextArea from 'primevue/TextArea';
+import TextArea from 'primevue/textarea';
 import Chips from 'primevue/chips';
 
 config.global.components = {
