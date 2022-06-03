@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-column sm:flex-row align-items-center col-12 p-3">
+  <div class="flex flex-column sm:flex-row align-items-center col-12 py-2 px-3 sm:p-3">
     <img
-      class="mb-3 sm:mr-3"
+      class="mb-2 sm:mb-0 sm:mr-3"
       :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
       :alt="post.content"
     />
@@ -10,29 +10,32 @@
         flex flex-column
         w-full
         justify-content-center
-        text-align-center text-center
+        text-center
         overflow-hidden
         sm:text-left
       "
     >
-      <a
-        :href="post.url"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="overflow-hidden text-overflow-ellipsis white-space-nowrap"
-      >
-        {{ post.get_title.title ? post.get_title.title : post.url }}
-      </a>
-      <span class="created-at text-sm my-1">
+      <p class="m-0 overflow-hidden text-overflow-ellipsis white-space-nowrap">
+        <a :href="post.url" target="_blank" rel="noopener noreferrer">
+          {{ post.get_title.title ? post.get_title.title : post.url }}
+        </a>
+      </p>
+      <span class="created-at text-xs mt-1">
         <b>{{ post.user.username }}</b> posted on
         {{ new Date(post.created_at.replace(" ", "T")).toLocaleDateString() }}
       </span>
+      <p
+        v-if="post.description && post.description.length !== 0"
+        class="description text-sm my-2"
+      >
+        <span v-html="post.description"></span>
+      </p>
       <div
         class="
           flex flex-column
+          mt-1
           justify-content-center
-          sm:align-items-center
-          sm:flex-row sm:justify-content-start
+          sm:align-items-center sm:flex-row sm:justify-content-start
         "
       >
         <div class="flex align-items-center justify-content-center">
@@ -85,5 +88,16 @@ img {
 
 .created-at {
   font-weight: lighter;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.description ::v-deep p {
+  margin: 0;
 }
 </style>
