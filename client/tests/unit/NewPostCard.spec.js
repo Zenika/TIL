@@ -4,13 +4,13 @@ import NewPostCard from "@/components/NewPostCard.vue"
 import Card from 'primevue/card';
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext';
-import Editor from 'primevue/editor';
+import TextArea from 'primevue/TextArea';
 import Chips from 'primevue/chips';
 
 config.global.components = {
     'Button': Button,
     'Card': Card,
-    'Editor': Editor,
+    'TextArea': TextArea,
     'Chips': Chips,
     'InputText': InputText
   }

@@ -1,6 +1,7 @@
 import { computed } from "vue";
 
 export const escapeHtml = str => computed(() => {
+    if (!str) return null
     str = str.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // PREVENT HTML INJECTION
     str = str.replace(
         /(https?:\/\/)([^ ]+)/g,
