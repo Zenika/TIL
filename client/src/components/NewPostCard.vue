@@ -22,11 +22,13 @@
         </div>
 
         <div class="field">
-          <label for="editor">Description</label>
-          <EditorWrapper
-            id="editor"
+          <label for="description">Description</label>
+          <TextArea
+            :autoResize="true"
+            rows="7"
+            id="description"
             v-model="state.description"
-            editorStyle="height: 320px"
+            class="w-full"
           />
           <small class="p-error font-light" v-if="v$.description.$error">{{
             v$.description.$errors[0].$message
@@ -66,7 +68,7 @@
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
-import EditorWrapper from "@/components/wrappers/EditorWrapper.vue";
+import { escapeHtml } from "@/filters/escapeHtmlFilter";
 
 defineProps({
   loading: Boolean,
@@ -91,7 +93,10 @@ const submit = () => {
   v$.value.$validate();
 
   if (!v$.value.$error) {
-    emit("post-click", state);
+    emit("post-click", {
+      ...state,
+      description: escapeHtml(state.description).value,
+    });
   }
 };
 </script>

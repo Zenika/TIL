@@ -38,7 +38,7 @@
         v-if="post.description && post.description.length !== 0"
         class="description text-sm my-2"
       >
-        <span v-html="post.description"></span>
+        <span v-html="nlToBr(post.description).value"></span>
       </p>
       <div
         class="
@@ -80,6 +80,7 @@
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
 import router from "@/router";
+import { nlToBr } from "@/filters/nlToBrFilter";
 
 const props = defineProps({
   post: Object,
