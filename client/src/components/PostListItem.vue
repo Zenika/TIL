@@ -1,5 +1,15 @@
 <template>
-  <div class="flex flex-column sm:flex-row align-items-center col-12 py-2 px-3 sm:p-3">
+  <div
+    class="
+      flex flex-column
+      sm:flex-row
+      align-items-center
+      col-12
+      py-2
+      px-3
+      sm:p-3
+    "
+  >
     <img
       class="mb-2 sm:mb-0 sm:mr-3"
       :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
@@ -97,7 +107,21 @@ img {
   overflow: hidden;
 }
 
-.description ::v-deep p {
+.description :deep(p) {
+  margin: 0;
+}
+
+.description :deep(pre) {
+  margin: 0;
+}
+
+.description :deep(ol) {
+  padding: 0;
+  margin: 0;
+}
+
+.description :deep(ul) {
+  padding: 0;
   margin: 0;
 }
 </style>
