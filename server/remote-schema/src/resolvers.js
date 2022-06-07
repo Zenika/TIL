@@ -12,8 +12,8 @@ const parseTitle = (body) => {
 const feed = new RSS({
     title: 'TIL RSS feed',
     description: 'This RSS feed will contain the latest posts from TIL',
-    feed_url: `http://localhost:8080/rss.xml`,
-    site_url: 'http://localhost:8080',
+    feed_url: `${process.env.REMOTE_SCHEMA_URL}/rss.xml`,
+    site_url: process.env.CLIENT_URL,
 })
 
 const resolvers = {
@@ -33,7 +33,7 @@ const resolvers = {
             feed.item({
                 title: url,
                 description,
-                url: `https://til.zenika.com/post/${uuid}`
+                url: `${process.env.CLIENT_URL}/post/${uuid}`
             })
             fs.writeFile(`${path.join(__dirname, '/public')}/rss.xml`, feed.xml(), err => {
                 if (err) {

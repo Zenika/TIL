@@ -9,7 +9,11 @@ services:
       POSTGRES_PASSWORD: postgrespassword
 
   remote-schema:
-    build: remote-schema
+    build:
+      context: remote-schema
+      args:
+        CLIENT_URL: http://localhost:6058
+        REMOTE_SCHEMA_URL: http://localhost:8080
     command: nodemon src/index.js
     ports:
       - "8000:8080"

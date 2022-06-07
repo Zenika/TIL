@@ -10,6 +10,7 @@ const path = require('path')
 // const context = ({ req }) => {
 //   return { headers: req.headers };
 // };
+
 const startApolloServer = async () => {
   const app = express();
   app.use(express.static(path.join(__dirname, '/public')));

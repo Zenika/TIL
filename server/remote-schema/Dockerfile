@@ -9,4 +9,11 @@ RUN npm install -g nodemon
 COPY . .
 
 EXPOSE 8080
+
+ARG CLIENT_URL
+ARG REMOTE_SCHEMA_URL
+
+ENV CLIENT_URL ${CLIENT_URL}
+ENV REMOTE_SCHEMA_URL ${REMOTE_SCHEMA_URL}
+
 CMD [ "node", "src/index.js" ]
