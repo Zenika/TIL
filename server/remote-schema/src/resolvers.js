@@ -29,8 +29,10 @@ const resolvers = {
                 return { error: e.message };
             }
         },
-        add_post_to_rss: (_, { uuid }) => {
+        add_post_to_rss: (_, { uuid, description, url }) => {
             feed.item({
+                title: url,
+                description,
                 url: `https://til.zenika.com/post/${uuid}`
             })
             fs.writeFile(`${path.join(__dirname, '/public')}/rss.xml`, feed.xml(), err => {
