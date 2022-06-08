@@ -1,24 +1,10 @@
-const axios = require('axios').default;
-const cheerio = require('cheerio');
-
-const parseTitle = (body) => {
-    const $ = cheerio.load(body);
-    return $('head > title').text()
-}
+const getTitle = require('./htmlTitleParser')
+const {addPostToFeed} = require('./rssFeed')
 
 const resolvers = {
     Query: {
-        get_title: (parent, args, context, info) => {
-            try {
-                return axios(args.url)
-                    .then(res => res.data)
-                    .then(body => parseTitle(body))
-                    .then(title => ({ title }))
-                    .catch(e => ({ error: e.message }))
-            } catch (e) {
-                return { error: e.message };
-            }
-        },
+        get_title: (_, { url }) => getTitle(url),
+        add_post_to_rss: (_, { uuid, description, url }) => addPostToFeed(uuid, description, url)
     },
 };
 

@@ -30,6 +30,19 @@ array_relationships:
 remote_relationships:
   - definition:
       remote_field:
+        add_post_to_rss:
+          arguments:
+            uuid: $uuid
+            url: $url
+            description: $description
+      hasura_fields:
+        - uuid
+        - url
+        - description
+      remote_schema: remote-schema
+    name: add_post_to_rss
+  - definition:
+      remote_field:
         get_title:
           arguments:
             url: $url

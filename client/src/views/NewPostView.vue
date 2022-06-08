@@ -30,7 +30,7 @@ const mutation = gql`
         post_tags: { data: $post_tag_insert_input }
       }
     ) {
-      uuid
+      add_post_to_rss
     }
   }
 `;
@@ -54,7 +54,7 @@ const submit = ({ url, description, tags }) => {
 
   mutate({
     url,
-    description,
+    description: description ? description : "",
     post_tag_insert_input,
   });
 };
