@@ -11,7 +11,8 @@ const Options = () => {
     isLoading,
     user,
     isAuthenticated,
-    loginWithPopup
+    loginWithPopup,
+    logout
   } = useAuth0();
 
   if (isLoading) {
@@ -24,6 +25,7 @@ const Options = () => {
         <img src={user?.picture} alt={user?.name} />
         <h2>{user?.name}</h2>
         <p>{user?.email}</p>
+        <button onClick={() => logout({ returnTo: location.href })}>Log Out</button>
       </div>
     )
   } else {
@@ -31,7 +33,7 @@ const Options = () => {
       <div>
         <div></div>
         <div>Pas loggé...</div>
-        <button onClick={() => loginWithPopup()}>Log In</button>
+        <button onClick={loginWithPopup}>Log In</button>
       </div>
     );
   }

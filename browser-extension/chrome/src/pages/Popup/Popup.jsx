@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
-import logo from '../../assets/img/logo.svg';
-import Greetings from '../../containers/Greetings/Greetings';
+import HomePage from '../HomePage/HomePage';
+import LoginPage from '../LoginPage/LoginPage';
 import './Popup.css';
 
 const Popup = () => {
@@ -9,12 +9,7 @@ const Popup = () => {
     user,
     isAuthenticated,
     isLoading
-    // getAccessTokenSilently
   } = useAuth0();
-
-  // getAccessTokenSilently().then(token => {
-  //   console.log(token)
-  // })
 
   if (isLoading) {
     return (
@@ -24,19 +19,7 @@ const Popup = () => {
     )
   }
 
-  if (isAuthenticated) {
-    return (
-      <div>
-        <p>{user.email}</p>
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        <p>Not Logged</p>
-      </div>
-    )
-  }
+  return isAuthenticated ? <HomePage username={user.name}/> : <LoginPage/>
 };
 
 export default Popup;
