@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
-import HomePage from '../HomePage/HomePage';
-import LoginPage from '../LoginPage/LoginPage';
+import Home from '../Home/Home';
+import Login from '../Login/Login';
 import './Popup.css';
 
 const Popup = () => {
@@ -11,15 +11,10 @@ const Popup = () => {
     isLoading
   } = useAuth0();
 
-  if (isLoading) {
-    return (
-      <div>
-        <p>Loading</p>
-      </div>
-    )
-  }
+  if (isLoading)
+    return <p>Loading</p>
 
-  return isAuthenticated ? <HomePage username={user.name}/> : <LoginPage/>
+  return isAuthenticated ? <Home username={user.name}/> : <Login/>
 };
 
 export default Popup;

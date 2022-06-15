@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoginPage = () => {
+const Login = () => {
   const redirect = () => {
     chrome.tabs.create({
       url: `${window.location.origin}/options.html`,
@@ -15,4 +15,4 @@ const LoginPage = () => {
   )
 };
 
-export default LoginPage;
+export default Login;
