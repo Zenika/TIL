@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from 'primereact/button'
+import './Login.css';
 
 const Login = () => {
   const redirect = () => {
@@ -8,9 +10,9 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <p>Please log in to TIL from the settings page</p>
-      <button onClick={redirect}>Go to settings</button>
+    <div className='container'>
+      <h3>Please log in to TIL from the settings page</h3>
+      <Button className='p-button-sm' onClick={redirect} label='Go to settings'/>
     </div>
   )
 };

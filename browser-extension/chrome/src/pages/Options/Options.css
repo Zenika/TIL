@@ -1,8 +1,19 @@
-.OptionsContainer {
-  width: 100%;
-  height: 50vh;
-  font-size: 2rem;
+.container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+}
+
+img {
+  border-radius: 50%;
+}
+
+h1, h2 {
+  margin: 0rem;
+  margin-top: 0.5rem;
+  font-weight: normal;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
 }
