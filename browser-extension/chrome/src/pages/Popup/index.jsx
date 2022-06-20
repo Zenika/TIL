@@ -4,6 +4,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import Popup from './Popup';
 import './index.css';
 import { ApolloProviderAuth0 } from '../ApolloProviderAuth0/ApolloProviderAuth0';
+import 'primereact/resources/themes/saga-blue/theme.css'
+import 'primereact/resources/primereact.min.css'
 
 render(
     <Auth0Provider

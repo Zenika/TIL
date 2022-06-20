@@ -3,8 +3,8 @@ import { render } from 'react-dom';
 import { Auth0Provider } from "@auth0/auth0-react";
 import Options from './Options';
 import './index.css';
-
-console.log(location.href)
+import 'primereact/resources/themes/saga-blue/theme.css'
+import 'primereact/resources/primereact.min.css'
 
 render(
   <Auth0Provider
