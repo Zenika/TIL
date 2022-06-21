@@ -3,6 +3,7 @@ import React from 'react';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
 import './Popup.css';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 const Popup = () => {
   const {
@@ -12,9 +13,9 @@ const Popup = () => {
   } = useAuth0();
 
   if (isLoading)
-    return <p>Loading</p>
+    return <ProgressSpinner className='center'/>;
 
-  return isAuthenticated ? <Home username={user.name}/> : <Login/>
+  return isAuthenticated ? <Home username={user.name} /> : <Login />
 };
 
 export default Popup;

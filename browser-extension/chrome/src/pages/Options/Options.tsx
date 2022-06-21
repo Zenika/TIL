@@ -2,6 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 import './Options.css';
 import { Button } from 'primereact/button'
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface Props {
   title: string;
@@ -17,12 +18,12 @@ const Options = () => {
   } = useAuth0();
 
   if (isLoading) {
-    return <div>Loading ...</div>;
+    return <ProgressSpinner className='center'/>;
   }
 
   if (isAuthenticated) {
     return (
-      <div className='container'>
+      <div className='container center'>
         <img src={user?.picture} alt={user?.name} width="100" />
         <h2>You are logged into <b>TIL</b> as</h2>
         <h1>{user?.name} ({user?.email})</h1>
@@ -31,7 +32,7 @@ const Options = () => {
     )
   } else {
     return (
-      <div className='container'>
+      <div className='container center'>
         <h1>Please log into <b>TIL</b></h1>
         <Button className='p-button-sm' onClick={loginWithPopup} label="Log in"/>
       </div>

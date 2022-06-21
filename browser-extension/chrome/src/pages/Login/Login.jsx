@@ -10,7 +10,7 @@ const Login = () => {
   }
 
   return (
-    <div className='container'>
+    <div className='container center'>
       <h3>Please log in to TIL from the settings page</h3>
       <Button className='p-button-sm' onClick={redirect} label='Go to settings'/>
     </div>
