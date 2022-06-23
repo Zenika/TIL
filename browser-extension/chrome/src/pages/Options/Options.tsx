@@ -4,10 +4,6 @@ import './Options.css';
 import { Button } from 'primereact/button'
 import { ProgressSpinner } from 'primereact/progressspinner';
 
-interface Props {
-  title: string;
-}
-
 const Options = () => {
   const {
     isLoading,

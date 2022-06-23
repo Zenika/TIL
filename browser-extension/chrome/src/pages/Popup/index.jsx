@@ -9,13 +9,13 @@ import 'primereact/resources/primereact.min.css'
 
 render(
     <Auth0Provider
-        domain="dev-iagwdw5k.us.auth0.com"
-        clientId="iHciVU4olh5PoOPDbSFYe1NmEm78bd6v"
-        audience='http://localhost:8080/v1/graphql'
+        domain={process.env.REACT_APP_AUTH0_DOMAIN}
+        clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+        audience={process.env.REACT_APP_AUTH0_AUDIENCE}
         redirectUri={location.href}
     >
         <ApolloProviderAuth0>
-            <Popup title={'Settings'} />
+            <Popup/>
         </ApolloProviderAuth0>
     </Auth0Provider>
     ,

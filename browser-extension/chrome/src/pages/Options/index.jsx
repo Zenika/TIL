@@ -8,11 +8,11 @@ import 'primereact/resources/primereact.min.css'
 
 render(
   <Auth0Provider
-    domain="dev-iagwdw5k.us.auth0.com"
-    clientId="iHciVU4olh5PoOPDbSFYe1NmEm78bd6v"
+    domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={location.href}
   >
-    <Options title={'Settings'} />
+    <Options/>
   </Auth0Provider>,
   window.document.querySelector('#app-container')
 );

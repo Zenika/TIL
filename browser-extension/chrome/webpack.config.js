@@ -4,8 +4,11 @@ var webpack = require('webpack'),
   env = require('./utils/env'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  TerserPlugin = require('terser-webpack-plugin');
+  TerserPlugin = require('terser-webpack-plugin'),
+  dotenv = require('dotenv')
 var { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+dotenv.config();
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
@@ -155,6 +158,9 @@ var options = {
       chunks: ['popup'],
       cache: false,
     }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env)
+    })
   ],
   infrastructureLogging: {
     level: 'info',
