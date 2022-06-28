@@ -23,3 +23,10 @@ select_permissions:
         - post_uuid
         - tag_uuid
       filter: {}
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        post:
+          user_id:
+            _eq: X-Hasura-User-Id

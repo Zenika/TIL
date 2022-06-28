@@ -68,14 +68,16 @@
 import { reactive, toRefs } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
-import { useMutation } from "@vue/apollo-composable";
-import gql from "graphql-tag";
+import { escapeHtml } from "@/filters/escapeHtmlFilter";
 
 const props = defineProps({
   post: Object,
+  loading: Boolean
 });
 
 const { post } = toRefs(props);
+
+const emit = defineEmits(["update-click"]);
 
 const tags = [];
 
@@ -92,33 +94,20 @@ const state = reactive({
 const rules = {
   url: { required, url },
   description: { maxLength: maxLength(1000) },
+  tags: { maxLength: maxLength(5) }
 };
 
 const v$ = useVuelidate(rules, state);
 
-const mutation = gql`
-  mutation UpdatePostByPk($uuid: uuid!, $description: String!, $url: String!) {
-    update_post_by_pk(
-      pk_columns: { uuid: $uuid }
-      _set: { url: $url, description: $description }
-    ) {
-      uuid
-    }
-  }
-`;
-
-const { mutate, onDone, loading } = useMutation(mutation);
-
-onDone((res) => {
-  console.log(res);
-});
-
 const submit = () => {
-  mutate({
-    uuid: post.value.uuid,
-    url: state.url,
-    description: state.description,
-  });
+  v$.value.$validate();
+
+  if (!v$.value.$error) {
+    emit("update-click", {
+      ...state,
+      description: escapeHtml(state.description).value,
+    });
+  }
 };
 </script>
 

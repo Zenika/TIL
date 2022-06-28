@@ -85,6 +85,7 @@ const state = reactive({
 const rules = {
   url: { required, url },
   description: { maxLength: maxLength(1000) },
+  tags: { maxLength: maxLength(5) }
 };
 
 const v$ = useVuelidate(rules, state);

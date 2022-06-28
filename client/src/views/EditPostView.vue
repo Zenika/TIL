@@ -14,17 +14,22 @@
       />
     </div>
     <div class="col-6 col-offset-3">
-      <EditPostCard :post="result.post_by_pk" />
+      <EditPostCard
+        @update-click="update($event)"
+        :post="result.post_by_pk"
+        :loading="mutationLoading"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
 import { useRoute } from "vue-router";
-import { useQuery } from "@vue/apollo-composable";
+import { useQuery, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
 import EditPostCard from "@/components/EditPostCard.vue";
+import router from "@/router";
 
 const route = useRoute();
 
@@ -34,7 +39,6 @@ const { loading, result, error } = useQuery(
       post_by_pk(uuid: $uuid) {
         url
         description
-        uuid
         post_tags(order_by: { tag: { name: asc } }) {
           tag {
             name
@@ -47,6 +51,58 @@ const { loading, result, error } = useQuery(
     uuid: route.params.id,
   }
 );
+
+const mutation = gql`
+  mutation UpdatePostByPk(
+    $uuid: uuid!
+    $description: String!
+    $url: String!
+    $post_tag_insert_input: [post_tag_insert_input!]!
+  ) {
+    update_post_by_pk(
+      pk_columns: { uuid: $uuid }
+      _set: { url: $url, description: $description }
+    ) {
+      add_post_to_rss
+    }
+    delete_post_tag(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
+    insert_post_tag(objects: $post_tag_insert_input) {
+      affected_rows
+    }
+  }
+`;
+
+const { mutate, onDone, loading: mutationLoading } = useMutation(mutation);
+
+onDone((res) => {
+  router.push(`post/${route.params.id}`);
+});
+
+const update = ({url, description, tags}) => {
+  let post_tag_insert_input = [];
+
+  tags.forEach((tag) => {
+    post_tag_insert_input.push({
+      tag: {
+        data: { name: tag.toLowerCase() },
+        on_conflict: {
+          constraint: "tag_name_key",
+          update_columns: ["blank"],
+        },
+      },
+      post_uuid: route.params.id
+    });
+  });
+
+  mutate({
+    url,
+    description: description ? description : "",
+    post_tag_insert_input,
+    uuid: route.params.id,
+  });
+};
 </script>
 
 <style scoped>
