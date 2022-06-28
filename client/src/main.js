@@ -77,6 +77,14 @@ const splitLink = split(
 const apolloClient = new ApolloClient({
   link: concat(authMiddleware, splitLink),
   cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'network-only',
+    },
+    query: {
+      fetchPolicy: 'network-only',
+    },
+  }
 })
 
 createApp({

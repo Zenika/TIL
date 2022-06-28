@@ -41,7 +41,7 @@
               <Button
                 @click="openMenu"
                 class="
-                  p-button-secondary p-button-text p-button-sm p-button-rounded
+                  p-button-secondary p-button-text p-button-sm p-button-rounded mb-2
                 "
                 icon="pi pi-ellipsis-h"
                 aria-haspopup="true"

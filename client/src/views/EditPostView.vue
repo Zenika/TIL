@@ -77,7 +77,7 @@ const mutation = gql`
 const { mutate, onDone, loading: mutationLoading } = useMutation(mutation);
 
 onDone((res) => {
-  router.push(`post/${route.params.id}`);
+  router.go(-1);
 });
 
 const update = ({url, description, tags}) => {
