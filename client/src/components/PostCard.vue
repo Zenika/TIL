@@ -3,7 +3,12 @@
     <Card class="p-0">
       <template #content>
         <div class="grid">
-          <div class="col-11 flex flex-column justify-content-center">
+          <div class="col flex align-items-center mb-2">
+            <img
+              :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
+            />
+          </div>
+          <div class="col-10 flex flex-column justify-content-center mb-2">
             <h3
               class="
                 font-normal
@@ -41,7 +46,8 @@
               <Button
                 @click="openMenu"
                 class="
-                  p-button-secondary p-button-text p-button-sm p-button-rounded mb-2
+                  p-button-secondary p-button-text p-button-sm p-button-rounded
+                  mb-2
                 "
                 icon="pi pi-ellipsis-h"
                 aria-haspopup="true"
@@ -49,9 +55,6 @@
               />
               <Menu id="overlay_menu" ref="menu" :popup="true" :model="items" />
             </div>
-            <img
-              :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
-            />
           </div>
 
           <div class="col-12 border-top-1 border-200">
