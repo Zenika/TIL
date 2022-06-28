@@ -14,7 +14,7 @@
       />
     </div>
     <div class="col-6 col-offset-3">
-      <PostCard :post="result.post_by_pk" />
+      <EditPostCard :post="result.post_by_pk" />
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
-import PostCard from "@/components/PostCard.vue";
+import EditPostCard from "@/components/EditPostCard.vue";
 
 const route = useRoute();
 
@@ -33,26 +33,12 @@ const { loading, result, error } = useQuery(
     query getPost($uuid: uuid!) {
       post_by_pk(uuid: $uuid) {
         url
-        uuid
         description
-        created_at
-        comments {
-          username
-        }
-        get_title {
-          title
-        }
-        user {
-          username
-          id
-        }
-        post_tags(order_by: {tag: {name: asc}}) {
+        uuid
+        post_tags(order_by: { tag: { name: asc } }) {
           tag {
             name
           }
-        }
-        bookmarks {
-          id
         }
       }
     }
@@ -64,11 +50,4 @@ const { loading, result, error } = useQuery(
 </script>
 
 <style scoped>
-.spinner {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
 </style>

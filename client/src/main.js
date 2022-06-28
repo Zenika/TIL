@@ -20,6 +20,7 @@ import Message from 'primevue/message';
 import Tag from 'primevue/tag';
 import Chips from 'primevue/chips';
 import ToggleButton from 'primevue/togglebutton';
+import Menu from 'primevue/menu';
 import '/node_modules/primeflex/primeflex.css'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink, concat, split } from '@apollo/client/core'
@@ -107,4 +108,5 @@ createApp({
   .component('Tag', Tag)
   .component('Chips', Chips)
   .component('ToggleButton', ToggleButton)
+  .component('Menu', Menu)
   .mount('#app')

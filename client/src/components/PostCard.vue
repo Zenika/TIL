@@ -3,13 +3,7 @@
     <Card class="p-0">
       <template #content>
         <div class="grid">
-          <div
-            class="
-              col-11
-              flex flex-column
-              justify-content-center
-            "
-          >
+          <div class="col-11 flex flex-column justify-content-center">
             <h3
               class="
                 font-normal
@@ -19,40 +13,42 @@
                 white-space-nowrap
               "
             >
-              <a
-                :href="post.post_by_pk.url"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {{
-                  post.post_by_pk.get_title.title
-                    ? post.post_by_pk.get_title.title
-                    : post.post_by_pk.url
-                }}
+              <a :href="post.url" target="_blank" rel="noopener noreferrer">
+                {{ post.get_title.title ? post.get_title.title : post.url }}
               </a>
             </h3>
             <small class="font-light">
-              {{ post.post_by_pk.user.username }} -
+              {{ post.user.username }} -
               {{
-                new Date(
-                  post.post_by_pk.created_at.replace(" ", "T")
-                ).toLocaleDateString()
+                new Date(post.created_at.replace(" ", "T")).toLocaleDateString()
               }}
             </small>
             <div class="flex align-items-center mt-2 mb-1">
               <BookmarkButton
-                :bookmarked="post.post_by_pk.bookmarks.length !== 0"
-                :uuid="post.post_by_pk.uuid"
+                :bookmarked="post.bookmarks.length !== 0"
+                :uuid="post.uuid"
               />
               <TagWrapper
-                v-for="tags in post.post_by_pk.post_tags"
+                v-for="tags in post.post_tags"
                 :key="tags.id"
                 class="ml-2"
                 :value="tags.tag.name"
               />
             </div>
           </div>
-          <div class="col">
+          <div class="col flex flex-column align-items-center">
+            <div v-if="post.user.id === user.sub">
+              <Button
+                @click="openMenu"
+                class="
+                  p-button-secondary p-button-text p-button-sm p-button-rounded
+                "
+                icon="pi pi-ellipsis-h"
+                aria-haspopup="true"
+                aria-controls="overlay_menu"
+              />
+              <Menu id="overlay_menu" ref="menu" :popup="true" :model="items" />
+            </div>
             <img
               :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
             />
@@ -62,8 +58,8 @@
             <p
               class="pt-0 pb-0 overflow-auto text-justify"
               v-html="
-                post.post_by_pk.description
-                  ? nlToBr(post.post_by_pk.description).value
+                post.description
+                  ? nlToBr(post.description).value
                   : '<i>No description</i>'
               "
             />
@@ -80,14 +76,18 @@
 </template>
 
 <script setup>
-import { toRefs } from "@vue/reactivity";
+import { ref, toRefs } from "@vue/reactivity";
 import CommentSection from "../components/CommentSection.vue";
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
-import { useRoute } from "vue-router";
-import { nlToBr } from '@/filters/nlToBrFilter'
+import { useRoute, useRouter } from "vue-router";
+import { nlToBr } from "@/filters/nlToBrFilter";
+import { useAuth0 } from "@auth0/auth0-vue";
+
+const { user } = useAuth0();
 
 const route = useRoute();
+const router = useRouter();
 
 const props = defineProps({
   post: Object,
@@ -95,8 +95,21 @@ const props = defineProps({
 
 const { post } = toRefs(props);
 
+const menu = ref();
+const items = ref([
+  {
+    label: "Edit",
+    icon: "pi pi-pencil",
+    command: () => router.push(`/post/${route.params.id}/edit`),
+  },
+]);
+
 let domainName;
-if (post.value) domainName = new URL(post.value.post_by_pk.url).hostname;
+if (post.value) domainName = new URL(post.value.url).hostname;
+
+const openMenu = (event) => {
+  menu.value.toggle(event);
+};
 </script>
 
 <style scoped>
