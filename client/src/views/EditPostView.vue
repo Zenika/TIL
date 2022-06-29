@@ -37,6 +37,7 @@ const { loading, result, error } = useQuery(
   gql`
     query getPost($uuid: uuid!) {
       post_by_pk(uuid: $uuid) {
+        uuid
         url
         description
         post_tags(order_by: { tag: { name: asc } }) {

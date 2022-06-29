@@ -29,6 +29,7 @@
             id="description"
             v-model="state.description"
             class="w-full"
+            data-test="description"
           />
           <small class="p-error font-light" v-if="v$.description.$error">{{
             v$.description.$errors[0].$message
@@ -70,15 +71,24 @@ import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
 import { escapeHtml } from "@/filters/escapeHtmlFilter";
 
-const props = defineProps({
-  post: Object,
-  loading: Boolean
+let props = defineProps({
+  post: {
+    type: Object,
+    default() {
+      return {
+        url: "",
+        description: "",
+        post_tags: [],
+      };
+    }
+  },
+  loading: {
+    type: Boolean
+  },
 });
 
 const { post } = toRefs(props);
-
 const emit = defineEmits(["update-click"]);
-
 const tags = [];
 
 post.value.post_tags.forEach((post_tag) => {
@@ -94,7 +104,7 @@ const state = reactive({
 const rules = {
   url: { required, url },
   description: { maxLength: maxLength(1000) },
-  tags: { maxLength: maxLength(5) }
+  tags: { maxLength: maxLength(5) },
 };
 
 const v$ = useVuelidate(rules, state);

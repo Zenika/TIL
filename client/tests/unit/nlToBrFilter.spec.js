@@ -7,8 +7,13 @@ describe('nlToBrFilter', () => {
         expect(nlToBr().value).toBeNull()
     })
 
-    it('should replace \\n into <br/>', () => {
+    it('should replace a single \\n into <br/>', () => {
         const test = "salut\nca va"
         expect(nlToBr(test).value).toBe("salut<br/>ca va")
+    })
+
+    it('should replace multiple \\n into <br/>', () => {
+        const test = "salut\nca\nva"
+        expect(nlToBr(test).value).toBe("salut<br/>ca<br/>va")
     })
 })
