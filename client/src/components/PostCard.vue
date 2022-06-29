@@ -88,6 +88,8 @@ import { useRoute, useRouter } from "vue-router";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";
 
+const emit = defineEmits(["delete-click"]);
+
 const { user } = useAuth0();
 
 const route = useRoute();
@@ -106,6 +108,11 @@ const items = ref([
     icon: "pi pi-pencil",
     command: () => router.push(`/post/${route.params.id}/edit`),
   },
+  {
+    label: "Delete",
+    icon: "pi pi-trash",
+    command: () => emit("delete-click"),
+  },
 ]);
 
 let domainName;
@@ -114,6 +121,7 @@ if (post.value) domainName = new URL(post.value.url).hostname;
 const openMenu = (event) => {
   menu.value.toggle(event);
 };
+
 </script>
 
 <style scoped>

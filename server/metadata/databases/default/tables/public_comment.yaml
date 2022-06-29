@@ -23,3 +23,10 @@ select_permissions:
         - username
       filter: {}
       allow_aggregations: true
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        post:
+          user_id:
+            _eq: X-Hasura-User-Id
