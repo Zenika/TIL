@@ -6,6 +6,7 @@ import NewPostView from '@/views/NewPostView'
 import TagView from '@/views/TagView'
 import BookmarksView from '@/views/BookmarksView'
 import { authGuard } from '@auth0/auth0-vue'
+import EditPostView from '@/views/EditPostView'
 
 const routes = [
   {
@@ -18,6 +19,12 @@ const routes = [
     path: '/post/:id',
     name: 'post',
     component: PostView,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/post/:id/edit',
+    name: 'post-edit',
+    component: EditPostView,
     beforeEnter: authGuard
   },
   {

@@ -14,7 +14,7 @@
       />
     </div>
     <div class="col-6 col-offset-3">
-      <PostCard :post="result" />
+      <PostCard :post="result.post_by_pk" />
     </div>
   </div>
 </template>
@@ -44,6 +44,7 @@ const { loading, result, error } = useQuery(
         }
         user {
           username
+          id
         }
         post_tags(order_by: {tag: {name: asc}}) {
           tag {
