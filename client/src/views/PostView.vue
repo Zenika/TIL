@@ -37,9 +37,6 @@ const { loading, result, error } = useQuery(
         uuid
         description
         created_at
-        comments {
-          username
-        }
         get_title {
           title
         }
