@@ -71,6 +71,9 @@ const mutation = gql`
     delete_post_tag(where: { post_uuid: { _eq: $uuid } }) {
       affected_rows
     }
+    delete_bookmark(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
     delete_post_by_pk(uuid: $uuid) {
       uuid
     }
