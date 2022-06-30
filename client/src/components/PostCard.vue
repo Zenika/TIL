@@ -1,5 +1,6 @@
 <template>
   <div v-if="post" class="card-container">
+    <ConfirmDialog></ConfirmDialog>
     <Card class="p-0">
       <template #content>
         <div class="grid">
@@ -87,11 +88,12 @@ import BookmarkButton from "@/components/BookmarkButton.vue";
 import { useRoute, useRouter } from "vue-router";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";
+import { useConfirm } from "primevue/useconfirm";
 
 const emit = defineEmits(["delete-click"]);
 
 const { user } = useAuth0();
-
+const confirm = useConfirm();
 const route = useRoute();
 const router = useRouter();
 
@@ -111,7 +113,17 @@ const items = ref([
   {
     label: "Delete",
     icon: "pi pi-trash",
-    command: () => emit("delete-click"),
+    command: () => {
+      confirm.require({
+        message: "Are you sure you want to delete this post?",
+        acceptLabel: "Delete",
+        rejectLabel: "Cancel",
+        header: "Delete Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "p-button-danger",
+        accept: () => emit("delete-click"),
+      });
+    },
   },
 ]);
 
@@ -121,7 +133,6 @@ if (post.value) domainName = new URL(post.value.url).hostname;
 const openMenu = (event) => {
   menu.value.toggle(event);
 };
-
 </script>
 
 <style scoped>
