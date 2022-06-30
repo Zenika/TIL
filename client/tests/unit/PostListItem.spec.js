@@ -35,7 +35,7 @@ describe('PostListItem.vue', () => {
     expect(html).toContain(new Date(post.created_at.replace(" ", "T")).toLocaleDateString())
     expect(html).toContain(post.get_title.title)
     expect(html).toContain(post.user.username)
-    expect(html).toContain("0 Comments")
+    expect(html).toContain("0")
   })
 
   it('renders one post with missing title', () => {
@@ -61,7 +61,7 @@ describe('PostListItem.vue', () => {
     expect(html).toContain(new Date(post.created_at.replace(" ", "T")).toLocaleDateString())
     expect(html).toContain(post.url)
     expect(html).toContain(post.user.username)
-    expect(html).toContain("0 Comments")
+    expect(html).toContain("0")
   })
 
   it('renders one post with one comment', () => {
@@ -84,7 +84,7 @@ describe('PostListItem.vue', () => {
       props: { post },
     })
     const html = wrapper.html();
-    expect(html).toContain("1 Comment")
+    expect(html).toContain("1")
   })
 
   it('renders one post with multiple comments', () => {
@@ -107,6 +107,6 @@ describe('PostListItem.vue', () => {
       props: { post },
     })
     const html = wrapper.html();
-    expect(html).toContain("15 Comments")
+    expect(html).toContain("15")
   })
 })

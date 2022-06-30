@@ -8,6 +8,12 @@
       py-2
       px-3
       sm:p-3
+      hover:surface-100
+      cursor-hover
+    "
+    @click="
+      openArticle(post.uuid);
+      event.stopPropagation();
     "
   >
     <img
@@ -21,12 +27,17 @@
         w-full
         justify-content-center
         text-center
-        overflow-hidden
         sm:text-left
+        overflow-hidden
       "
     >
       <p class="m-0 overflow-hidden text-overflow-ellipsis white-space-nowrap">
-        <a :href="post.url" target="_blank" rel="noopener noreferrer">
+        <a
+          :href="post.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          @click.stop=""
+        >
           {{ post.get_title.title ? post.get_title.title : post.url }}
         </a>
       </p>
@@ -40,32 +51,29 @@
       >
         <span v-html="nlToBr(post.description).value"></span>
       </p>
+
       <div
         class="
           flex flex-column
-          mt-1
           justify-content-center
           sm:align-items-center sm:flex-row sm:justify-content-start
+          text-sm
         "
       >
         <div class="flex align-items-center justify-content-center">
-          <Button
-            class="p-button-outlined p-button-secondary p-button-sm"
-            icon="pi pi-comments"
-            :label="`${post.comments_aggregate.aggregate.count} Comment${
-              post.comments_aggregate.aggregate.count !== 1 ? 's' : ''
-            }`"
-            @click="openArticle(post.uuid)"
-          />
+          <span class="pr-2 border-right-1">
+            <i class="pi pi-comments" />
+            {{ post.comments_aggregate.aggregate.count }}
+          </span>
           <BookmarkButton
-            class="ml-2"
+            class="ml-2 mr-2"
             :bookmarked="post.bookmarks.length !== 0"
             :uuid="post.uuid"
           />
         </div>
         <span class="mt-2 sm:mt-0">
           <TagWrapper
-            class="mx-1 sm:ml-2 sm:mr-0"
+            class="mr-1 mt-1 sm:mt-0"
             v-for="tags in post.post_tags"
             :key="tags.id"
             :value="tags.tag.name"
