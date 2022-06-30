@@ -2,7 +2,7 @@
   <Tag
     class="hover:text-300 cursor-hover"
     :value="value"
-    @click="$router.push(`/tags/${value}?p=1`)"
+    @click.stop="$router.push(`/tags/${value}?p=1`)"
   />
 </template>
 

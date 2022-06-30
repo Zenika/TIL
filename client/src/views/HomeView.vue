@@ -5,7 +5,7 @@
   <div v-else-if="result.post">
     <DataView :value="result.post" :layout="'list'">
       <template #list="slotProps">
-        <PostListItem :post="slotProps.data" />
+        <PostListItem :post="slotProps.data"/>
       </template>
       <template #empty>
         <div>No articles found.</div>
