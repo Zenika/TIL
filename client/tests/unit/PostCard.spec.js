@@ -26,6 +26,11 @@ jest.mock('@auth0/auth0-vue', () => ({
     })),
 }));
 
+jest.mock('primevue/useconfirm', () => ({
+    __esModule: true,
+    useConfirm: jest.fn(() => ({})),
+}));
+
 jest.mock('@/components/CommentSection.vue')
 jest.mock('@/components/BookmarkButton.vue')
 

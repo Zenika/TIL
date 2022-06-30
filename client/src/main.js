@@ -21,6 +21,8 @@ import Tag from 'primevue/tag';
 import Chips from 'primevue/chips';
 import ToggleButton from 'primevue/togglebutton';
 import Menu from 'primevue/menu';
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmDialog from 'primevue/confirmdialog';
 import '/node_modules/primeflex/primeflex.css'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink, concat, split } from '@apollo/client/core'
@@ -102,6 +104,7 @@ createApp({
   }))
   .use(exposeAuth0())
   .use(PrimeVue)
+  .use(ConfirmationService)
   .component('Button', Button)
   .component('ProgressSpinner', ProgressSpinner)
   .component('Card', Card)
@@ -117,4 +120,5 @@ createApp({
   .component('Chips', Chips)
   .component('ToggleButton', ToggleButton)
   .component('Menu', Menu)
+  .component('ConfirmDialog', ConfirmDialog)
   .mount('#app')

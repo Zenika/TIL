@@ -14,19 +14,20 @@
       />
     </div>
     <div class="col-6 col-offset-3">
-      <PostCard :post="result.post_by_pk" />
+      <PostCard :post="result.post_by_pk" @delete-click="deletePost($event)" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
-import { useQuery } from "@vue/apollo-composable";
+import { useRoute, useRouter } from "vue-router";
+import { useMutation, useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
 import PostCard from "@/components/PostCard.vue";
 
 const route = useRoute();
+const router = useRouter();
 
 const { loading, result, error } = useQuery(
   gql`
@@ -46,7 +47,7 @@ const { loading, result, error } = useQuery(
           username
           id
         }
-        post_tags(order_by: {tag: {name: asc}}) {
+        post_tags(order_by: { tag: { name: asc } }) {
           tag {
             name
           }
@@ -61,6 +62,31 @@ const { loading, result, error } = useQuery(
     uuid: route.params.id,
   }
 );
+
+const mutation = gql`
+  mutation DeletePost($uuid: uuid!) {
+    delete_comment(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
+    delete_post_tag(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
+    delete_bookmark(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
+    delete_post_by_pk(uuid: $uuid) {
+      uuid
+    }
+  }
+`;
+
+const { mutate, onDone } = useMutation(mutation);
+
+onDone(() => router.push(`/`));
+
+const deletePost = () => {
+  mutate({ uuid: route.params.id });
+};
 </script>
 
 <style scoped>
