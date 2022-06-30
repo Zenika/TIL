@@ -41,13 +41,13 @@
           {{ post.get_title.title ? post.get_title.title : post.url }}
         </a>
       </p>
-      <span class="created-at text-xs mt-1">
+      <span class="created-at text-xs my-1">
         <b>{{ post.user.username }}</b> posted on
         {{ new Date(post.created_at.replace(" ", "T")).toLocaleDateString() }}
       </span>
       <p
         v-if="post.description && post.description.length !== 0"
-        class="description text-sm my-2"
+        class="description text-sm my-1"
       >
         <span v-html="nlToBr(post.description).value"></span>
       </p>
@@ -55,6 +55,7 @@
       <div
         class="
           flex flex-column
+          mt-1
           justify-content-center
           sm:align-items-center sm:flex-row sm:justify-content-start
           text-sm
