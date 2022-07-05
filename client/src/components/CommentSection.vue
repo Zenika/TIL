@@ -44,7 +44,7 @@
       <template #list="slotProps">
         <div class="col-12 p-2">
           <div class="col-12 p-0 text-sm font-semibold">
-            {{ slotProps.data.username }}
+            {{ slotProps.data.username ? slotProps.data.username : slotProps.data.user.username }}
           </div>
 
           <div class="col-12 p-0 font-light">
@@ -72,7 +72,6 @@ import { reactive, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import { useUserInfo } from "@/composables/useUserInfo";
 
 const { isAuthenticated } = useAuth0();
 
@@ -95,6 +94,9 @@ const { loading, result, error, onResult } = useSubscription(
       comment(where: { post_uuid: { _eq: $post_uuid } }) {
         content
         username
+        user {
+          username
+        }
       }
     }
   `,
@@ -113,12 +115,11 @@ const mutation = gql`
   mutation insertCommentOne(
     $content: String!
     $post_uuid: uuid!
-    $username: String!
   ) {
     insert_comment_one(
-      object: { content: $content, post_uuid: $post_uuid, username: $username }
+      object: { content: $content, post_uuid: $post_uuid }
     ) {
-      username
+      uuid
     }
   }
 `;
@@ -135,7 +136,6 @@ const postComment = () => {
   if (!v$.value.$error) {
     mutate({
       content: comment.text,
-      username: useUserInfo()?.nickname,
       post_uuid: postId.value,
     });
   }
