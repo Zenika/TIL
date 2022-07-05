@@ -44,7 +44,7 @@
       <template #list="slotProps">
         <div class="col-12 p-2">
           <div class="col-12 p-0 text-sm font-semibold">
-            {{ slotProps.data.username ? slotProps.data.username : slotProps.data.user.username }}
+            {{ slotProps.data.user.username }}
           </div>
 
           <div class="col-12 p-0 font-light">
@@ -93,7 +93,6 @@ const { loading, result, error, onResult } = useSubscription(
     subscription MySubscription($post_uuid: uuid!) {
       comment(where: { post_uuid: { _eq: $post_uuid } }) {
         content
-        username
         user {
           username
         }
