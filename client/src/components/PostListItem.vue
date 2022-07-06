@@ -11,10 +11,7 @@
       hover:surface-100
       cursor-hover
     "
-    @click="
-      openArticle(post.uuid);
-      event.stopPropagation();
-    "
+    @click="openArticle(post.uuid);"
   >
     <img
       class="mb-2 sm:mb-0 sm:mr-3"
