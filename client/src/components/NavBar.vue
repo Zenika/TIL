@@ -6,7 +6,8 @@
           alt="logo"
           src="../assets/logo-zenika.svg"
           height="40"
-          class="mr-2"
+          class="mr-2 cursor-hover"
+          @click="$router.push('/')"
         />
       </template>
       <template #end>
@@ -25,11 +26,6 @@ import { ref } from "vue";
 
 const menuSchema = ref([
   {
-    label: "Home",
-    icon: "pi pi-fw pi-home",
-    to: "/",
-  },
-  {
     label: "New post",
     icon: "pi pi-fw pi-link",
     to: "/post",
@@ -46,9 +42,6 @@ const { logout, user, isLoading } = useAuth0();
 const onLogoutClick = () => {
   logout({ returnTo: window.location.origin });
 };
-
-if (!sessionStorage.getItem("user"))
-  sessionStorage.setItem("user", JSON.stringify(user.value));
 </script>
 
 <style>
