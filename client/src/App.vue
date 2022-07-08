@@ -17,4 +17,8 @@ a {
 a:hover {
   color: #1971b9;
 }
+
+.round-borders {
+  border-radius: 50%;
+}
 </style>

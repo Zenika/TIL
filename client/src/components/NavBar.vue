@@ -12,6 +12,7 @@
       </template>
       <template #end>
         <div class="flex align-items-center">
+          <img :src="user.picture" alt="profile picture" class="h-3rem mr-2 round-borders">
           <span class="mr-2">{{ user.nickname }}</span>
           <Button label="Log out" @click="onLogoutClick" />
         </div>
