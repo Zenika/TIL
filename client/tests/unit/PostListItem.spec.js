@@ -2,12 +2,30 @@ import { mount } from '@vue/test-utils'
 import PostListItem from '@/components/PostListItem.vue'
 import { config } from '@vue/test-utils'
 import Button from 'primevue/button'
+import ConfirmDialog from 'primevue/confirmdialog';
+import PostOptionButton from "@/components/PostOptionButton.vue";
 
 config.global.components = {
-  'Button': Button
+  'Button': Button,
+  'ConfirmDialog': ConfirmDialog,
+  'PostOptionButton': PostOptionButton
 }
 
 jest.mock('@/components/BookmarkButton.vue')
+
+jest.mock('@auth0/auth0-vue', () => ({
+  __esModule: true,
+  useAuth0: jest.fn(() => ({
+      user: {
+          sub: 'google-oauth2|10296848579QZDQZD'
+      }
+  })),
+}));
+
+jest.mock('vue-router', () => ({
+  __esModule: true,
+  useRouter: jest.fn(() => ({})),
+}));
 
 describe('PostListItem.vue', () => {
   it('renders one post', () => {

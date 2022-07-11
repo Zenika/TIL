@@ -2,12 +2,12 @@ import { config, mount } from '@vue/test-utils'
 
 import PostCard from "@/components/PostCard.vue"
 import CommentSection from "@/components/CommentSection.vue";
+import PostOptionButton from "@/components/PostOptionButton.vue";
 import Card from 'primevue/card';
 import Message from 'primevue/message'
 import Menu from 'primevue/menu'
 import Button from 'primevue/button'
 import ConfirmDialog from 'primevue/confirmdialog';
-
 
 jest.mock('vue-router', () => ({
     __esModule: true,
@@ -43,6 +43,7 @@ config.global.components = {
     'Menu': Menu,
     'Button': Button,
     'ConfirmDialog': ConfirmDialog,
+    'PostOptionButton': PostOptionButton
 }
 
 describe('PostCard.vue', () => {

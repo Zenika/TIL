@@ -94,11 +94,10 @@ import BookmarkButton from "@/components/BookmarkButton.vue";
 import PostOptionButton from "@/components/PostOptionButton.vue";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 const emit = defineEmits(["delete-click"]);
 
-const route = useRoute();
 const router = useRouter();
 
 const { user } = useAuth0();
