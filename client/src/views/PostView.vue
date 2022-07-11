@@ -21,7 +21,7 @@
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { useMutation, useQuery } from "@vue/apollo-composable";
+import { useQuery, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
 import PostCard from "@/components/PostCard.vue";

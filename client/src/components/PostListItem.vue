@@ -1,4 +1,5 @@
 <template>
+  <ConfirmDialog></ConfirmDialog>
   <div
     class="
       flex flex-column
@@ -11,7 +12,7 @@
       hover:surface-100
       cursor-hover
     "
-    @click="openArticle(post.uuid);"
+    @click="openArticle(post.uuid)"
   >
     <img
       class="mb-2 sm:mb-0 sm:mr-3"
@@ -79,14 +80,28 @@
         </span>
       </div>
     </div>
+    <PostOptionButton
+      v-if="post.user.id === user.sub"
+      :postId="post.uuid"
+      @delete-click="emit('delete-click', post.uuid)"
+    />
   </div>
 </template>
 
 <script setup>
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
-import router from "@/router";
+import PostOptionButton from "@/components/PostOptionButton.vue";
 import { nlToBr } from "@/filters/nlToBrFilter";
+import { useAuth0 } from "@auth0/auth0-vue";
+import { useRoute, useRouter } from "vue-router";
+
+const emit = defineEmits(["delete-click"]);
+
+const route = useRoute();
+const router = useRouter();
+
+const { user } = useAuth0();
 
 const props = defineProps({
   post: Object,
