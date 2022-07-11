@@ -5,14 +5,18 @@ object_relationships:
   - name: post
     using:
       foreign_key_constraint_on: post_uuid
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
 insert_permissions:
   - role: user
     permission:
       check: {}
+      set:
+        user_id: x-hasura-User-Id
       columns:
         - content
         - post_uuid
-        - username
       backend_only: false
 select_permissions:
   - role: user
@@ -20,6 +24,13 @@ select_permissions:
       columns:
         - content
         - post_uuid
-        - username
+        - uuid
       filter: {}
       allow_aggregations: true
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        post:
+          user_id:
+            _eq: X-Hasura-User-Id

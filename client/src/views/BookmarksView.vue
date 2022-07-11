@@ -80,6 +80,7 @@ const { result, loading, error } = useQuery(
           url
           uuid
           created_at
+          description
           get_title {
             error
             title
@@ -92,7 +93,7 @@ const { result, loading, error } = useQuery(
               count
             }
           }
-          post_tags {
+          post_tags(order_by: {tag: {name: asc}}) {
             tag {
               name
             }

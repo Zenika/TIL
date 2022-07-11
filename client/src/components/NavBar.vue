@@ -6,11 +6,13 @@
           alt="logo"
           src="../assets/logo-zenika.svg"
           height="40"
-          class="mr-2"
+          class="mr-2 cursor-hover"
+          @click="$router.push('/')"
         />
       </template>
       <template #end>
         <div class="flex align-items-center">
+          <img :src="user.picture" alt="profile picture" class="h-3rem mr-2 round-borders">
           <span class="mr-2">{{ user.nickname }}</span>
           <Button label="Log out" @click="onLogoutClick" />
         </div>
@@ -24,11 +26,6 @@ import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
 
 const menuSchema = ref([
-  {
-    label: "Home",
-    icon: "pi pi-fw pi-home",
-    to: "/",
-  },
   {
     label: "New post",
     icon: "pi pi-fw pi-link",
@@ -46,9 +43,6 @@ const { logout, user, isLoading } = useAuth0();
 const onLogoutClick = () => {
   logout({ returnTo: window.location.origin });
 };
-
-if (!sessionStorage.getItem("user"))
-  sessionStorage.setItem("user", JSON.stringify(user.value));
 </script>
 
 <style>

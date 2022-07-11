@@ -1,8 +1,8 @@
 <template>
   <i
-    class="pi pi-bookmark cursor-hover"
+    class="pi pi-bookmark cursor-hover hover:text-primary"
     :class="{ 'text-primary': bookmarked }"
-    @click="onClick"
+    @click.stop="onClick"
   ></i>
 </template>
 

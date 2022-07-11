@@ -5,7 +5,10 @@
   <div v-else-if="result.post">
     <DataView :value="result.post" :layout="'list'">
       <template #list="slotProps">
-        <PostListItem :post="slotProps.data" />
+        <PostListItem
+          :post="slotProps.data"
+          @delete-click="deletePost($event)"
+        />
       </template>
       <template #empty>
         <div>No articles found.</div>
@@ -22,7 +25,7 @@
 </template>
 
 <script setup>
-import { useQuery } from "@vue/apollo-composable";
+import { useMutation, useQuery } from "@vue/apollo-composable";
 import { ref, watch } from "@vue/runtime-core";
 import NavBar from "@/components/NavBar.vue";
 import gql from "graphql-tag";
@@ -60,6 +63,7 @@ const { result, loading, error } = useQuery(
           title
         }
         user {
+          id
           username
         }
         comments_aggregate {
@@ -67,7 +71,7 @@ const { result, loading, error } = useQuery(
             count
           }
         }
-        post_tags {
+        post_tags(order_by: { tag: { name: asc } }) {
           tag {
             name
           }
@@ -97,6 +101,31 @@ watch(result, (value) => {
 
 const changePage = ({ page }) => {
   router.push(`/?p=${page + 1}`);
+};
+
+const mutation = gql`
+  mutation DeletePost($uuid: uuid!) {
+    delete_comment(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
+    delete_post_tag(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
+    delete_bookmark(where: { post_uuid: { _eq: $uuid } }) {
+      affected_rows
+    }
+    delete_post_by_pk(uuid: $uuid) {
+      uuid
+    }
+  }
+`;
+
+const { mutate, onDone } = useMutation(mutation);
+
+onDone(() => router.push(`/`));
+
+const deletePost = (uuid) => {
+  mutate({ uuid });
 };
 </script>
 

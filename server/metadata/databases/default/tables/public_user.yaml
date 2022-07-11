@@ -9,6 +9,13 @@ array_relationships:
         table:
           schema: public
           name: bookmark
+  - name: comments
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: comment
   - name: posts
     using:
       foreign_key_constraint_on:
@@ -20,5 +27,6 @@ select_permissions:
   - role: user
     permission:
       columns:
+        - id
         - username
       filter: {}

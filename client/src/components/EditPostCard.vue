@@ -29,6 +29,7 @@
             id="description"
             v-model="state.description"
             class="w-full"
+            data-test="description"
           />
           <small class="p-error font-light" v-if="v$.description.$error">{{
             v$.description.$errors[0].$message
@@ -53,7 +54,7 @@
 
         <div>
           <Button
-            label="Post"
+            label="Save"
             :loading="loading"
             @click="submit"
             data-test="submit"
@@ -65,27 +66,45 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, toRefs } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
 import { escapeHtml } from "@/filters/escapeHtmlFilter";
 
-defineProps({
-  loading: Boolean,
+let props = defineProps({
+  post: {
+    type: Object,
+    default() {
+      return {
+        url: "",
+        description: "",
+        post_tags: [],
+      };
+    }
+  },
+  loading: {
+    type: Boolean
+  },
 });
 
-const emit = defineEmits(["post-click"]);
+const { post } = toRefs(props);
+const emit = defineEmits(["update-click"]);
+const tags = [];
+
+post.value.post_tags.forEach((post_tag) => {
+  tags.push(post_tag.tag.name);
+});
 
 const state = reactive({
-  url: null,
-  description: null,
-  tags: [],
+  url: post.value.url,
+  description: post.value.description,
+  tags,
 });
 
 const rules = {
   url: { required, url },
   description: { maxLength: maxLength(1000) },
-  tags: { maxLength: maxLength(5) }
+  tags: { maxLength: maxLength(5) },
 };
 
 const v$ = useVuelidate(rules, state);
@@ -94,7 +113,7 @@ const submit = () => {
   v$.value.$validate();
 
   if (!v$.value.$error) {
-    emit("post-click", {
+    emit("update-click", {
       ...state,
       description: escapeHtml(state.description).value,
     });

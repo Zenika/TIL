@@ -2,12 +2,30 @@ import { mount } from '@vue/test-utils'
 import PostListItem from '@/components/PostListItem.vue'
 import { config } from '@vue/test-utils'
 import Button from 'primevue/button'
+import ConfirmDialog from 'primevue/confirmdialog';
+import PostOptionButton from "@/components/PostOptionButton.vue";
 
 config.global.components = {
-  'Button': Button
+  'Button': Button,
+  'ConfirmDialog': ConfirmDialog,
+  'PostOptionButton': PostOptionButton
 }
 
 jest.mock('@/components/BookmarkButton.vue')
+
+jest.mock('@auth0/auth0-vue', () => ({
+  __esModule: true,
+  useAuth0: jest.fn(() => ({
+      user: {
+          sub: 'google-oauth2|10296848579QZDQZD'
+      }
+  })),
+}));
+
+jest.mock('vue-router', () => ({
+  __esModule: true,
+  useRouter: jest.fn(() => ({})),
+}));
 
 describe('PostListItem.vue', () => {
   it('renders one post', () => {
@@ -35,7 +53,7 @@ describe('PostListItem.vue', () => {
     expect(html).toContain(new Date(post.created_at.replace(" ", "T")).toLocaleDateString())
     expect(html).toContain(post.get_title.title)
     expect(html).toContain(post.user.username)
-    expect(html).toContain("0 Comments")
+    expect(html).toContain("0")
   })
 
   it('renders one post with missing title', () => {
@@ -61,7 +79,7 @@ describe('PostListItem.vue', () => {
     expect(html).toContain(new Date(post.created_at.replace(" ", "T")).toLocaleDateString())
     expect(html).toContain(post.url)
     expect(html).toContain(post.user.username)
-    expect(html).toContain("0 Comments")
+    expect(html).toContain("0")
   })
 
   it('renders one post with one comment', () => {
@@ -84,7 +102,7 @@ describe('PostListItem.vue', () => {
       props: { post },
     })
     const html = wrapper.html();
-    expect(html).toContain("1 Comment")
+    expect(html).toContain("1")
   })
 
   it('renders one post with multiple comments', () => {
@@ -107,6 +125,6 @@ describe('PostListItem.vue', () => {
       props: { post },
     })
     const html = wrapper.html();
-    expect(html).toContain("15 Comments")
+    expect(html).toContain("15")
   })
 })

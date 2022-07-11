@@ -70,3 +70,21 @@ select_permissions:
         - uuid
       filter: {}
       allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - description
+        - url
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
