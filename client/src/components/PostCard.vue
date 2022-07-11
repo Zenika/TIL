@@ -42,21 +42,12 @@
               />
             </div>
           </div>
-          <div class="col flex flex-column align-items-center">
-            <div v-if="post.user.id === user.sub">
-              <Button
-                @click="openMenu"
-                class="
-                  p-button-secondary p-button-text p-button-sm p-button-rounded
-                "
-                icon="pi pi-ellipsis-h"
-                aria-haspopup="true"
-                aria-controls="overlay_menu"
-                data-test="ellipsis"
-              />
-              <Menu id="overlay_menu" ref="menu" :popup="true" :model="items" />
-            </div>
-          </div>
+          <PostOptionButton
+            class="col"
+            v-if="post.user.id === user.sub"
+            :postId="route.params.id"
+            @delete-click="emit('delete-click')"
+          />
 
           <div class="col-12 border-top-1 border-200">
             <p
@@ -80,21 +71,19 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from "@vue/reactivity";
+import { toRefs } from "@vue/reactivity";
 import CommentSection from "../components/CommentSection.vue";
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
-import { useRoute, useRouter } from "vue-router";
+import PostOptionButton from "@/components/PostOptionButton.vue";
+import { useRoute } from "vue-router";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";
-import { useConfirm } from "primevue/useconfirm";
 
 const emit = defineEmits(["delete-click"]);
 
 const { user } = useAuth0();
-const confirm = useConfirm();
 const route = useRoute();
-const router = useRouter();
 
 const props = defineProps({
   post: Object,
@@ -102,36 +91,8 @@ const props = defineProps({
 
 const { post } = toRefs(props);
 
-const menu = ref();
-const items = ref([
-  {
-    label: "Edit",
-    icon: "pi pi-pencil",
-    command: () => router.push(`/post/${route.params.id}/edit`),
-  },
-  {
-    label: "Delete",
-    icon: "pi pi-trash",
-    command: () => {
-      confirm.require({
-        message: "Are you sure you want to delete this post?",
-        acceptLabel: "Delete",
-        rejectLabel: "Cancel",
-        header: "Delete Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "p-button-danger",
-        accept: () => emit("delete-click"),
-      });
-    },
-  },
-]);
-
 let domainName;
 if (post.value) domainName = new URL(post.value.url).hostname;
-
-const openMenu = (event) => {
-  menu.value.toggle(event);
-};
 </script>
 
 <style scoped>
