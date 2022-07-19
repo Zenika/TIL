@@ -1,6 +1,6 @@
 import { computed } from "vue";
 
-export const escapeHtml = str => computed(() => {
+export const escapeHtml = (str: string) => computed(() => {
     if (!str) return null
     str = str.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // PREVENT HTML INJECTION
     str = str.replace(
