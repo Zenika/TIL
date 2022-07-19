@@ -6,7 +6,7 @@
   ></i>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "@vue/reactivity";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { useMutation } from "@vue/apollo-composable";
@@ -27,7 +27,7 @@ const { mutate: insertBookmark } = useMutation(
       insert_bookmark_one(
         object: { post_uuid: $post_uuid, user_id: $user_id }
       ) {
-        id
+        uuid
       }
     }
   `

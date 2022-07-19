@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { toRefs, ref } from "@vue/reactivity";
 import { useConfirm } from "primevue/useconfirm";
 import { useRouter } from "vue-router";
@@ -57,7 +57,7 @@ const items = ref([
   },
 ]);
 
-const openMenu = (event) => {
+const openMenu = (event: Event) => {
   menu.value.toggle(event);
 };
 </script>

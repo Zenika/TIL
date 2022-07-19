@@ -45,26 +45,27 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
 import { useQuery } from "@vue/apollo-composable";
 import router from "../router";
-import { useRoute } from "vue-router";
+import { LocationQueryValue, useRoute } from "vue-router";
 import gql from "graphql-tag";
 import PostListItem from "../components/PostListItem.vue";
 import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
 
 const route = useRoute();
+const currentPage = parseInt(route.query.p?.[0]!)
 const rowsPerPage = 10;
 
-if (isNaN(route.query.p) || route.query.p < 1) {
+if (isNaN(currentPage) || currentPage < 1) {
   router.push(`/bookmarks?p=1`);
 }
 
 const variables = ref({
   limit: rowsPerPage,
-  offset: (route.query.p - 1) * rowsPerPage,
+  offset: (currentPage - 1) * rowsPerPage,
 });
 
 const { result, loading, error } = useQuery(
@@ -99,7 +100,7 @@ const { result, loading, error } = useQuery(
             }
           }
           bookmarks {
-            id
+            uuid
           }
         }
       }
@@ -115,14 +116,14 @@ const { result, loading, error } = useQuery(
 watch(result, (value) => {
   if (
     value &&
-    route.query.p >
+    currentPage >
       Math.ceil(value.bookmark_aggregate.aggregate.count / rowsPerPage)
   ) {
     router.push(`/bookmarks?p=1`);
   }
 });
 
-const changePage = ({ page }) => {
+const changePage = ({ page }: {page: number}) => {
   router.push(`/bookmarks?p=${page + 1}`);
 };
 </script>
