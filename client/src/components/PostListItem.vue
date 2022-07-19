@@ -88,7 +88,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
 import PostOptionButton from "@/components/PostOptionButton.vue";
@@ -103,11 +103,14 @@ const router = useRouter();
 const { user } = useAuth0();
 
 const props = defineProps({
-  post: Object,
+  post: {
+    type: Object,
+    required: true
+  },
 });
 
 const domainName = new URL(props.post.url).hostname;
-const openArticle = (id) => {
+const openArticle = (id: string) => {
   router.push(`/post/${id}`);
 };
 </script>

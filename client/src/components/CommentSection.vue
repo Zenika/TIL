@@ -65,13 +65,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { reactive, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import { Comment } from '../models/comment';
 
 const { isAuthenticated } = useAuth0();
 
@@ -100,12 +101,12 @@ const { loading, result, error, onResult } = useSubscription(
     }
   `,
   {
-    post_uuid: postId.value,
+    post_uuid: postId?.value,
   }
 );
 
-onResult(({ data }) => {
-  data.comment.forEach((comment) => {
+onResult(({ data: {comment} }) => {
+  comment.forEach((comment: Comment) => {
     comment.content = processComment(comment.content);
   });
 });
@@ -135,12 +136,12 @@ const postComment = () => {
   if (!v$.value.$error) {
     mutate({
       content: comment.text,
-      post_uuid: postId.value,
+      post_uuid: postId?.value,
     });
   }
 };
 
-const processComment = (content) => {
+const processComment = (content: string) => {
   content = content.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // PREVENT HTML INJECTION
   content = content.replace(
     /(https?:\/\/)([^ ]+)/g,

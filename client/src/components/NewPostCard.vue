@@ -64,7 +64,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
@@ -96,7 +96,7 @@ const submit = () => {
   if (!v$.value.$error) {
     emit("post-click", {
       ...state,
-      description: escapeHtml(state.description).value,
+      description: escapeHtml(state.description!).value,
     });
   }
 };

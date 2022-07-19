@@ -45,7 +45,7 @@
           <PostOptionButton
             class="col"
             v-if="post.user.id === user.sub"
-            :postId="route.params.id"
+            :postId="postId"
             @delete-click="emit('delete-click')"
           />
 
@@ -61,7 +61,7 @@
           </div>
 
           <div class="col-12">
-            <CommentSection :postId="route.params.id" />
+            <CommentSection :postId="postId" />
           </div>
         </div>
       </template>
@@ -70,9 +70,9 @@
   <Message v-else class="mt-5" severity="error"> Internal error </Message>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { toRefs } from "@vue/reactivity";
-import CommentSection from "../components/CommentSection.vue";
+import CommentSection from "@/components/CommentSection.vue";
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
 import PostOptionButton from "@/components/PostOptionButton.vue";
@@ -83,15 +83,18 @@ import { useAuth0 } from "@auth0/auth0-vue";
 const emit = defineEmits(["delete-click"]);
 
 const { user } = useAuth0();
-const route = useRoute();
+const postId = useRoute().params.id as string
 
 const props = defineProps({
-  post: Object,
+  post: {
+    type: Object,
+    required: true
+  },
 });
 
 const { post } = toRefs(props);
 
-let domainName;
+let domainName: string;
 if (post.value) domainName = new URL(post.value.url).hostname;
 </script>
 

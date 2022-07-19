@@ -65,11 +65,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, toRefs } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
 import { escapeHtml } from "@/filters/escapeHtmlFilter";
+import {PostTag} from "@/models/post_tag"
 
 let props = defineProps({
   post: {
@@ -89,9 +90,9 @@ let props = defineProps({
 
 const { post } = toRefs(props);
 const emit = defineEmits(["update-click"]);
-const tags = [];
+const tags: string[] = [];
 
-post.value.post_tags.forEach((post_tag) => {
+post.value.post_tags.forEach((post_tag: PostTag) => {
   tags.push(post_tag.tag.name);
 });
 

@@ -23,7 +23,7 @@ select_permissions:
     permission:
       columns:
         - created_at
-        - id
+        - uuid
         - post_uuid
         - user_id
       filter:

@@ -24,7 +24,7 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { ref, watch } from "@vue/runtime-core";
 import NavBar from "@/components/NavBar.vue";
@@ -34,15 +34,16 @@ import router from "../router";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+const currentPage = parseInt(route.query.p?.[0]!)
 const rowsPerPage = 10;
 
-if (isNaN(route.query.p) || route.query.p < 1) {
+if (isNaN(currentPage) || currentPage < 1) {
   router.push(`/?p=1`);
 }
 
 const variables = ref({
   limit: rowsPerPage,
-  offset: (route.query.p - 1) * rowsPerPage,
+  offset: (currentPage - 1) * rowsPerPage,
 });
 
 const { result, loading, error } = useQuery(
@@ -77,7 +78,7 @@ const { result, loading, error } = useQuery(
           }
         }
         bookmarks {
-          id
+          uuid
         }
       }
     }
@@ -92,14 +93,14 @@ const { result, loading, error } = useQuery(
 watch(result, (value) => {
   if (
     value &&
-    route.query.p >
+    currentPage >
       Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
   ) {
     router.push({ params: { p: 1 } });
   }
 });
 
-const changePage = ({ page }) => {
+const changePage = ({ page }: {page: number}) => {
   router.push(`/?p=${page + 1}`);
 };
 
@@ -124,7 +125,7 @@ const { mutate, onDone } = useMutation(mutation);
 
 onDone(() => router.push(`/`));
 
-const deletePost = (uuid) => {
+const deletePost = (uuid: string) => {
   mutate({ uuid });
 };
 </script>
