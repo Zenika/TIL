@@ -23,6 +23,7 @@ select_permissions:
         - post_uuid
         - tag_uuid
       filter: {}
+      allow_aggregations: true
 delete_permissions:
   - role: user
     permission:
