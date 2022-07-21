@@ -8,7 +8,6 @@ const resolvers = require('./resolvers')
 const path = require('path')
 const { feed, writeFeed } = require('./rssFeed')
 const { initPgClient } = require('./database')
-require('dotenv').config()
 
 // const context = ({ req }) => {
 //   return { headers: req.headers };
