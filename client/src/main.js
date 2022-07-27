@@ -23,6 +23,7 @@ import ToggleButton from 'primevue/togglebutton';
 import Menu from 'primevue/menu';
 import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
+import AutoComplete from 'primevue/autocomplete';
 import '/node_modules/primeflex/primeflex.css'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink, concat, split } from '@apollo/client/core'
@@ -121,4 +122,5 @@ createApp({
   .component('ToggleButton', ToggleButton)
   .component('Menu', Menu)
   .component('ConfirmDialog', ConfirmDialog)
+  .component('AutoComplete', AutoComplete)
   .mount('#app')
