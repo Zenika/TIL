@@ -1,28 +1,28 @@
 <template>
-  <span class="p-input-icon-left mr-2">
-    <i class="pi pi-search" />
-    <InputText type="text" v-model="text" placeholder="Search for tags" @input="onInput($event)"
-      @focusout="onFocusOut($event)" />
-  </span>
-  <Menu id="overlay_menu" ref="menu" :popup="true" :model="menuItems" />
+    <AutoComplete v-model="selectedTag" :suggestions="suggestions" @complete="searchTags($event)" field="name"
+      @item-select="onItemSelect($event)" class="mr-2" placeholder="Search for tags">
+      <template #item="slotProps">
+        <div>
+          {{ slotProps.item.name }} <small>({{ slotProps.item.post_tags_aggregate.aggregate.count }})</small>
+        </div>
+      </template>
+    </AutoComplete>
 </template>
 
 <script setup>
-import { useQuery } from '@vue/apollo-composable';
-import { computed } from '@vue/reactivity';
+import { useLazyQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const text = ref("");
-const menu = ref();
-const menuItems = ref([])
-const enableFetch = ref(false)
+const suggestions = ref([]);
+const selectedTag = ref();
+let lastSearchedText = "";
 
-const { result, loading } = useQuery(gql`
-  query MyQuery($search: String!) {
+const { load, onResult } = useLazyQuery(gql`
+  query SearchTags($search: String!) {
     search_tags(args: {search: $search}) {
       name
       post_tags_aggregate {
@@ -31,29 +31,23 @@ const { result, loading } = useQuery(gql`
         }
       }
     }
-  }`,
-  { search: text },
-  { enabled: computed(() => enableFetch.value) }
+  }`
 );
 
-const onFocusOut = (event) => {
-  menu.value.hide(event)
+const searchTags = ({ query }) => {
+  if (lastSearchedText === query) {
+    suggestions.value = [...suggestions.value]
+  } else {
+    load(null, { search: query })
+    lastSearchedText = query
+  }
 }
 
-const onInput = (event) => {
-  enableFetch.value = true
-  if (text.value.length > 1 && menuItems.value.length > 0)
-    menu.value.show(event)
-}
-
-watch(result, resValue => {
-  menuItems.value = resValue.search_tags.map((tag) => ({
-    label: `${tag.name} (${tag.post_tags_aggregate.aggregate.count})`,
-    command: () => {
-      router.push(`/tags/${tag.name}`);
-    },
-  }))
-  if (menuItems.value.length === 0)
-    menu.value.hide()
+onResult(({ data: { search_tags } }) => {
+  suggestions.value = search_tags
 })
+
+const onItemSelect = ({ value: { name } }) => {
+  router.push(`/tags/${name}`);
+}
 </script>
