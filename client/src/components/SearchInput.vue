@@ -1,6 +1,6 @@
 <template>
     <AutoComplete v-model="selectedTag" :suggestions="suggestions" @complete="searchTags($event)" field="name"
-      @item-select="onItemSelect($event)" inputClass="w-full" class="w-full autocomplete" placeholder="Search for tags">
+      @item-select="onItemSelect($event)" class="mr-2" placeholder="Search for tags">
       <template #item="slotProps">
         <div>
           {{ slotProps.item.name }} <small>({{ slotProps.item.post_tags_aggregate.aggregate.count }})</small>
