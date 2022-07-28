@@ -15,14 +15,24 @@
 <script setup>
 import { useLazyQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
-import { ref } from 'vue';
+import { ref, toRef } from 'vue';
 
 const emit = defineEmits(["update"])
 
-let lastSearchedText = "";
-let filteredTags = [];
-const selectedTags = ref([]);
+let props = defineProps({
+  tags: {
+    type: Array,
+    default() {
+      return [];
+    }
+  },
+});
+
 const suggestions = ref([]);
+const selectedTags = ref(toRef(props, "tags").value);
+
+let filteredTags = selectedTags.value.map(tag => tag.name);
+let lastSearchedText = "";
 
 const { load, onResult } = useLazyQuery(gql`
   query SearchTags($search: String!) {
