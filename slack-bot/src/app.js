@@ -31,13 +31,19 @@ const mutation = gql`
     }
 `
 
+const extractUrls = (event) => {
+    if (event && event.attachments)
+        return event.attachments.map(attachment => attachment.from_url)
+
+    const urlRegex = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/g
+    return event.text.match(urlRegex);
+}
+
 app.event('app_mention', async ({ event, client }) => {
     console.log(event)
+    const urls = extractUrls(event)
 
-    if (event && event.attachments && event.attachments[0] && event.attachments[0].from_url) {
-        const url = event.attachments[0].from_url
-        console.log(url)
-
+    if (urls) {
         const { user } = await client.users.info({
             user: event.user,
         });
@@ -58,14 +64,16 @@ app.event('app_mention', async ({ event, client }) => {
             }
         ]
 
-        apolloClient.mutate({
-            mutation,
-            variables: {
-                url,
-                description: `Posted by ${user.name}`,
-                post_tag_insert_input: tag
-            }
-        }).then(console.log)
-            .catch(console.error)
+        urls.forEach(url => {
+            apolloClient.mutate({
+                mutation,
+                variables: {
+                    url,
+                    description: `Shared by ${user.name}`,
+                    post_tag_insert_input: tag
+                }
+            }).then(console.log)
+                .catch(console.error)
+        })
     }
 });
