@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client/core';
-import { App, matchEventType } from '@slack/bolt';
+import { App } from '@slack/bolt';
 import { apolloClient } from './apollo'
 require('dotenv').config()
 
@@ -40,7 +40,6 @@ const extractUrls = (event) => {
 }
 
 app.event('app_mention', async ({ event, client }) => {
-    console.log(event)
     const urls = extractUrls(event)
 
     if (urls) {
