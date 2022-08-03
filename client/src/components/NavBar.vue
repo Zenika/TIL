@@ -2,7 +2,7 @@
   <div v-if="!isLoading">
     <MenuBar :model="menuSchema">
       <template #start>
-        <img alt="logo" src="../assets/logo-zenika.svg" height="40" class="mr-2 cursor-hover"
+        <img alt="logo" src="../assets/logo-TIL.svg" height="40" class="ml-2 mr-1 cursor-hover"
           @click="$router.push('/')" />
       </template>
       <template #end>
