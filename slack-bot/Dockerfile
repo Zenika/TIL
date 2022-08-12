@@ -1,0 +1,22 @@
+FROM node
+
+WORKDIR /slack-bot
+COPY package*.json ./
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
+COPY . .
+
+EXPOSE 8080
+
+ARG SLACK_TOKEN
+ARG SLACK_SIGNIN_SECRET
+ARG HASURA_URL
+ARG HASURA_ADMIN_SECRET
+
+ENV SLACK_TOKEN ${SLACK_TOKEN}
+ENV SLACK_SIGNIN_SECRET ${SLACK_SIGNIN_SECRET}
+ENV HASURA_URL ${HASURA_URL}
+ENV HASURA_ADMIN_SECRET ${HASURA_ADMIN_SECRET}
+
+CMD [ "node", "src/index.js" ]

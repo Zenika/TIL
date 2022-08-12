@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon src/index.js",
     "tunnel": "ngrok http 8888",
+    "deploy": "git init && git add . && git commit -m \"deploy\" && clever login && clever link app_0469faaa-9bb6-4173-a345-4f22935b0e77 && clever deploy --alias til-slack-bot --force && rm -rf .git",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vincent LANDAIS",

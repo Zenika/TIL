@@ -22,7 +22,7 @@ const mutation = gql`
         ) {
         insert_post_one(object: {
             url: $url,
-            user_id: "test",
+            user_id: "slack_bot",
             description: $description
             post_tags: { data: $post_tag_insert_input }
         }) {
