@@ -3,10 +3,8 @@
         field="name" @item-select="onItemSelect($event)" @item-unselect="onItemUnselect($event)" inputClass="w-full"
         class="w-full autocomplete">
         <template #item="slotProps">
-            <div class="country-item">
-                <div>
-                    {{ slotProps.item.name }} <small>({{ slotProps.item.post_tags_aggregate.aggregate.count }})</small>
-                </div>
+            <div>
+                {{ slotProps.item.name }} <small>({{ slotProps.item.post_tags_aggregate.aggregate.count }})</small>
             </div>
         </template>
     </AutoComplete>
