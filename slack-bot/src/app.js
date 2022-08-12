@@ -15,7 +15,7 @@ const app = new App({
 })();
 
 const mutation = gql`
-    mutation MyMutation(
+    mutation InsertPost(
         $url: String!,
         $description: String,
         $post_tag_insert_input: [post_tag_insert_input!]!
@@ -39,7 +39,7 @@ const extractUrls = (event) => {
     return event.text.match(urlRegex);
 }
 
-app.event('app_mention', async ({ event, client }) => {
+app.event('message', async ({ event, client }) => {
     const urls = extractUrls(event)
 
     if (urls) {
