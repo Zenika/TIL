@@ -25,15 +25,7 @@
           result.post_aggregate.aggregate.count !== 1 ? "s" : ""
       }}</span>
     </div>
-
-    <DataView :value="result.post" :layout="'list'">
-      <template #list="slotProps">
-        <PostListItem :post="slotProps.data" />
-      </template>
-      <template #empty>
-        <div>No articles found.</div>
-      </template>
-    </DataView>
+    <PostList :posts="result.post" @on-refresh="refetch" />
   </div>
   <Paginator v-if="result" :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count"
     :rows="rowsPerPage" @page="changePage($event)" />
@@ -44,7 +36,7 @@ import { useRoute } from "vue-router";
 import gql from "graphql-tag";
 import { useQuery } from "@vue/apollo-composable";
 import NavBar from "@/components/NavBar.vue";
-import PostListItem from "../components/PostListItem.vue";
+import PostList from "../components/PostList.vue";
 import { ref, watch } from "@vue/runtime-core";
 import router from "../router";
 
@@ -62,7 +54,7 @@ const variables = ref({
   offset: (currentPage - 1) * rowsPerPage,
 });
 
-const { loading, result, error } = useQuery(
+const { loading, result, error, refetch } = useQuery(
   gql`
     query getPostsByTag($tag: String!, $limit: Int!, $offset: Int!) {
       post_aggregate(where: { post_tags: { tag: { name: { _eq: $tag } } } }) {
@@ -85,6 +77,7 @@ const { loading, result, error } = useQuery(
           title
         }
         user {
+          id
           username
         }
         comments_aggregate {
