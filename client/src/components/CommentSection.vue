@@ -72,7 +72,7 @@ import { reactive, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import { Comment } from '../models/comment';
+import { Comment } from '@/models/comment';
 
 const { isAuthenticated } = useAuth0();
 

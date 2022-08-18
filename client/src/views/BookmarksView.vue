@@ -25,7 +25,7 @@
         }}
       </span>
     </div>
-    <PostList :posts="result.bookmark.map((bookmark: Bookmark) => bookmark.post)" @on-refresh="refetch" />
+    <PostList :posts="posts" @on-refresh="refetch" />
   </div>
   <Paginator v-if="result" :first="variables.offset" :totalRecords="result.bookmark_aggregate.aggregate.count"
     :rows="rowsPerPage" @page="changePage($event)" />
@@ -45,6 +45,7 @@ import { Bookmark } from "@/models/bookmark";
 const route = useRoute();
 const currentPage = parseInt(route.query.p?.[0]!)
 const rowsPerPage = 10;
+const posts = ref([]);
 
 if (isNaN(currentPage) || currentPage < 1) {
   router.push(`/bookmarks?p=1`);
@@ -55,7 +56,7 @@ const variables = ref({
   offset: (currentPage - 1) * rowsPerPage,
 });
 
-const { result, loading, error, refetch } = useQuery(
+const { result, loading, error, refetch, onResult } = useQuery(
   gql`
     query getPosts($limit: Int, $offset: Int) {
       bookmark_aggregate {
@@ -100,6 +101,8 @@ const { result, loading, error, refetch } = useQuery(
     fetchPolicy: "cache-and-network",
   }
 );
+
+onResult(({data}) => posts.value = data.bookmark.map((bookmark: Bookmark) => bookmark.post))
 
 watch(result, (value) => {
   if (
