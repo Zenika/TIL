@@ -21,7 +21,7 @@ services:
       - ./remote-schema:/server
 
   graphql-engine:
-    image: hasura/graphql-engine:v2.8.4
+    image: hasura/graphql-engine:v2.10.1
     ports:
       - "8080:8080"
     depends_on:
