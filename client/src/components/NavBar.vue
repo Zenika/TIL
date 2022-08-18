@@ -7,6 +7,7 @@
       </template>
       <template #end>
         <div class="flex align-items-center">
+          <SlackButton class="mr-2"/>
           <SearchInput/>
           <img :src="user.picture" alt="profile picture" class="h-3rem mr-2 round-borders">
           <span class="mr-2">{{ user.nickname }}</span>
@@ -21,6 +22,7 @@
 import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
 import SearchInput from "@/components/SearchInput.vue";
+import SlackButton from "@/components/SlackButton.vue"
 
 const menuSchema = ref([
   {
