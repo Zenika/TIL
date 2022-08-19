@@ -1,6 +1,6 @@
 <template>
   <AutoComplete v-model="selectedTag" :suggestions="suggestions" @complete="onComplete($event)" field="name"
-    @item-select="onItemSelect($event)" class="mr-2" placeholder="Search for tags">
+    @item-select="$router.push(`/tags/${encodeURIComponent($event.value.name)}?p=1`)" class="mr-2" placeholder="Search for tags">
     <template #item="slotProps">
       <div>
         {{ slotProps.item.name }} <small>({{ slotProps.item.post_tags_aggregate.aggregate.count }})</small>
@@ -37,6 +37,8 @@ onResult(({ data: { search_tags } }) => {
 })
 
 const onItemSelect = ({ value: { name } }) => {
-  router.push(`/tags/${name}`);
+  console.log(name)
+  console.log("heyo", encodeURIComponent(name))
+  router.push(`/tags/${encodeURIComponent(name)}`);
 }
 </script>
