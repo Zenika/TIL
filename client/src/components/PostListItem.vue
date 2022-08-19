@@ -27,7 +27,7 @@
         </a>
       </p>
       <span class="created-at text-xs my-1">
-        <b>{{ post.user.username }}</b> posted on
+        <b @click.stop="$router.push(`/user/${post.user.id}`)">{{ post.user.username }}</b> posted on
         {{ new Date(post.created_at.replace(" ", "T")).toLocaleDateString() }}
       </span>
       <p v-if="post.description && post.description.length !== 0" class="description text-sm my-1">
