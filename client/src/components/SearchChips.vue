@@ -1,5 +1,5 @@
 <template>
-    <AutoComplete :multiple="true" v-model="selectedTags" :suggestions="suggestions" @complete="searchTags($event)"
+    <AutoComplete :multiple="true" v-model="selectedTags" :suggestions="suggestions" @complete="onComplete($event)"
         field="name" @item-select="onItemSelect($event)" @item-unselect="onItemUnselect($event)" inputClass="w-full"
         class="w-full autocomplete">
         <template #item="slotProps">
@@ -11,9 +11,22 @@
 </template>
 
 <script setup>
-import { useLazyQuery } from '@vue/apollo-composable';
+import { useSearchAutoComplete } from '@/composables/useSearchAutoComplete';
 import gql from 'graphql-tag';
 import { ref, toRef } from 'vue';
+
+const { onResult, suggestions, onComplete, lastSearchedText } = useSearchAutoComplete(gql`
+   query SearchTags($search: String!) {
+    search_tags(args: {search: $search}) {
+      name
+      post_tags_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }`
+)
 
 const emit = defineEmits(["update"])
 
@@ -26,41 +39,17 @@ let props = defineProps({
   },
 });
 
-const suggestions = ref([]);
 const selectedTags = ref(toRef(props, "tags").value);
 
 let filteredTags = selectedTags.value.map(tag => tag.name);
-let lastSearchedText = "";
-
-const { load, onResult } = useLazyQuery(gql`
-  query SearchTags($search: String!) {
-    search_tags(args: {search: $search}) {
-      name
-      post_tags_aggregate {
-        aggregate {
-          count
-        }
-      }
-    }
-  }`
-);
-
-const searchTags = ({ query }) => {
-    if (lastSearchedText === query) {
-        suggestions.value = [...suggestions.value]
-    } else {
-        load(null, { search: query })
-        lastSearchedText = query
-    }
-}
 
 onResult(({ data: { search_tags } }) => {
     suggestions.value = search_tags
 
-    if (!suggestions.value.find(tag => tag.name === lastSearchedText)) {
+    if (!suggestions.value.find(tag => tag.name === lastSearchedText.value)) {
         suggestions.value = [
             {
-                name: lastSearchedText,
+                name: lastSearchedText.value,
                 post_tags_aggregate: {
                     aggregate: {
                         count: "new tag"
