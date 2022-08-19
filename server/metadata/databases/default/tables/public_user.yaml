@@ -28,5 +28,6 @@ select_permissions:
     permission:
       columns:
         - id
+        - profile_pic
         - username
       filter: {}

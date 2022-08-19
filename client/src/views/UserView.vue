@@ -5,6 +5,9 @@
     <div v-else-if="result.user_by_pk">
         <div class="grid m-0">
             <div class="col-12 mb-0 flex justify-content-center">
+                <img :src="profile_pic" alt="profile picture" class="mt-2 h-10rem w-10rem round-borders"/>
+            </div>
+            <div class="col-12 mb-0 flex justify-content-center">
                 <h1 class="font-light mb-0 mt-0">{{ result.user_by_pk.username }}</h1>
             </div>
         </div>
@@ -17,7 +20,7 @@
                     {{ result.user_by_pk.posts_aggregate.aggregate.count }} Posts
                 </template>
                 <template #content>
-                    <PostList :posts="result.user_by_pk.posts" :brief="true" @on-refresh="refetch" />
+                    <PostList :posts="result.user_by_pk.posts" :brief="true" />
                 </template>
             </Card>
             <Card class="m-3 p-0 w-5">
@@ -61,11 +64,13 @@ import { useRoute } from 'vue-router';
 const { id } = useRoute().params
 
 let tags = ref([]);
+const profile_pic = ref()
 
 const { result, loading, error, onResult } = useQuery(gql`
     query UserByPk($id: String!) {
         user_by_pk(id: $id) {
             username
+            profile_pic
             posts {
                 url
                 uuid
@@ -100,6 +105,7 @@ const { result, loading, error, onResult } = useQuery(gql`
 onResult(({ data }) => {
     tags.value = data.user_by_pk.posts.map(({ post_tags }) => post_tags.map(({ tag }) => tag.name)).flat();
     tags.value = Array.from(new Set(tags.value));
+    profile_pic.value = data.user_by_pk.profile_pic ? data.user_by_pk.profile_pic : require('../assets/default-profile-pic.jpg')
 })
 
 </script>
