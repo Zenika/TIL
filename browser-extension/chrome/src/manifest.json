@@ -18,7 +18,7 @@
     }
   ],
   "permissions": [
-    "identity",
     "tabs"
-  ]
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnTvFJb5yxvf5fzF+XPJeg9apkVPtOUm0Z0+wB8v3V2bDwwHwTKbtaVpTU9NaHB6vMXw9HiqnhZOQQuBiKkGc6xGBG7az3x4Gc2qGEmzA3DYm3rcWCknpC1UBa4NwTKegSJgvASMBSv1HcS1Dyu+nmLqMU/Ie4tp8Zj1gRkauoZl70TXonfO6eIZPg4TJKm9OAHHYYN3ZY6imLTw0XSkcBPdp7rD09iUOQx7LWA9pwaRDMClGu3380Ir0hu/XSM4RqXfNxgxdZ+Fkqv6PtGX73iQaypHerZylUIg1n/oCvd4Ay5dzXDes4pnyT9j/WvGNKTQ5//FSTKXTZtioPuM/+wIDAQAB"
 }
