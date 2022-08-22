@@ -44,7 +44,7 @@
       <template #list="slotProps">
         <div class="col-12 p-2">
           <div class="col-12 p-0 text-sm font-semibold">
-            {{ slotProps.data.user.username }}
+            <UserLink :username="slotProps.data.user.username" :id="slotProps.data.user.id" class="font-semibold"/>
           </div>
 
           <div class="col-12 p-0 font-light">
@@ -73,6 +73,7 @@ import { useAuth0 } from "@auth0/auth0-vue";
 import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import { Comment } from '@/models/comment';
+import UserLink from "@/components/UserLink.vue";
 
 const { isAuthenticated } = useAuth0();
 
@@ -96,6 +97,7 @@ const { loading, result, error, onResult } = useSubscription(
         content
         user {
           username
+          id
         }
       }
     }

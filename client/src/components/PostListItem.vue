@@ -27,7 +27,7 @@
         </a>
       </p>
       <span class="created-at text-xs my-1">
-        <b @click.stop="$router.push(`/user/${post.user.id}`)">{{ post.user.username }}</b> posted on
+        <UserLink :username="post.user.username" :id="post.user.id" class="font-semibold"/> posted on
         {{ new Date(post.created_at.replace(" ", "T")).toLocaleDateString() }}
       </span>
       <p v-if="post.description && post.description.length !== 0" class="description text-sm my-1">
@@ -62,6 +62,7 @@
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
 import PostOptionButton from "@/components/PostOptionButton.vue";
+import UserLink from "@/components/UserLink.vue";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { useRouter } from "vue-router";

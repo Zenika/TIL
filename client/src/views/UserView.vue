@@ -5,7 +5,7 @@
     <div v-else-if="result.user_by_pk">
         <div class="grid m-0">
             <div class="col-12 mb-0 flex justify-content-center">
-                <img :src="profile_pic" alt="profile picture" class="mt-2 h-10rem w-10rem round-borders"/>
+                <img :src="profile_pic" alt="profile picture" height="100" class="mt-2 round-borders" />
             </div>
             <div class="col-12 mb-0 flex justify-content-center">
                 <h1 class="font-light mb-0 mt-0">{{ result.user_by_pk.username }}</h1>
@@ -17,7 +17,9 @@
                     Posts
                 </template>
                 <template #subtitle>
-                    {{ result.user_by_pk.posts_aggregate.aggregate.count }} Posts
+                    <div class="pb-2 border-bottom-1 border-300">
+                        {{ result.user_by_pk.posts_aggregate.aggregate.count }} Posts
+                    </div>
                 </template>
                 <template #content>
                     <PostList :posts="result.user_by_pk.posts" :brief="true" />
@@ -28,7 +30,9 @@
                     Comments
                 </template>
                 <template #subtitle>
-                    {{ result.user_by_pk.comments_aggregate.aggregate.count }} Comments
+                    <div class="pb-2 border-bottom-1 border-300">
+                        {{ result.user_by_pk.comments_aggregate.aggregate.count }} Comments
+                    </div>
                 </template>
                 <template #content>
                     <div v-for="comment in result.user_by_pk.comments" :key="comment.uuid">
@@ -41,10 +45,14 @@
                     Tags
                 </template>
                 <template #subtitle>
-                    {{ tags.length }} Tags
+                    <div class="pb-2 border-bottom-1 border-300">
+                        {{ tags.length }} Tags
+                    </div>
                 </template>
                 <template #content>
-                    <TagWrapper class="mb-1 mr-1" v-for="tag in tags" :key="tag" :value="tag" />
+                    <div class="flex flex-wrap justify-content-center" style="background-color: red;">
+                        <TagWrapper class="mb-1 mr-1" v-for="tag in tags" :key="tag" :value="tag" />
+                    </div>
                 </template>
             </Card>
         </div>

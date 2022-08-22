@@ -7,6 +7,10 @@
   cursor: pointer;
 }
 
+.underline-hover:hover {
+  text-decoration: underline;
+}
+
 a {
   color: var(--primary-color)
 }
