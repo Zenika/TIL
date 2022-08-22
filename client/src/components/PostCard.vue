@@ -15,7 +15,7 @@
                 text-overflow-ellipsis
                 white-space-nowrap
               ">
-              <a :href="post.url" target="_blank" rel="noopener noreferrer">
+              <a :href="post.url" target="_blank" rel="noopener noreferrer" class="no-underline">
                 {{ post.get_title.title ? post.get_title.title : post.url }}
               </a>
             </h3>

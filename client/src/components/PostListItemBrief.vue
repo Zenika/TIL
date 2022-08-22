@@ -1,7 +1,7 @@
 <template>
     <div class="w-full p-2">
         <p class="m-0 overflow-hidden text-overflow-ellipsis white-space-nowrap">
-            <a :href="post.url" target="_blank" rel="noopener noreferrer" @click.stop="">
+            <a @click.stop="$router.push(`/post/${post.uuid}`);" class="cursor-hover">
                 {{ post.get_title.title ? post.get_title.title : post.url }}
             </a>
         </p>

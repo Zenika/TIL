@@ -11,20 +11,8 @@
                 <h1 class="font-light mb-0 mt-0">{{ result.user_by_pk.username }}</h1>
             </div>
         </div>
-        <div class="flex">
-            <Card class="m-3 p-0 w-5">
-                <template #title>
-                    Posts
-                </template>
-                <template #subtitle>
-                    <div class="pb-2 border-bottom-1 border-300">
-                        {{ result.user_by_pk.posts_aggregate.aggregate.count }} Posts
-                    </div>
-                </template>
-                <template #content>
-                    <PostList :posts="result.user_by_pk.posts" :brief="true" />
-                </template>
-            </Card>
+        <div class="flex flex-column">
+            <PostListCard :posts="result.user_by_pk.posts" class="m-3"/>
             <Card class="m-3 p-0 w-5">
                 <template #title>
                     Comments
@@ -61,9 +49,8 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import PostList from "@/components/PostList.vue";
+import PostListCard from "@/components/PostListCard.vue";
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
-import { Tag } from "@/models/tag";
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { ref } from "vue";
@@ -90,11 +77,6 @@ const { result, loading, error, onResult } = useQuery(gql`
                     tag {
                         name
                     }
-                }
-            }
-            posts_aggregate {
-                aggregate {
-                    count
                 }
             }
             comments_aggregate {
