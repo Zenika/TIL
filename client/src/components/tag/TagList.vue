@@ -6,7 +6,7 @@
             </div>
         </template>
         <template #empty>
-            <div>No tags found.</div>
+            <div class="mb-2 mt-2"><i>No tags yet.</i></div>
         </template>
     </DataView>
 </template>

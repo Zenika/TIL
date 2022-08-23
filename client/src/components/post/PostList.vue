@@ -11,7 +11,7 @@
       <PostListItem v-else :post="slotProps.data" @delete-click="deletePost($event)" />
     </template>
     <template #empty>
-      <div>No articles found.</div>
+      <div class="mb-2 mt-2"><i>No posts yet.</i></div>
     </template>
   </DataView>
 </template>
