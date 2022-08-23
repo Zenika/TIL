@@ -11,24 +11,16 @@
                 <h1 class="font-light mb-0 mt-0">{{ result.user_by_pk.username }}</h1>
             </div>
         </div>
-        <div class="flex flex-column">
-            <PostListCard :posts="result.user_by_pk.posts" class="m-3"/>
-            <CommentListCard :comments="result.user_by_pk.comments" class="m-3" />
-            <!-- <Card class="m-3 p-0 w-5">
-                <template #title>
-                    Tags
-                </template>
-                <template #subtitle>
-                    <div class="pb-2 border-bottom-1 border-300">
-                        {{ tags.length }} Tags
-                    </div>
-                </template>
-                <template #content>
-                    <div class="flex flex-wrap justify-content-center" style="background-color: red;">
-                        <TagWrapper class="mb-1 mr-1" v-for="tag in tags" :key="tag" :value="tag" />
-                    </div>
-                </template>
-            </Card> -->
+        <div class="grid">
+            <div class="col-12 lg:col-5">
+                <PostListCard :posts="result.user_by_pk.posts" class="m-3 " />
+            </div>
+            <div class="col-12 lg:col-5">
+                <CommentListCard :comments="result.user_by_pk.comments" class="m-3" />
+            </div>
+            <div class="col-12 lg:col-2">
+                <TagListCard :tags="tags" class="m-3" />
+            </div>
         </div>
     </div>
 </template>
@@ -36,12 +28,12 @@
 <script setup>
 import NavBar from "@/components/NavBar.vue";
 import PostListCard from "@/components/PostListCard.vue";
-import TagWrapper from "@/components/wrappers/TagWrapper.vue";
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { ref } from "vue";
 import { useRoute } from 'vue-router';
 import CommentListCard from "@/components/CommentListCard.vue";
+import TagListCard from "@/components/TagListCard.vue";
 
 const { id } = useRoute().params
 

@@ -35,4 +35,8 @@ defineProps({
 .card :deep(.p-card-content) {
     padding: 0;
 }
+
+.card :deep(.p-card-subtitle) {
+    margin: 0;
+}
 </style>
