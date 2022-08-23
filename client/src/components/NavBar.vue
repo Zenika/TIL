@@ -8,8 +8,8 @@
       <template #end>
         <div class="flex align-items-center">
           <SearchInput/>
-          <img :src="user.picture" alt="profile picture" class="h-3rem mr-2 round-borders">
-          <UserLink :username="user.nickname" :id="user.sub" class="mr-2"/>
+          <img :src="user.picture" alt="profile picture" @click="$router.push(`/user/${user.sub}`)" class="h-3rem mr-2 round-borders cursor-hover">
+          <UserLink :username="user.nickname!" :id="user.sub!" class="mr-2"/>
           <Button label="Log out" @click="onLogoutClick" />
         </div>
       </template>
@@ -22,7 +22,6 @@ import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
 import SearchInput from "@/components/SearchInput.vue";
 import UserLink from "@/components/UserLink.vue";
-import { useQuery } from "@vue/apollo-composable";
 
 const menuSchema = ref([
   {

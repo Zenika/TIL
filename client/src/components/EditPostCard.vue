@@ -96,3 +96,12 @@ const onChipsUpdate = chips => {
   state.tags = chips
 }
 </script>
+
+<style scoped>
+.card-container :deep(.p-card-content) {
+  padding: 0;
+}
+.card-container :deep(.p-chips-multiple-container) {
+  width: 100%;
+}
+</style>
