@@ -1,5 +1,5 @@
 <template>
-    <Card class="card overflow-y-scroll overflow-x-hidden">
+    <Card class="card">
         <template #title>
             Posts
         </template>
@@ -9,7 +9,9 @@
             </div>
         </template>
         <template #content>
-            <PostList :posts="posts" :brief="true" />
+            <div class="container overflow-y-scroll overflow-x-hidden">
+                <PostList :posts="posts" :brief="true" />
+            </div>
         </template>
     </Card>
 </template>
@@ -18,18 +20,19 @@
 import PostList from "@/components/PostList.vue";
 
 defineProps({
-  posts: {
-    type: Array,
-    required: true
-  }
+    posts: {
+        type: Array,
+        required: true
+    }
 });
 </script>
 
 <style scoped>
-.card {
+.container {
     height: 300px;
 }
+
 .card :deep(.p-card-content) {
-  padding: 0;
+    padding: 0;
 }
 </style>

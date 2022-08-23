@@ -13,7 +13,7 @@
         </div>
         <div class="flex flex-column">
             <PostListCard :posts="result.user_by_pk.posts" class="m-3"/>
-            <Card class="m-3 p-0 w-5">
+            <!-- <Card class="m-3 p-0 w-5">
                 <template #title>
                     Comments
                 </template>
@@ -42,12 +42,12 @@
                         <TagWrapper class="mb-1 mr-1" v-for="tag in tags" :key="tag" :value="tag" />
                     </div>
                 </template>
-            </Card>
+            </Card> -->
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import NavBar from "@/components/NavBar.vue";
 import PostListCard from "@/components/PostListCard.vue";
 import TagWrapper from "@/components/wrappers/TagWrapper.vue";
