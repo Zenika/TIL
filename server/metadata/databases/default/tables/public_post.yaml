@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: post
+  schema: public
 object_relationships:
   - name: user
     using:
@@ -11,43 +11,43 @@ array_relationships:
       foreign_key_constraint_on:
         column: post_uuid
         table:
-          schema: public
           name: bookmark
+          schema: public
   - name: comments
     using:
       foreign_key_constraint_on:
         column: post_uuid
         table:
-          schema: public
           name: comment
+          schema: public
   - name: post_tags
     using:
       foreign_key_constraint_on:
         column: post_uuid
         table:
-          schema: public
           name: post_tag
+          schema: public
 remote_relationships:
   - definition:
-      remote_field:
-        add_post_to_rss:
-          arguments:
-            uuid: $uuid
-            url: $url
-            description: $description
       hasura_fields:
         - uuid
         - url
         - description
+      remote_field:
+        add_post_to_rss:
+          arguments:
+            description: $description
+            url: $url
+            uuid: $uuid
       remote_schema: remote-schema
     name: add_post_to_rss
   - definition:
+      hasura_fields:
+        - url
       remote_field:
         get_title:
           arguments:
             url: $url
-      hasura_fields:
-        - url
       remote_schema: remote-schema
     name: get_title
 insert_permissions:
@@ -59,7 +59,6 @@ insert_permissions:
       columns:
         - description
         - url
-      backend_only: false
 select_permissions:
   - role: user
     permission:
@@ -85,6 +84,7 @@ update_permissions:
 delete_permissions:
   - role: user
     permission:
+      backend_only: false
       filter:
         user_id:
           _eq: X-Hasura-User-Id

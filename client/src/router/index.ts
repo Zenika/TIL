@@ -5,6 +5,7 @@ import PostView from '@/views/PostView.vue'
 import NewPostView from '@/views/NewPostView.vue'
 import TagView from '@/views/TagView.vue'
 import BookmarksView from '@/views/BookmarksView.vue'
+import UserView from '@/views/UserView.vue'
 import { authGuard } from '@auth0/auth0-vue'
 import EditPostView from '@/views/EditPostView.vue'
 
@@ -43,6 +44,12 @@ const routes = [
     path: '/bookmarks',
     name: 'bookmarks',
     component: BookmarksView,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/user/:id',
+    name: 'user',
+    component: UserView,
     beforeEnter: authGuard
   },
   {

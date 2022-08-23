@@ -101,7 +101,6 @@ const onChipsUpdate = chips => {
 .card-container :deep(.p-card-content) {
   padding: 0;
 }
-
 .card-container :deep(.p-chips-multiple-container) {
   width: 100%;
 }
