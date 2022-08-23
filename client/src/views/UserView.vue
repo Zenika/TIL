@@ -11,7 +11,7 @@
                 <h1 class="font-light mb-0 mt-0">{{ result.user_by_pk.username }}</h1>
             </div>
         </div>
-        <div class="grid">
+        <div class="grid m-0">
             <div class="col-12 lg:col-5">
                 <PostListCard :posts="result.user_by_pk.posts" class="m-3 " />
             </div>
