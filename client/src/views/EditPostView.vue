@@ -28,7 +28,7 @@ import { useRoute } from "vue-router";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
-import EditPostCard from "@/components/EditPostCard.vue";
+import EditPostCard from "@/components/post/EditPostCard.vue";
 import router from "@/router";
 
 const route = useRoute();

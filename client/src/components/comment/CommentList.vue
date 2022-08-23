@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import CommentListItem from "@/components/CommentListItem.vue"
-import CommentListItemBrief from "@/components/CommentListItemBrief.vue"
+import CommentListItem from "@/components/comment/CommentListItem.vue"
+import CommentListItemBrief from "@/components/comment/CommentListItemBrief.vue"
 
 defineProps({
     comments: {

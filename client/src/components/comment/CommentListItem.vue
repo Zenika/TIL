@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import UserLink from "../components/UserLink.vue";
+import UserLink from "@/components/UserLink.vue";
 
 defineProps({
     comment: {

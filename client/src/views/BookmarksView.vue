@@ -37,7 +37,7 @@ import { useQuery } from "@vue/apollo-composable";
 import router from "../router";
 import { useRoute } from "vue-router";
 import gql from "graphql-tag";
-import PostList from "../components/PostList.vue";
+import PostList from "@/components/post/PostList.vue";
 import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
 import { Bookmark } from "@/models/bookmark";

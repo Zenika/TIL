@@ -27,13 +27,13 @@
 
 <script setup>
 import NavBar from "@/components/NavBar.vue";
-import PostListCard from "@/components/PostListCard.vue";
+import PostListCard from "@/components/post/PostListCard.vue";
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { ref } from "vue";
 import { useRoute } from 'vue-router';
-import CommentListCard from "@/components/CommentListCard.vue";
-import TagListCard from "@/components/TagListCard.vue";
+import CommentListCard from "@/components/comment/CommentListCard.vue";
+import TagListCard from "@/components/tag/TagListCard.vue";
 
 const { id } = useRoute().params
 

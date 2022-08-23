@@ -36,7 +36,7 @@ import { useRoute } from "vue-router";
 import gql from "graphql-tag";
 import { useQuery } from "@vue/apollo-composable";
 import NavBar from "@/components/NavBar.vue";
-import PostList from "../components/PostList.vue";
+import PostList from "@/components/post/PostList.vue";
 import { ref, watch } from "@vue/runtime-core";
 import router from "../router";
 

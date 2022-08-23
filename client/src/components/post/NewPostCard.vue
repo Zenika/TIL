@@ -44,7 +44,7 @@ import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
 import { escapeHtml } from "@/filters/escapeHtmlFilter";
-import SearchChips from "@/components/SearchChips.vue"
+import SearchChips from "@/components/search/SearchChips.vue"
 
 defineProps({
   loading: Boolean,

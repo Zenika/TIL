@@ -53,10 +53,10 @@
 
 <script setup lang="ts">
 import { toRefs } from "@vue/reactivity";
-import CommentSection from "@/components/CommentSection.vue";
-import TagWrapper from "@/components/wrappers/TagWrapper.vue";
+import CommentSection from "@/components/comment/CommentSection.vue";
+import TagWrapper from "@/components/tag/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
-import PostOptionButton from "@/components/PostOptionButton.vue";
+import PostOptionButton from "@/components/post/PostOptionButton.vue";
 import UserLink from "@/components/UserLink.vue";
 import { useRoute } from "vue-router";
 import { nlToBr } from "@/filters/nlToBrFilter";
