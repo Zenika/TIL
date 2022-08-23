@@ -13,22 +13,8 @@
         </div>
         <div class="flex flex-column">
             <PostListCard :posts="result.user_by_pk.posts" class="m-3"/>
+            <CommentListCard :comments="result.user_by_pk.comments" class="m-3" />
             <!-- <Card class="m-3 p-0 w-5">
-                <template #title>
-                    Comments
-                </template>
-                <template #subtitle>
-                    <div class="pb-2 border-bottom-1 border-300">
-                        {{ result.user_by_pk.comments_aggregate.aggregate.count }} Comments
-                    </div>
-                </template>
-                <template #content>
-                    <div v-for="comment in result.user_by_pk.comments" :key="comment.uuid">
-                        {{ comment.content }}
-                    </div>
-                </template>
-            </Card>
-            <Card class="m-3 p-0 w-5">
                 <template #title>
                     Tags
                 </template>
@@ -55,6 +41,7 @@ import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { ref } from "vue";
 import { useRoute } from 'vue-router';
+import CommentListCard from "@/components/CommentListCard.vue";
 
 const { id } = useRoute().params
 
@@ -79,14 +66,16 @@ const { result, loading, error, onResult } = useQuery(gql`
                     }
                 }
             }
-            comments_aggregate {
-                aggregate {
-                    count
-                }
-            }
             comments {
                 uuid
                 content
+                post {
+                    url
+                    get_title {
+                        title
+                    }
+                    uuid
+                }
             }
         }
     }
