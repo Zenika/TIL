@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import NewPostCard from "@/components/NewPostCard.vue";
+import NewPostCard from "@/components/post/NewPostCard.vue";
 import router from "../router";
 import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";

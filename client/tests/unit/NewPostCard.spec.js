@@ -1,6 +1,6 @@
 import { config, mount } from '@vue/test-utils'
 
-import NewPostCard from "@/components/NewPostCard.vue"
+import NewPostCard from "@/components/post/NewPostCard.vue"
 import Card from 'primevue/card';
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext';

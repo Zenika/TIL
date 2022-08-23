@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import TagWrapper from './wrappers/TagWrapper.vue';
+import TagWrapper from './TagWrapper.vue';
 
 defineProps({
     tags: {

@@ -59,9 +59,9 @@
 </template>
 
 <script setup lang="ts">
-import TagWrapper from "@/components/wrappers/TagWrapper.vue";
+import TagWrapper from "@/components/tag/TagWrapper.vue";
 import BookmarkButton from "@/components/BookmarkButton.vue";
-import PostOptionButton from "@/components/PostOptionButton.vue";
+import PostOptionButton from "@/components/post/PostOptionButton.vue";
 import UserLink from "@/components/UserLink.vue";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";

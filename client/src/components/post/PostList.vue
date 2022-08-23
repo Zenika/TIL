@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 import { useMutation } from '@vue/apollo-composable';
-import PostListItem from "../components/PostListItem.vue";
-import PostListItemBrief from "../components/PostListItemBrief.vue";
+import PostListItem from "@/components/post/PostListItem.vue";
+import PostListItemBrief from "@/components/post/PostListItemBrief.vue";
 import gql from 'graphql-tag';
 
 defineProps({

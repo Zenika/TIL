@@ -1,8 +1,8 @@
 import { config, mount } from '@vue/test-utils'
 
-import PostCard from "@/components/PostCard.vue"
-import CommentSection from "@/components/CommentSection.vue";
-import PostOptionButton from "@/components/PostOptionButton.vue";
+import PostCard from "@/components/post/PostCard.vue"
+import CommentSection from "@/components/comment/CommentSection.vue";
+import PostOptionButton from "@/components/post/PostOptionButton.vue";
 import Card from 'primevue/card';
 import Message from 'primevue/message'
 import Menu from 'primevue/menu'
@@ -33,7 +33,7 @@ jest.mock('primevue/useconfirm', () => ({
     useConfirm: jest.fn(() => ({})),
 }));
 
-jest.mock('@/components/CommentSection.vue')
+jest.mock('@/components/comment/CommentSection.vue')
 jest.mock('@/components/BookmarkButton.vue')
 
 config.global.components = {

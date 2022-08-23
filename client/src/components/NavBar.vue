@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
-import SearchInput from "@/components/SearchInput.vue";
+import SearchInput from "@/components/search/SearchInput.vue";
 import UserLink from "@/components/UserLink.vue";
 
 const menuSchema = ref([
