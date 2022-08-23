@@ -29,7 +29,7 @@ defineProps({
 
 <style scoped>
 .container {
-    height: 300px;
+    height: 400px;
 }
 
 .card :deep(.p-card-content) {
