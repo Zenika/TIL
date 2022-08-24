@@ -12,8 +12,7 @@
     Internal error
   </Message>
   <div v-else-if="result">
-    <div
-      class="
+    <div class="
         col-12
         mb-0
         flex
@@ -21,56 +20,41 @@
         border-bottom-1 border-200
         pt-0
         pb-10
-      "
-    >
-      <span
-        >{{ result.post_aggregate.aggregate.count }} post{{
+      ">
+      <span>{{ result.post_aggregate.aggregate.count }} post{{
           result.post_aggregate.aggregate.count !== 1 ? "s" : ""
-        }}</span
-      >
+      }}</span>
     </div>
-
-    <DataView :value="result.post" :layout="'list'">
-      <template #list="slotProps">
-        <PostListItem :post="slotProps.data" />
-      </template>
-      <template #empty>
-        <div>No articles found.</div>
-      </template>
-    </DataView>
+    <PostList :posts="result.post" @on-refresh="refetch" />
   </div>
-  <Paginator
-    v-if="result"
-    :first="variables.offset"
-    :totalRecords="result.post_aggregate.aggregate.count"
-    :rows="rowsPerPage"
-    @page="changePage($event)"
-  />
+  <Paginator v-if="result" :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count"
+    :rows="rowsPerPage" @page="changePage($event)" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute } from "vue-router";
 import gql from "graphql-tag";
 import { useQuery } from "@vue/apollo-composable";
 import NavBar from "@/components/NavBar.vue";
-import PostListItem from "../components/PostListItem.vue";
+import PostList from "@/components/post/PostList.vue";
 import { ref, watch } from "@vue/runtime-core";
 import router from "../router";
 
 const route = useRoute();
+const currentPage = parseInt(route.query.p?.[0]!)
 const rowsPerPage = 10;
 
-if (isNaN(route.query.p) || route.query.p < 1) {
+if (isNaN(currentPage) || currentPage < 1) {
   router.push(`/tags/${route.params.tag}?p=1`);
 }
 
 const variables = ref({
   tag: route.params.tag,
   limit: rowsPerPage,
-  offset: (route.query.p - 1) * rowsPerPage,
+  offset: (currentPage - 1) * rowsPerPage,
 });
 
-const { loading, result, error } = useQuery(
+const { loading, result, error, refetch } = useQuery(
   gql`
     query getPostsByTag($tag: String!, $limit: Int!, $offset: Int!) {
       post_aggregate(where: { post_tags: { tag: { name: { _eq: $tag } } } }) {
@@ -93,6 +77,7 @@ const { loading, result, error } = useQuery(
           title
         }
         user {
+          id
           username
         }
         comments_aggregate {
@@ -106,7 +91,7 @@ const { loading, result, error } = useQuery(
           }
         }
         bookmarks {
-          id
+          uuid
         }
       }
     }
@@ -121,14 +106,14 @@ const { loading, result, error } = useQuery(
 watch(result, (value) => {
   if (
     value &&
-    route.query.p >
-      Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
+    currentPage >
+    Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
   ) {
     router.push({ params: { p: 1 } });
   }
 });
 
-const changePage = ({ page }) => {
+const changePage = ({ page }: { page: number }) => {
   router.push(`/tags/${route.params.tag}?p=${page + 1}`);
 };
 </script>

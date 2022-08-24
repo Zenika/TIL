@@ -2,18 +2,14 @@
   <div v-if="!isLoading">
     <MenuBar :model="menuSchema">
       <template #start>
-        <img
-          alt="logo"
-          src="../assets/logo-zenika.svg"
-          height="40"
-          class="mr-2 cursor-hover"
-          @click="$router.push('/')"
-        />
+        <img alt="logo" src="../assets/logo-TIL.svg" height="40" class="ml-2 mr-1 cursor-hover"
+          @click="$router.push('/')" />
       </template>
       <template #end>
         <div class="flex align-items-center">
-          <img :src="user.picture" alt="profile picture" class="h-3rem mr-2 round-borders">
-          <span class="mr-2">{{ user.nickname }}</span>
+          <SearchInput/>
+          <img :src="user.picture" alt="profile picture" @click="$router.push(`/user/${user.sub}`)" class="h-3rem mr-2 round-borders cursor-hover">
+          <UserLink :username="user.nickname!" :id="user.sub!" class="mr-2"/>
           <Button label="Log out" @click="onLogoutClick" />
         </div>
       </template>
@@ -21,9 +17,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
+import SearchInput from "@/components/search/SearchInput.vue";
+import UserLink from "@/components/UserLink.vue";
 
 const menuSchema = ref([
   {

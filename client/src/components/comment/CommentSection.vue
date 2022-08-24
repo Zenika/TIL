@@ -5,73 +5,37 @@
   <div v-else-if="error" class="col-12 flex justify-content-center mt-6">
     <Message severity="error">Internal error</Message>
   </div>
-  <div
-    v-else-if="result"
-    class="
+  <div v-else-if="result" class="
       col-12
       p-0
       flex flex-column
       justify-content-center
       border-top-1 border-200
-    "
-  >
-    <div class="w-full">
-      <TextArea
-        class="w-full mt-1 mb-1"
-        v-model="comment.text"
-        :class="{ 'p-invalid': v$.text.$error }"
-        placeholder="Write your comment here"
-        :autoResize="true"
-      />
-    </div>
-    <div class="w-full flex flex-row-reverse">
-      <Button
-        v-if="isAuthenticated"
-        @click="postComment"
-        label="Comment"
-        :loading="mutationLoading"
-        class="p-button-sm"
-      />
-      <Button
-        v-else
-        label="Comment"
-        disabled
-        title="Log in to post comments"
-        class="p-button-sm"
-      />
-    </div>
-    <DataView :value="result.comment" :layout="'list'">
-      <template #list="slotProps">
-        <div class="col-12 p-2">
-          <div class="col-12 p-0 text-sm font-semibold">
-            {{ slotProps.data.user.username }}
-          </div>
-
-          <div class="col-12 p-0 font-light">
-            <p class="m-0 text-justify word-wrap-break">
-              <span v-html="slotProps.data.content"></span>
-            </p>
-          </div>
-        </div>
-      </template>
-      <template #empty>
-        <div class="mb-2 mt-2"><i>No comments yet.</i></div>
-      </template>
-    </DataView>
-
+    ">
+    <TextArea class="w-full mt-1 mb-1" v-model="comment.text" :class="{ 'p-invalid': v$.text.$error }"
+      placeholder="Write a comment..." :autoResize="true" />
     <small id="username2-help" class="p-error mb-1" v-if="v$.text.$error">{{
-      v$.text.$errors[0].$message
+        v$.text.$errors[0].$message
     }}</small>
+    <div class="w-full flex flex-row-reverse">
+      <Button v-if="isAuthenticated" @click="postComment" label="Comment" :loading="mutationLoading"
+        class="p-button-sm" />
+      <Button v-else label="Comment" disabled title="Log in to post comments" class="p-button-sm" />
+    </div>
+    <CommentList :comments="result.comment" />
+
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useSubscription, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { reactive, toRefs } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { required, maxLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import { Comment } from '@/models/comment';
+import CommentList from "./CommentList.vue";
 
 const { isAuthenticated } = useAuth0();
 
@@ -84,10 +48,13 @@ const { postId } = toRefs(props);
 const comment = reactive({
   text: "",
 });
+
 const rules = {
   text: { required, maxLength: maxLength(400) },
 };
+
 const v$ = useVuelidate(rules, comment);
+
 const { loading, result, error, onResult } = useSubscription(
   gql`
     subscription MySubscription($post_uuid: uuid!) {
@@ -95,17 +62,18 @@ const { loading, result, error, onResult } = useSubscription(
         content
         user {
           username
+          id
         }
       }
     }
   `,
   {
-    post_uuid: postId.value,
+    post_uuid: postId?.value,
   }
 );
 
-onResult(({ data }) => {
-  data.comment.forEach((comment) => {
+onResult(({ data: { comment } }) => {
+  comment.forEach((comment: Comment) => {
     comment.content = processComment(comment.content);
   });
 });
@@ -135,12 +103,12 @@ const postComment = () => {
   if (!v$.value.$error) {
     mutate({
       content: comment.text,
-      post_uuid: postId.value,
+      post_uuid: postId?.value,
     });
   }
 };
 
-const processComment = (content) => {
+const processComment = (content: string) => {
   content = content.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // PREVENT HTML INJECTION
   content = content.replace(
     /(https?:\/\/)([^ ]+)/g,

@@ -1,10 +1,10 @@
 import { config, mount } from '@vue/test-utils'
 
-import EditPostCard from "@/components/EditPostCard.vue"
+import EditPostCard from "@/components/post/EditPostCard.vue"
 import Card from 'primevue/card';
 import Button from 'primevue/button'
 import TextArea from 'primevue/textarea'
-import Chips from 'primevue/chips'
+import AutoComplete from 'primevue/autocomplete'
 import Message from 'primevue/message'
 import InputText from 'primevue/inputtext'
 
@@ -12,9 +12,9 @@ config.global.components = {
     'Card': Card,
     'Button': Button,
     'TextArea': TextArea,
-    'Chips': Chips,
     'Message': Message,
     'InputText': InputText,
+    'AutoComplete': AutoComplete,
 }
 
 describe('EditPostCard.vue', () => {
@@ -101,8 +101,8 @@ describe('EditPostCard.vue', () => {
                 loading: false
             },
         })
-        expect(wrapper.vm.tags.length).toBe(2)
-        expect(wrapper.vm.tags[0]).toBe("html")
-        expect(wrapper.vm.tags[1]).toBe("css")
+        expect(wrapper.vm.state.tags.length).toBe(2)
+        expect(wrapper.vm.state.tags[0]).toBe("html")
+        expect(wrapper.vm.state.tags[1]).toBe("css")
     })
 })

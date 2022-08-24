@@ -23,12 +23,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
-import EditPostCard from "@/components/EditPostCard.vue";
+import EditPostCard from "@/components/post/EditPostCard.vue";
 import router from "@/router";
 
 const route = useRoute();
@@ -77,14 +77,14 @@ const mutation = gql`
 
 const { mutate, onDone, loading: mutationLoading } = useMutation(mutation);
 
-onDone((res) => {
+onDone(() => {
   router.go(-1);
 });
 
-const update = ({url, description, tags}) => {
-  let post_tag_insert_input = [];
+const update = ({url, description, tags}: {url: string, description: string, tags: string[]}) => {
+  let post_tag_insert_input: any[] = [];
 
-  tags.forEach((tag) => {
+  tags.forEach((tag: string) => {
     post_tag_insert_input.push({
       tag: {
         data: { name: tag.toLowerCase() },

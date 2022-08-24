@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: comment
+  schema: public
 object_relationships:
   - name: post
     using:
@@ -17,7 +17,6 @@ insert_permissions:
       columns:
         - content
         - post_uuid
-      backend_only: false
 select_permissions:
   - role: user
     permission:
@@ -30,6 +29,7 @@ select_permissions:
 delete_permissions:
   - role: user
     permission:
+      backend_only: false
       filter:
         post:
           user_id:

@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import NotFoundView from '@/views/NotFoundView'
-import PostView from '@/views/PostView'
-import NewPostView from '@/views/NewPostView'
-import TagView from '@/views/TagView'
-import BookmarksView from '@/views/BookmarksView'
+import NotFoundView from '@/views/NotFoundView.vue'
+import PostView from '@/views/PostView.vue'
+import NewPostView from '@/views/NewPostView.vue'
+import TagView from '@/views/TagView.vue'
+import BookmarksView from '@/views/BookmarksView.vue'
+import UserView from '@/views/UserView.vue'
 import { authGuard } from '@auth0/auth0-vue'
-import EditPostView from '@/views/EditPostView'
+import EditPostView from '@/views/EditPostView.vue'
 
 const routes = [
   {
@@ -43,6 +44,12 @@ const routes = [
     path: '/bookmarks',
     name: 'bookmarks',
     component: BookmarksView,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/user/:id',
+    name: 'user',
+    component: UserView,
     beforeEnter: authGuard
   },
   {

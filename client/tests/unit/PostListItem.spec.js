@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils'
-import PostListItem from '@/components/PostListItem.vue'
+import PostListItem from '@/components/post/PostListItem.vue'
 import { config } from '@vue/test-utils'
 import Button from 'primevue/button'
 import ConfirmDialog from 'primevue/confirmdialog';
-import PostOptionButton from "@/components/PostOptionButton.vue";
+import PostOptionButton from "@/components/post/PostOptionButton.vue";
 
 config.global.components = {
   'Button': Button,
@@ -37,6 +37,7 @@ describe('PostListItem.vue', () => {
         title: "Next steps for Sri Lanka — What is the change we want (and can have)? | by Sanjiva Weerawarana | Apr, 2022 | Medium"
       },
       user: {
+        id: "3230191716",
         username: "test.user"
       },
       comments_aggregate: {
@@ -63,6 +64,7 @@ describe('PostListItem.vue', () => {
       created_at: "2022-03-31T07:26:36.473801+00:00",
       get_title: {},
       user: {
+        id: "3230191716",
         username: "test.user"
       },
       comments_aggregate: {
@@ -89,6 +91,7 @@ describe('PostListItem.vue', () => {
       created_at: "2022-03-31T07:26:36.473801+00:00",
       get_title: {},
       user: {
+        id: "3230191716",
         username: "test.user"
       },
       comments_aggregate: {
@@ -112,6 +115,7 @@ describe('PostListItem.vue', () => {
       created_at: "2022-03-31T07:26:36.473801+00:00",
       get_title: {},
       user: {
+        id: "3230191716",
         username: "test.user"
       },
       comments_aggregate: {

@@ -2,12 +2,13 @@
   <router-view :key="$route.fullPath" />
 </template>
 
-<script setup>
-</script>
-
 <style>
 .cursor-hover:hover {
   cursor: pointer;
+}
+
+.underline-hover:hover {
+  text-decoration: underline;
 }
 
 a {

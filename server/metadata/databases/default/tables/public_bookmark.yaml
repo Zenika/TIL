@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: bookmark
+  schema: public
 object_relationships:
   - name: post
     using:
@@ -17,13 +17,12 @@ insert_permissions:
       columns:
         - post_uuid
         - user_id
-      backend_only: false
 select_permissions:
   - role: user
     permission:
       columns:
         - created_at
-        - id
+        - uuid
         - post_uuid
         - user_id
       filter:
@@ -33,6 +32,7 @@ select_permissions:
 delete_permissions:
   - role: user
     permission:
+      backend_only: false
       filter:
         _or:
           - user_id:

@@ -14,17 +14,17 @@
       />
     </div>
     <div class="col-6 col-offset-3">
-      <PostCard :post="result.post_by_pk" @delete-click="deletePost($event)" />
+      <PostCard :post="result.post_by_pk" @delete-click="deletePost" />
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
-import PostCard from "@/components/PostCard.vue";
+import PostCard from "@/components/post/PostCard.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -50,7 +50,7 @@ const { loading, result, error } = useQuery(
           }
         }
         bookmarks {
-          id
+          uuid
         }
       }
     }

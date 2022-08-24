@@ -1,32 +1,33 @@
 table:
-  schema: public
   name: user
+  schema: public
 array_relationships:
   - name: bookmarks
     using:
       foreign_key_constraint_on:
         column: user_id
         table:
-          schema: public
           name: bookmark
+          schema: public
   - name: comments
     using:
       foreign_key_constraint_on:
         column: user_id
         table:
-          schema: public
           name: comment
+          schema: public
   - name: posts
     using:
       foreign_key_constraint_on:
         column: user_id
         table:
-          schema: public
           name: post
+          schema: public
 select_permissions:
   - role: user
     permission:
       columns:
         - id
+        - profile_pic
         - username
       filter: {}

@@ -3,49 +3,47 @@
   <ProgressSpinner v-if="loading" class="spinner" />
   <Message v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
-    <DataView :value="result.post" :layout="'list'">
-      <template #list="slotProps">
-        <PostListItem
-          :post="slotProps.data"
-          @delete-click="deletePost($event)"
-        />
-      </template>
-      <template #empty>
-        <div>No articles found.</div>
-      </template>
-    </DataView>
+    <div class="grid m-0">
+      <div class="xl:col-3"/>
+      <div class="p-0 md:p-2 col-12 md:col-9 xl:col-6">
+        <div class="flex flex-column border-right-1 border-left-1 border-bottom-1 border-300">
+          <PostList :posts="result.post" @on-refresh="refetch" />
+          <Paginator :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count" :rows="rowsPerPage"
+            @page="changePage($event)" />
+        </div>
+      </div>
+      <div class="hidden md:block md:col-3">
+        <TagListCard :tags="result.tag" class="" />
+      </div>
+    </div>
   </div>
-  <Paginator
-    v-if="result"
-    :first="variables.offset"
-    :totalRecords="result.post_aggregate.aggregate.count"
-    :rows="rowsPerPage"
-    @page="changePage($event)"
-  />
+
 </template>
 
-<script setup>
-import { useMutation, useQuery } from "@vue/apollo-composable";
+<script setup lang="ts">
+import { useQuery } from "@vue/apollo-composable";
 import { ref, watch } from "@vue/runtime-core";
 import NavBar from "@/components/NavBar.vue";
 import gql from "graphql-tag";
-import PostListItem from "../components/PostListItem.vue";
+import PostList from "@/components/post/PostList.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
+import TagListCard from "@/components/tag/TagListCard.vue";
 
 const route = useRoute();
+const currentPage = parseInt(route.query.p?.[0]!)
 const rowsPerPage = 10;
 
-if (isNaN(route.query.p) || route.query.p < 1) {
+if (isNaN(currentPage) || currentPage < 1) {
   router.push(`/?p=1`);
 }
 
 const variables = ref({
   limit: rowsPerPage,
-  offset: (route.query.p - 1) * rowsPerPage,
+  offset: (currentPage - 1) * rowsPerPage,
 });
 
-const { result, loading, error } = useQuery(
+const { result, loading, error, refetch } = useQuery(
   gql`
     query getPosts($limit: Int, $offset: Int) {
       post_aggregate {
@@ -77,7 +75,15 @@ const { result, loading, error } = useQuery(
           }
         }
         bookmarks {
-          id
+          uuid
+        }
+      }
+      tag(order_by: {post_tags_aggregate: {count: desc}}) {
+        name
+        post_tags_aggregate {
+          aggregate {
+            count
+          }
         }
       }
     }
@@ -92,40 +98,15 @@ const { result, loading, error } = useQuery(
 watch(result, (value) => {
   if (
     value &&
-    route.query.p >
-      Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
+    currentPage >
+    Math.ceil(value.post_aggregate.aggregate.count / rowsPerPage)
   ) {
     router.push({ params: { p: 1 } });
   }
 });
 
-const changePage = ({ page }) => {
+const changePage = ({ page }: { page: number }) => {
   router.push(`/?p=${page + 1}`);
-};
-
-const mutation = gql`
-  mutation DeletePost($uuid: uuid!) {
-    delete_comment(where: { post_uuid: { _eq: $uuid } }) {
-      affected_rows
-    }
-    delete_post_tag(where: { post_uuid: { _eq: $uuid } }) {
-      affected_rows
-    }
-    delete_bookmark(where: { post_uuid: { _eq: $uuid } }) {
-      affected_rows
-    }
-    delete_post_by_pk(uuid: $uuid) {
-      uuid
-    }
-  }
-`;
-
-const { mutate, onDone } = useMutation(mutation);
-
-onDone(() => router.push(`/`));
-
-const deletePost = (uuid) => {
-  mutate({ uuid });
 };
 </script>
 

@@ -1,21 +1,20 @@
 table:
-  schema: public
   name: tag
+  schema: public
 array_relationships:
   - name: post_tags
     using:
       foreign_key_constraint_on:
         column: tag_uuid
         table:
-          schema: public
           name: post_tag
+          schema: public
 insert_permissions:
   - role: user
     permission:
       check: {}
       columns:
         - name
-      backend_only: false
 select_permissions:
   - role: user
     permission:

@@ -6,7 +6,7 @@ const { ApolloServerPluginLandingPageDisabled } = require('apollo-server-core');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers')
 const path = require('path')
-const {feed, writeFeed} = require('./rssFeed')
+const { feed, writeFeed } = require('./rssFeed')
 
 // const context = ({ req }) => {
 //   return { headers: req.headers };
