@@ -3,10 +3,21 @@
   <ProgressSpinner v-if="loading" class="spinner" />
   <Message v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
-    <PostList :posts="result.post" @on-refresh="refetch" />
+    <div class="grid m-0">
+      <div class="xl:col-3"/>
+      <div class="p-0 md:p-2 col-12 md:col-9 xl:col-6">
+        <div class="flex flex-column border-right-1 border-left-1 border-bottom-1 border-300">
+          <PostList :posts="result.post" @on-refresh="refetch" />
+          <Paginator :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count" :rows="rowsPerPage"
+            @page="changePage($event)" />
+        </div>
+      </div>
+      <div class="hidden md:block md:col-3">
+        <TagListCard :tags="result.tag" class="" />
+      </div>
+    </div>
   </div>
-  <Paginator v-if="result" :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count"
-    :rows="rowsPerPage" @page="changePage($event)" />
+
 </template>
 
 <script setup lang="ts">
@@ -17,6 +28,7 @@ import gql from "graphql-tag";
 import PostList from "@/components/post/PostList.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
+import TagListCard from "@/components/tag/TagListCard.vue";
 
 const route = useRoute();
 const currentPage = parseInt(route.query.p?.[0]!)
@@ -64,6 +76,14 @@ const { result, loading, error, refetch } = useQuery(
         }
         bookmarks {
           uuid
+        }
+      }
+      tag(order_by: {post_tags_aggregate: {count: desc}}) {
+        name
+        post_tags_aggregate {
+          aggregate {
+            count
+          }
         }
       }
     }

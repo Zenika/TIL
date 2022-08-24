@@ -74,8 +74,14 @@ const { result, loading, error, onResult } = useQuery(gql`
 `, { id })
 
 onResult(({ data }) => {
-    tags.value = data.user_by_pk.posts.map(({ post_tags }) => post_tags.map(({ tag }) => tag.name)).flat();
-    tags.value = Array.from(new Set(tags.value));
+    tags.value = data.user_by_pk.posts.map(({ post_tags }) => post_tags.map(({ tag }) => ({ name: tag.name }))).flat();
+
+    // Remove all duplicates from tags
+    tags.value = tags.value.filter((value, index, self) =>
+        index === self.findIndex((t) => (
+            t.place === value.place && t.name === value.name
+        ))
+    )
     profile_pic.value = data.user_by_pk.profile_pic ? data.user_by_pk.profile_pic : require('../assets/default-profile-pic.jpg')
 })
 
