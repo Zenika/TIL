@@ -10,8 +10,6 @@ var { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}.local` })
 
-console.log(process.env)
-
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 var alias = {
