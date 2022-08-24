@@ -29,15 +29,15 @@ clients:
     allowed_clients: []
     allowed_logout_urls:
       - ##FRONTEND_URL##
-      - "chrome-extension://beongpgiledmjeadadaeflfdgjobelmd/options.html"
+      - chrome-extension://beongpgiledmjeadadaeflfdgjobelmd/options.html
     allowed_origins:
       - ##FRONTEND_URL##
-      - "chrome-extension://beongpgiledmjeadadaeflfdgjobelmd"
+      - chrome-extension://beongpgiledmjeadadaeflfdgjobelmd
     app_type: spa
     callbacks:
       - ##FRONTEND_URL##
-      - "chrome-extension://beongpgiledmjeadadaeflfdgjobelmd/options.html"
-      - "chrome-extension://beongpgiledmjeadadaeflfdgjobelmd/popup.html"
+      - chrome-extension://beongpgiledmjeadadaeflfdgjobelmd/options.html
+      - chrome-extension://beongpgiledmjeadadaeflfdgjobelmd/popup.html
     client_aliases: []
     cross_origin_auth: false
     custom_login_page_on: true
@@ -70,7 +70,7 @@ clients:
     token_endpoint_auth_method: none
     web_origins:
       - ##FRONTEND_URL##
-      - "chrome-extension://beongpgiledmjeadadaeflfdgjobelmd"
+      - chrome-extension://beongpgiledmjeadadaeflfdgjobelmd
   - name: TIL Server (Test Application)
     app_type: non_interactive
     cross_origin_auth: false

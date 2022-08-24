@@ -4,11 +4,13 @@ var webpack = require('webpack'),
   env = require('./utils/env'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  TerserPlugin = require('terser-webpack-plugin'),
-  dotenv = require('dotenv')
+  TerserPlugin = require('terser-webpack-plugin')
+
 var { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-dotenv.config();
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}.local` })
+
+console.log(process.env)
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 

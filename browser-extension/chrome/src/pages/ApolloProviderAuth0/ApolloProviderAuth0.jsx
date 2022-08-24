@@ -12,7 +12,7 @@ const ApolloProviderAuth0 = ({ children }) => {
     const { getAccessTokenSilently } = useAuth0();
 
     const httpLink = createHttpLink({
-        uri: 'http://localhost:8080/v1/graphql',
+        uri: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
 
     const authLink = setContext(async (_, { headers, ...rest }) => {
