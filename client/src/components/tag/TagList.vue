@@ -2,7 +2,7 @@
     <DataView :value="tags" :layout="'list'" class="data-view">
         <template #list="slotProps">
             <div class="w-full p-2">
-                <TagWrapper :value="slotProps.data" />
+                <TagListItem :tag="slotProps.data"/>
             </div>
         </template>
         <template #empty>
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import TagWrapper from './TagWrapper.vue';
+import TagListItem from './TagListItem.vue';
 
 defineProps({
     tags: {
