@@ -26,6 +26,7 @@ const Home = ({ username }) => {
         }
       ) {
         add_post_to_rss
+        save_title
       }
     }
   `
