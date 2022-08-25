@@ -48,10 +48,7 @@ const { result, loading, error, onResult } = useQuery(gql`
             posts {
                 url
                 uuid
-                get_title {
-                    title
-                    error
-                }
+                title
                 post_tags {
                     tag {
                         name
@@ -63,9 +60,7 @@ const { result, loading, error, onResult } = useQuery(gql`
                 content
                 post {
                     url
-                    get_title {
-                        title
-                    }
+                    title
                     uuid
                 }
             }

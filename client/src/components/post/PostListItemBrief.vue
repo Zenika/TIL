@@ -2,7 +2,7 @@
     <div class="w-full p-2">
         <p class="m-0 overflow-hidden text-overflow-ellipsis white-space-nowrap">
             <a @click.stop="$router.push(`/post/${post.uuid}`);" class="cursor-hover">
-                {{ post.get_title.title ? post.get_title.title : post.url }}
+                {{ post.title ? post.title : post.url }}
             </a>
         </p>
     </div>

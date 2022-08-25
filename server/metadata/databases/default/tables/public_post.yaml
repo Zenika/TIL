@@ -50,6 +50,17 @@ remote_relationships:
             url: $url
       remote_schema: remote-schema
     name: get_title
+  - definition:
+      hasura_fields:
+        - uuid
+        - url
+      remote_field:
+        save_title:
+          arguments:
+            url: $url
+            uuid: $uuid
+      remote_schema: remote-schema
+    name: save_title
 insert_permissions:
   - role: user
     permission:
@@ -65,6 +76,7 @@ select_permissions:
       columns:
         - created_at
         - description
+        - title
         - url
         - uuid
       filter: {}

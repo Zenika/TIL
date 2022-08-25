@@ -58,9 +58,7 @@ describe('PostCard.vue', () => {
             url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
             created_at: "2022-03-31T07:26:36.473801+00:00",
             description: "Salut la description yooo",
-            get_title: {
-                title: "Next steps for Sri Lanka — What is the change we want (and can have)? | by Sanjiva Weerawarana | Apr, 2022 | Medium"
-            },
+            title: "Next steps for Sri Lanka — What is the change we want (and can have)? | by Sanjiva Weerawarana | Apr, 2022 | Medium",
             user: {
                 username: "test.user",
                 id: "google-oauth2|10296848579QZDQZD"
@@ -71,7 +69,7 @@ describe('PostCard.vue', () => {
             props: { post },
         })
         expect(wrapper.html()).toContain(new Date(post.created_at.replace(" ", "T")).toLocaleDateString())
-        expect(wrapper.html()).toContain(post.get_title.title)
+        expect(wrapper.html()).toContain(post.title)
         expect(wrapper.html()).toContain(post.user.username)
         expect(wrapper.html()).toContain(post.description)
     })
@@ -81,9 +79,7 @@ describe('PostCard.vue', () => {
             uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",
             url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
             created_at: "2022-03-31T07:26:36.473801+00:00",
-            get_title: {
-                title: "Next steps for Sri Lanka — What is the change we want (and can have)? | by Sanjiva Weerawarana | Apr, 2022 | Medium"
-            },
+            title: "Next steps for Sri Lanka — What is the change we want (and can have)? | by Sanjiva Weerawarana | Apr, 2022 | Medium",
             user: {
                 username: "test.user",
                 id: "google-oauth2|10296848579QZDQZD"
@@ -95,7 +91,7 @@ describe('PostCard.vue', () => {
         })
         const html = wrapper.html();
         expect(html).toContain(new Date(post.created_at.replace(" ", "T")).toLocaleDateString())
-        expect(html).toContain(post.get_title.title)
+        expect(html).toContain(post.title)
         expect(html).toContain(post.user.username)
         expect(html).toContain('No description')
     })
@@ -106,7 +102,7 @@ describe('PostCard.vue', () => {
             url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
             created_at: "2022-03-31T07:26:36.473801+00:00",
             description: "Salut la description yooo",
-            get_title: {},
+            title: null,
             user: {
                 username: "test.user",
                 id: "google-oauth2|10296848579QZDQZD"
@@ -129,7 +125,7 @@ describe('PostCard.vue', () => {
             url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
             created_at: "2022-03-31T07:26:36.473801+00:00",
             description: "Salut la description yooo",
-            get_title: {},
+            title: "ayo",
             user: {
                 username: "test.user",
                 id: "google-oauth2|10296848579QZDQZD"
@@ -148,7 +144,7 @@ describe('PostCard.vue', () => {
             url: "https://medium.com/@sanjiva.weerawarana/next-steps-for-sri-lanka-what-is-the-change-we-want-and-can-have-e172dc8667a7",
             created_at: "2022-03-31T07:26:36.473801+00:00",
             description: "Salut la description yooo",
-            get_title: {},
+            title: "ayo",
             user: {
                 username: "test.user",
                 id: "mauvais id"

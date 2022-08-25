@@ -9,6 +9,7 @@ const typeDefs = gql`
   type Query {
     get_title(url: String): get_title_res
     add_post_to_rss(uuid: String!, url: String!, description: String): String
+    save_title(uuid: String!, url: String!): String
   }
 `;
 

@@ -65,6 +65,7 @@ const mutation = gql`
       _set: { url: $url, description: $description }
     ) {
       add_post_to_rss
+      save_title
     }
     delete_post_tag(where: { post_uuid: { _eq: $uuid } }) {
       affected_rows

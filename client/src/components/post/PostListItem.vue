@@ -23,7 +23,7 @@
       ">
       <p class="m-0 overflow-hidden text-overflow-ellipsis white-space-nowrap">
         <a :href="post.url" target="_blank" rel="noopener noreferrer" @click.stop="" class="no-underline">
-          {{ post.get_title.title ? post.get_title.title : post.url }}
+          {{ post.title ? post.title : post.url }}
         </a>
       </p>
       <span class="created-at text-xs my-1">

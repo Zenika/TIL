@@ -155,10 +155,11 @@ tenant:
     universal_login: true
     revoke_refresh_token_grant: false
     disable_clickjack_protection_headers: false
+  picture_url: https://i.imgur.com/lNs3q6p.png
   universal_login:
     colors:
       page_background: '#ffffff'
-      primary: '#635dff'
+      primary: '#d8204e'
 emailProvider: {}
 emailTemplates: []
 clientGrants:
@@ -197,7 +198,8 @@ roles:
 branding:
   colors:
     page_background: '#ffffff'
-    primary: '#635dff'
+    primary: '#d8204e'
+  logo_url: https://i.imgur.com/lNs3q6p.png
   templates: []
 prompts:
   universal_login_experience: new
