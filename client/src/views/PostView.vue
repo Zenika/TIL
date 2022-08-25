@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { useQuery, useMutation } from "@vue/apollo-composable";
+import { useQuery, useMutation, useSubscription } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
 import PostCard from "@/components/post/PostCard.vue";
@@ -29,9 +29,9 @@ import PostCard from "@/components/post/PostCard.vue";
 const route = useRoute();
 const router = useRouter();
 
-const { loading, result, error } = useQuery(
+const { loading, result, error } = useSubscription(
   gql`
-    query getPost($uuid: uuid!) {
+    subscription getPost($uuid: uuid!) {
       post_by_pk(uuid: $uuid) {
         url
         uuid
