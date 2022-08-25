@@ -31,6 +31,7 @@ const mutation = gql`
       }
     ) {
       add_post_to_rss
+      save_title
       uuid
     }
   }

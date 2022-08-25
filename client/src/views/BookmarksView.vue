@@ -70,10 +70,7 @@ const { result, loading, error, refetch, onResult } = useQuery(
           uuid
           created_at
           description
-          get_title {
-            error
-            title
-          }
+          title
           user {
             id
             username

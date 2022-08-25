@@ -76,6 +76,7 @@ select_permissions:
       columns:
         - created_at
         - description
+        - title
         - url
         - uuid
       filter: {}

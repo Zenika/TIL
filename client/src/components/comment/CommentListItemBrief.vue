@@ -6,7 +6,7 @@
                     class="cursor-hover underline-hover">{{ comment?.content }}</span>
                 -
                 <a @click.stop="$router.push(`/post/${comment?.post.uuid}`);" class="cursor-hover">
-                    {{ comment?.post.get_title.title ? comment?.post.get_title.title : comment?.post.url }}
+                    {{ comment?.post.title ? comment?.post.title : comment?.post.url }}
                 </a>
             </p>
         </div>
