@@ -25,7 +25,7 @@
         }}
       </span>
     </div>
-    <PostList :posts="posts" @on-refresh="refetch" />
+    <PostList :posts="posts" @on-refresh="refetch" @on-post-nb-change="updatePostNb"/>
   </div>
   <Paginator v-if="result" :first="variables.offset" :totalRecords="result.bookmark_aggregate.aggregate.count"
     :rows="rowsPerPage" @page="changePage($event)" />
@@ -42,9 +42,11 @@ import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
 import { Bookmark } from "@/models/bookmark";
 
+const emit = defineEmits(["on-router-view-reload"]);
+
 const route = useRoute();
 const currentPage = parseInt(route.query.p?.[0]!)
-const rowsPerPage = 10;
+const rowsPerPage = parseInt(localStorage.getItem("postNbOption") || '25');
 const posts = ref([]);
 
 if (isNaN(currentPage) || currentPage < 1) {
@@ -114,6 +116,10 @@ watch(result, (value) => {
 const changePage = ({ page }: { page: number }) => {
   router.push(`/bookmarks?p=${page + 1}`);
 };
+
+const updatePostNb = () => {
+  emit('on-router-view-reload')
+}
 </script>
 
 <style scoped>
