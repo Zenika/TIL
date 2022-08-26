@@ -25,10 +25,18 @@
         }}
       </span>
     </div>
-    <PostList :posts="posts" @on-refresh="refetch" @on-post-nb-change="updatePostNb"/>
+
+    <div class="grid m-0">
+      <div class="xl:col-3" />
+      <div class="p-0 md:p-2 col-12 xl:col-6">
+        <div class="flex flex-column border-right-1 border-left-1 border-bottom-1 border-300">
+          <PostList :posts="posts" @on-refresh="refetch" @on-post-nb-change="updatePostNb" />
+          <Paginator :first="variables.offset" :totalRecords="result.bookmark_aggregate.aggregate.count"
+            :rows="rowsPerPage" @page="changePage($event)" />
+        </div>
+      </div>
+    </div>
   </div>
-  <Paginator v-if="result" :first="variables.offset" :totalRecords="result.bookmark_aggregate.aggregate.count"
-    :rows="rowsPerPage" @page="changePage($event)" />
 </template>
 
 <script setup lang="ts">
@@ -101,7 +109,7 @@ const { result, loading, error, refetch, onResult } = useQuery(
   }
 );
 
-onResult(({data}) => posts.value = data.bookmark.map((bookmark: Bookmark) => bookmark.post))
+onResult(({ data }) => posts.value = data.bookmark.map((bookmark: Bookmark) => bookmark.post))
 
 watch(result, (value) => {
   if (

@@ -1,15 +1,8 @@
 <template>
-  <div>
-    <Button
-      @click.stop="openMenu"
-      class="p-button-secondary p-button-text p-button-sm p-button-rounded"
-      icon="pi pi-ellipsis-h"
-      aria-haspopup="true"
-      aria-controls="overlay_menu"
-      data-test="ellipsis"
-    />
-    <Menu id="overlay_menu" ref="menu" :popup="true" :model="items" />
-  </div>
+  <ConfirmDialog></ConfirmDialog>
+  <Button @click.stop="openMenu" class="p-button-secondary p-button-text p-button-sm p-button-rounded"
+    icon="pi pi-ellipsis-h" aria-haspopup="true" aria-controls="overlay_menu" data-test="ellipsis" />
+  <Menu id="overlay_menu" ref="menu" :popup="true" :model="items" />
 </template>
 
 <script setup lang="ts">
@@ -51,7 +44,7 @@ const items = ref([
         header: "Delete Confirmation",
         icon: "pi pi-exclamation-triangle",
         acceptClass: "p-button-danger",
-        accept: () => emit("delete-click"),
+        accept: () => emit("delete-click")
       });
     },
   },
