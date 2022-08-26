@@ -28,8 +28,10 @@
 
     <div class="grid m-0">
       <div class="xl:col-3" />
-      <div class="p-0 md:p-2 col-12 xl:col-6">
+      <div class="p-0 col-12 xl:col-6">
         <div class="flex flex-column border-right-1 border-left-1 border-bottom-1 border-300">
+          <Paginator :first="variables.offset" :totalRecords="result.bookmark_aggregate.aggregate.count"
+            :rows="rowsPerPage" @page="changePage($event)" />
           <PostList :posts="posts" @on-refresh="refetch" @on-post-nb-change="updatePostNb" />
           <Paginator :first="variables.offset" :totalRecords="result.bookmark_aggregate.aggregate.count"
             :rows="rowsPerPage" @page="changePage($event)" />
