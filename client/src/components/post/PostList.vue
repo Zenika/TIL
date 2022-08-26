@@ -1,7 +1,11 @@
 <template>
   <DataView :value="posts" :layout="'list'" class="data-view">
     <template #header v-if="!brief">
-      <div class="p-0">
+      <div class="p-0 flex justify-content-between">
+        <div class="flex align-items-center">
+          <span class="mr-2">Show</span>
+          <Dropdown v-model="selectedPostNbOptions" :options="postNbOptions" optionLabel="name" optionValue="code" />
+        </div>
         <Button @click="emit('on-refresh')" label="Refresh" icon="pi pi-refresh"
           class="p-button-sm p-button-outlined p-button-secondary" />
       </div>
@@ -21,6 +25,7 @@ import { useMutation } from '@vue/apollo-composable';
 import PostListItem from "@/components/post/PostListItem.vue";
 import PostListItemBrief from "@/components/post/PostListItemBrief.vue";
 import gql from 'graphql-tag';
+import { ref, watch } from 'vue';
 
 defineProps({
   posts: {
@@ -32,7 +37,20 @@ defineProps({
   }
 });
 
-const emit = defineEmits(["on-refresh"]);
+const emit = defineEmits(["on-refresh", "on-post-nb-change"]);
+
+const selectedPostNbOptions = ref(localStorage.getItem("postNbOption") || '25');
+const postNbOptions = ref([
+  { name: '25', code: '25' },
+  { name: '50', code: '50' },
+  { name: '100', code: '100' },
+  { name: '250', code: '250' }
+]);
+
+watch(selectedPostNbOptions, value => {
+  localStorage.setItem("postNbOption", value)
+  emit("on-post-nb-change", value);
+})
 
 const mutation = gql`
   mutation DeletePost($uuid: uuid!) {

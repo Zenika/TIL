@@ -4,10 +4,10 @@
   <Message v-else-if="error" severity="error">Internal error</Message>
   <div v-else-if="result.post">
     <div class="grid m-0">
-      <div class="xl:col-3"/>
+      <div class="xl:col-3" />
       <div class="p-0 md:p-2 col-12 md:col-9 xl:col-6">
         <div class="flex flex-column border-right-1 border-left-1 border-bottom-1 border-300">
-          <PostList :posts="result.post" @on-refresh="refetch" />
+          <PostList :posts="result.post" @on-refresh="refetch" @on-post-nb-change="updatePostNb" />
           <Paginator :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count" :rows="rowsPerPage"
             @page="changePage($event)" />
         </div>
@@ -17,7 +17,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -30,9 +29,11 @@ import router from "../router";
 import { useRoute } from "vue-router";
 import TagListCard from "@/components/tag/TagListCard.vue";
 
+const emit = defineEmits(["on-router-view-reload"]);
+
 const route = useRoute();
 const currentPage = parseInt(route.query.p?.[0]!)
-const rowsPerPage = 10;
+const rowsPerPage = parseInt(localStorage.getItem("postNbOption") || '25');
 
 if (isNaN(currentPage) || currentPage < 1) {
   router.push(`/?p=1`);
@@ -105,6 +106,10 @@ watch(result, (value) => {
 const changePage = ({ page }: { page: number }) => {
   router.push(`/?p=${page + 1}`);
 };
+
+const updatePostNb = () => {
+  emit('on-router-view-reload')
+}
 </script>
 
 <style scoped>
