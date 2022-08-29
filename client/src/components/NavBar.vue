@@ -7,9 +7,10 @@
       </template>
       <template #end>
         <div class="flex align-items-center">
-          <SearchInput/>
-          <img :src="user.picture" alt="profile picture" @click="$router.push(`/user/${user.sub}`)" class="h-3rem mr-2 round-borders cursor-hover">
-          <UserLink :username="user.nickname!" :id="user.sub!" class="mr-2"/>
+          <SearchInput />
+          <img :src="user.picture" alt="profile picture" @click="$router.push(`/user/${user.sub}`)"
+            class="h-3rem mr-2 round-borders cursor-hover">
+          <UserLink :username="user.nickname!" :id="user.sub!" class="mr-2" />
           <Button label="Log out" @click="onLogoutClick" />
         </div>
       </template>
@@ -33,6 +34,12 @@ const menuSchema = ref([
     label: "Bookmarks",
     icon: "pi pi-fw pi-bookmark",
     to: "/bookmarks",
+  },
+  {
+    label: "Extension",
+    icon: "pi pi-fw pi-external-link",
+    url: "https://chrome.google.com/webstore/detail/til/beongpgiledmjeadadaeflfdgjobelmd?hl=fr&authuser=1",
+    target: "_blank"
   },
 ]);
 

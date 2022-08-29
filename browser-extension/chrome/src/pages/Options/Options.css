@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img {
+  border-radius: 50%;
+}
+
+h1,
+h2 {
+  margin: 0rem;
+  margin-top: 0.5rem;
+  font-weight: normal;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+}
+
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
