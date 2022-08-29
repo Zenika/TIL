@@ -1,6 +1,5 @@
 <template>
   <div v-if="post" class="card-container">
-    <ConfirmDialog></ConfirmDialog>
     <Card class="p-0">
       <template #content>
         <div class="grid">
