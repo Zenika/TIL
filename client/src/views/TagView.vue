@@ -25,10 +25,21 @@
           result.post_aggregate.aggregate.count !== 1 ? "s" : ""
       }}</span>
     </div>
-    <PostList :posts="result.post" @on-refresh="refetch" />
+
+    <div class="grid m-0">
+      <div class="xl:col-3" />
+      <div class="p-0 col-12 xl:col-6">
+        <div class="flex flex-column border-right-1 border-left-1 border-bottom-1 border-300">
+          <Paginator :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count" :rows="rowsPerPage"
+            @page="changePage($event)" />
+          <PostList :posts="result.post" @on-refresh="refetch" @on-post-nb-change="updatePostNb" />
+          <Paginator :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count" :rows="rowsPerPage"
+            @page="changePage($event)" />
+        </div>
+      </div>
+    </div>
   </div>
-  <Paginator v-if="result" :first="variables.offset" :totalRecords="result.post_aggregate.aggregate.count"
-    :rows="rowsPerPage" @page="changePage($event)" />
+
 </template>
 
 <script setup lang="ts">
@@ -40,9 +51,11 @@ import PostList from "@/components/post/PostList.vue";
 import { ref, watch } from "@vue/runtime-core";
 import router from "../router";
 
+const emit = defineEmits(["on-router-view-reload"]);
+
 const route = useRoute();
 const currentPage = parseInt(route.query.p?.[0]!)
-const rowsPerPage = 10;
+const rowsPerPage = parseInt(localStorage.getItem("postNbOption") || '25');
 
 if (isNaN(currentPage) || currentPage < 1) {
   router.push(`/tags/${route.params.tag}?p=1`);
@@ -113,6 +126,10 @@ watch(result, (value) => {
 const changePage = ({ page }: { page: number }) => {
   router.push(`/tags/${route.params.tag}?p=${page + 1}`);
 };
+
+const updatePostNb = () => {
+  emit('on-router-view-reload')
+}
 </script>
 
 <style scope>

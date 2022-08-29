@@ -1,5 +1,4 @@
 <template>
-  <ConfirmDialog></ConfirmDialog>
   <div class="
       flex flex-column
       sm:flex-row
