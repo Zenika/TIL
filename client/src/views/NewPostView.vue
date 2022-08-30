@@ -4,7 +4,7 @@
     <div class="col-6 col-offset-3 mb-0">
       <h1 class="font-light">Post a new link</h1>
     </div>
-    <div class="col-6 col-offset-3">
+    <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
       <NewPostCard @post-click="submit($event)" :loading="loading" />
     </div>
   </div>
