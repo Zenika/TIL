@@ -5,7 +5,7 @@
     Internal error
   </Message>
   <div v-else-if="result" class="grid m-0 mt-2">
-    <div class="col-6 col-offset-3">
+    <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
       <Button
         label="Return"
         class="p-button-plain p-button-text"
@@ -13,7 +13,7 @@
         @click="$router.go(-1)"
       />
     </div>
-    <div class="col-6 col-offset-3">
+    <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
       <PostCard :post="result.post_by_pk" @delete-click="deletePost" />
     </div>
   </div>
@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { useQuery, useMutation, useSubscription } from "@vue/apollo-composable";
+import { useMutation, useSubscription } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import NavBar from "@/components/NavBar.vue";
 import PostCard from "@/components/post/PostCard.vue";
