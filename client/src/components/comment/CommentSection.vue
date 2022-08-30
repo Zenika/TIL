@@ -59,6 +59,7 @@ const { loading, result, error, onResult } = useSubscription(
   gql`
     subscription MySubscription($post_uuid: uuid!) {
       comment(where: { post_uuid: { _eq: $post_uuid } }) {
+        uuid
         content
         user {
           username
