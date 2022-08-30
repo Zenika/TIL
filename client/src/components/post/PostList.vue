@@ -1,4 +1,5 @@
 <template>
+  <ConfirmDialog></ConfirmDialog>
   <DataView :value="posts" :layout="'list'" class="data-view">
     <template #header v-if="!brief">
       <div class="p-0 flex justify-content-between">
