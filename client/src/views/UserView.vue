@@ -1,25 +1,25 @@
 <template>
-    <NavBar />
-    <ProgressSpinner v-if="loading" class="spinner" />
-    <Message v-else-if="error" severity="error">Internal error</Message>
-    <div v-else-if="result.user_by_pk">
-        <div class="grid m-0">
-            <div class="col-12 mb-0 flex justify-content-center">
-                <img :src="profile_pic" alt="profile picture" height="100" class="mt-2 round-borders" />
-            </div>
-            <div class="col-12 mb-0 flex justify-content-center">
-                <h1 class="font-light mb-0 mt-0">{{ result.user_by_pk.username }}</h1>
-            </div>
-        </div>
-        <div class="grid m-0">
-            <div class="col-12 lg:col-5">
-                <PostListCard :posts="result.user_by_pk.posts" class="m-3 " />
-            </div>
-            <div class="col-12 lg:col-5">
-                <CommentListCard :comments="result.user_by_pk.comments" class="m-3" />
-            </div>
-            <div class="col-12 lg:col-2">
-                <TagListCard :tags="tags" class="m-3" />
+    <div>
+        <NavBar />
+        <ProgressSpinner v-if="loading" class="spinner" />
+        <Message v-else-if="error" severity="error">Internal error</Message>
+        <div v-else-if="result.user_by_pk">
+            <div class="grid m-0">
+                <div class="col-12 mb-0 flex justify-content-center">
+                    <img :src="profile_pic" alt="profile picture" height="100" class="mt-2 round-borders" />
+                </div>
+                <div class="col-12 mb-0 flex justify-content-center">
+                    <h1 class="font-light mb-0 mt-0">{{ result.user_by_pk.username }}</h1>
+                </div>
+                <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
+                    <TabMenu class="" :model="tabs" v-model:activeIndex="activeIndex" />
+                    <div class="md:mt-3 md:mx-2">
+                        <PostListCard v-if="activeIndex === 0" :posts="result.user_by_pk.posts" />
+                        <CommentListCard v-else-if="activeIndex === 1" :comments="result.user_by_pk.comments" />
+                        <TagListCard v-else-if="activeIndex === 2" :tags="tags" />
+                        <BookmarkListCard v-else-if="activeIndex === 3" :bookmarks="result.user_by_pk.bookmarks" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -28,12 +28,22 @@
 <script setup>
 import NavBar from "@/components/NavBar.vue";
 import PostListCard from "@/components/post/PostListCard.vue";
+import CommentListCard from "@/components/comment/CommentListCard.vue";
+import TagListCard from "@/components/tag/TagListCard.vue";
+import BookmarkListCard from "@/components/bookmark/BookmarkListCard.vue";
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { ref } from "vue";
 import { useRoute } from 'vue-router';
-import CommentListCard from "@/components/comment/CommentListCard.vue";
-import TagListCard from "@/components/tag/TagListCard.vue";
+
+const tabs = [
+    { label: 'Posts', icon: 'pi pi-fw pi-link' },
+    { label: 'Comments', icon: 'pi pi-fw pi-comments' },
+    { label: 'Tags', icon: 'pi pi-fw pi-tags' },
+    { label: 'Bookmarks', icon: 'pi pi-fw pi-bookmark' },
+]
+
+const activeIndex = ref(0)
 
 const { id } = useRoute().params
 
@@ -45,7 +55,7 @@ const { result, loading, error, onResult } = useQuery(gql`
         user_by_pk(id: $id) {
             username
             profile_pic
-            posts {
+            posts(order_by: {created_at: desc}) {
                 url
                 uuid
                 title
@@ -55,9 +65,16 @@ const { result, loading, error, onResult } = useQuery(gql`
                     }
                 }
             }
-            comments {
+            comments(order_by: {created_at: desc}) {
                 uuid
                 content
+                post {
+                    url
+                    title
+                    uuid
+                }
+            }
+            bookmarks(order_by: { created_at: desc }) {
                 post {
                     url
                     title

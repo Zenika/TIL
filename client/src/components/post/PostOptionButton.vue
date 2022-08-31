@@ -1,7 +1,9 @@
 <template>
-  <Button @click.stop="openMenu" class="p-button-secondary p-button-text p-button-sm p-button-rounded"
-    icon="pi pi-ellipsis-h" aria-haspopup="true" aria-controls="overlay_menu" data-test="ellipsis" />
-  <Menu id="overlay_menu" ref="menu" :popup="true" :model="items" />
+  <div>
+    <Button @click.stop="openMenu" class="p-button-secondary p-button-text p-button-sm p-button-rounded"
+      icon="pi pi-ellipsis-h" aria-haspopup="true" aria-controls="overlay_menu" data-test="ellipsis" />
+    <Menu id="overlay_menu" ref="menu" :popup="true" :model="items" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -11,12 +13,9 @@ import { useRouter } from "vue-router";
 
 const emit = defineEmits(["delete-click"]);
 
-let props = defineProps({
-  postId: {
-    type: String,
-    required: true,
-  },
-});
+const props = defineProps<{
+  postId: string
+}>()
 
 const { postId } = toRefs(props);
 

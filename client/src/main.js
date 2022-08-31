@@ -25,6 +25,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
 import AutoComplete from 'primevue/autocomplete';
 import Dropdown  from 'primevue/dropdown';
+import TabMenu from 'primevue/tabmenu';
 import '/node_modules/primeflex/primeflex.css'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloLink, concat, split } from '@apollo/client/core'
@@ -125,4 +126,5 @@ createApp({
   .component('ConfirmDialog', ConfirmDialog)
   .component('AutoComplete', AutoComplete)
   .component('Dropdown', Dropdown)
+  .component('TabMenu', TabMenu)
   .mount('#app')

@@ -17,14 +17,12 @@
 </template>
 
 <script setup lang="ts">
+import { Comment } from '@/models/comment';
 import CommentList from './CommentList.vue';
 
-defineProps({
-    comments: {
-        type: Array,
-        required: true
-    }
-});
+defineProps<{
+    comments: Comment[],
+}>()
 </script>
 
 <style scoped>

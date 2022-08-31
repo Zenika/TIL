@@ -22,6 +22,7 @@ select_permissions:
     permission:
       columns:
         - content
+        - created_at
         - post_uuid
         - uuid
       filter: {}

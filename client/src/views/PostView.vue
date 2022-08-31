@@ -1,20 +1,17 @@
 <template>
-  <NavBar />
-  <ProgressSpinner v-if="loading" class="spinner" />
-  <Message v-else-if="error" class="mt-5" severity="error">
-    Internal error
-  </Message>
-  <div v-else-if="result" class="grid m-0 mt-2">
-    <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
-      <Button
-        label="Return"
-        class="p-button-plain p-button-text"
-        icon="pi pi-angle-left"
-        @click="$router.go(-1)"
-      />
-    </div>
-    <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
-      <PostCard :post="result.post_by_pk" @delete-click="deletePost" />
+  <div>
+    <NavBar />
+    <ProgressSpinner v-if="loading" class="spinner" />
+    <Message v-else-if="error" class="mt-5" severity="error">
+      Internal error
+    </Message>
+    <div v-else-if="result" class="grid m-0 mt-2">
+      <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
+        <Button label="Return" class="p-button-plain p-button-text" icon="pi pi-angle-left" @click="$router.go(-1)" />
+      </div>
+      <div class="p-0 col-12 md:col-8 md:col-offset-2 lg:col-6 lg:col-offset-3">
+        <PostCard :post="result.post_by_pk" @delete-click="deletePost" />
+      </div>
     </div>
   </div>
 </template>

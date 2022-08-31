@@ -10,9 +10,11 @@
     </AutoComplete>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useSearchAutoComplete } from '@/composables/useSearchAutoComplete';
+import { Tag } from '@/models/tag';
 import gql from 'graphql-tag';
+import { AutoCompleteItemSelectEvent, AutoCompleteItemUnselectEvent } from 'primevue/autocomplete';
 import { ref, toRef } from 'vue';
 
 const { onResult, suggestions, onComplete, lastSearchedText } = useSearchAutoComplete(gql`
@@ -30,23 +32,18 @@ const { onResult, suggestions, onComplete, lastSearchedText } = useSearchAutoCom
 
 const emit = defineEmits(["update"])
 
-let props = defineProps({
-  tags: {
-    type: Array,
-    default() {
-      return [];
-    }
-  },
-});
+const props = defineProps<{
+  tags?: Tag[]
+}>()
 
 const selectedTags = ref(toRef(props, "tags").value);
 
-let filteredTags = selectedTags.value.map(tag => tag.name);
+let filteredTags = selectedTags.value?.map(tag => tag.name);
 
 onResult(({ data: { search_tags } }) => {
     suggestions.value = search_tags
 
-    if (!suggestions.value.find(tag => tag.name === lastSearchedText.value)) {
+    if (!suggestions.value.find((tag: Tag) => tag.name === lastSearchedText.value)) {
         suggestions.value = [
             {
                 name: lastSearchedText.value,
@@ -61,15 +58,17 @@ onResult(({ data: { search_tags } }) => {
     }
 })
 
-const onItemSelect = ({ value: { name } }) => {
-    if (selectedTags.value.length > 5)
-        return selectedTags.value.pop()
-    filteredTags.push(name)
+const onItemSelect = (event: AutoCompleteItemSelectEvent) => {
+    const { name } = event.value;
+    if (selectedTags.value!.length > 5)
+        return selectedTags.value!.pop()
+    filteredTags?.push(name)
     emit("update", filteredTags)
 }
 
-const onItemUnselect = ({ value: { name } }) => {
-    filteredTags = filteredTags.filter(tag => tag !== name);
+const onItemUnselect = (event: AutoCompleteItemUnselectEvent) => {
+    const { name } = event.value;
+    filteredTags = filteredTags?.filter(tag => tag !== name);
     emit("update", filteredTags)
 }
 </script>

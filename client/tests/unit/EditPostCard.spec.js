@@ -18,14 +18,21 @@ config.global.components = {
 }
 
 describe('EditPostCard.vue', () => {
-    it('No props', async () => {
-        const wrapper = mount(EditPostCard)
-        const input = wrapper.get('[data-test="url"]')
-        expect(input.text()).toBe("")
-    })
-
     it('empty url', () => {
-        const wrapper = mount(EditPostCard)
+        const post = {
+            description: "Salut la description yooo",
+            post_tags: [{
+                tag: {
+                    name: "yooo"
+                }
+            }]
+        }
+        const wrapper = mount(EditPostCard, {
+            props: {
+                post,
+                loading: false
+            },
+        })
         const submit = wrapper.get('[data-test="submit"]')
         submit.trigger('click')
         expect(wrapper.vm.v$.$error).toBe(true)
@@ -33,7 +40,21 @@ describe('EditPostCard.vue', () => {
     })
 
     it('invalid url', async () => {
-        const wrapper = mount(EditPostCard)
+        const post = {
+            url: "",
+            description: "Salut la description yooo",
+            post_tags: [{
+                tag: {
+                    name: "yooo"
+                }
+            }]
+        }
+        const wrapper = mount(EditPostCard, {
+            props: {
+                post,
+                loading: false
+            },
+        })
         const submit = wrapper.get('[data-test="submit"]')
         const input = wrapper.get('[data-test="url"]')
 
@@ -44,7 +65,21 @@ describe('EditPostCard.vue', () => {
     })
 
     it('valid url', async () => {
-        const wrapper = mount(EditPostCard)
+        const post = {
+            url: "",
+            description: "Salut la description yooo",
+            post_tags: [{
+                tag: {
+                    name: "yooo"
+                }
+            }]
+        }
+        const wrapper = mount(EditPostCard, {
+            props: {
+                post,
+                loading: false
+            },
+        })
         const submit = wrapper.get('[data-test="submit"]')
         const input = wrapper.get('[data-test="url"]')
 

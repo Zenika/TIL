@@ -14,10 +14,10 @@ import gql from "graphql-tag";
 
 const { user } = useAuth0();
 
-const props = defineProps({
-  bookmarked: Boolean,
-  uuid: String,
-});
+const props = defineProps<{
+  bookmarked: boolean,
+  uuid: string,
+}>()
 
 let bookmarked = ref(props.bookmarked);
 

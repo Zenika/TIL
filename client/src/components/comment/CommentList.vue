@@ -14,19 +14,14 @@
 <script setup lang="ts">
 import CommentListItem from "@/components/comment/CommentListItem.vue"
 import CommentListItemBrief from "@/components/comment/CommentListItemBrief.vue"
+import { Comment } from "@/models/comment";
 import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
-defineProps({
-    comments: {
-        type: Object,
-        require: true
-    },
-    brief: {
-        type: Boolean,
-        default: false
-    }
-});
+defineProps<{
+    comments: Comment[],
+    brief?: boolean,
+}>()
 
 const mutation = gql`
   mutation DeleteComment($uuid: uuid!) {

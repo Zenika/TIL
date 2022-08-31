@@ -1,27 +1,27 @@
 <template>
     <Card class="card">
         <template #title>
-            Tags
+            Bookmarks
         </template>
         <template #subtitle>
             <div class="pb-2 border-bottom-1 border-300">
-                {{ tags.length }} Tags
+                {{ bookmarks.length }} Bookmarks
             </div>
         </template>
         <template #content>
             <div class="container overflow-y-scroll overflow-x-hidden">
-                <TagList :tags="tags"/>
+                <PostList :posts="bookmarks.map(bookmark => bookmark.post)" :brief="true" />
             </div>
         </template>
     </Card>
 </template>
 
 <script setup lang="ts">
-import { Tag } from '@/models/tag';
-import TagList from './TagList.vue';
+import PostList from "@/components/post/PostList.vue";
+import { Bookmark } from "@/models/bookmark";
 
 defineProps<{
-  tags: Tag[]
+    bookmarks: Bookmark[]
 }>()
 </script>
 

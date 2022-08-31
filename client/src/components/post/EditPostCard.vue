@@ -30,7 +30,7 @@
             <label for="tags">Tags</label>
             <small>Add up to 5 tags to describe what your post is about</small>
           </div>
-          <SearchChips :tags="post.post_tags.map(({tag: {name}}) => ({ name }))" @update="onChipsUpdate($event)"/>
+          <SearchChips :tags="tags" @update="onChipsUpdate($event)"/>
         </div>
 
         <div>
@@ -41,31 +41,25 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, toRefs } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength, url } from "@vuelidate/validators";
 import { escapeHtml } from "@/filters/escapeHtmlFilter";
 import SearchChips from "@/components/search/SearchChips.vue"
+import { Post } from '@/models/post';
+import { Tag } from "@/models/tag";
 
-let props = defineProps({
-  post: {
-    type: Object,
-    default() {
-      return {
-        url: "",
-        description: "",
-        post_tags: [],
-      };
-    }
-  },
-  loading: {
-    type: Boolean
-  },
-});
+const emit = defineEmits(["update-click"]);
+
+const props = defineProps<{
+  post: Post,
+  loading: boolean,
+}>()
 
 const { post } = toRefs(props);
-const emit = defineEmits(["update-click"]);
+
+const tags = (post.value.post_tags.map(({tag: {name}}) => ({ name })) as Tag[])
 
 const state = reactive({
   url: post.value.url,
@@ -92,7 +86,7 @@ const submit = () => {
   }
 };
 
-const onChipsUpdate = chips => {
+const onChipsUpdate = (chips: string[]) => {
   state.tags = chips
 }
 </script>
