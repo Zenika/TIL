@@ -4,7 +4,7 @@ import { ref } from "vue"
 import { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 
 export function useSearchAutoComplete(query: DocumentNode) {
-    const suggestions = ref([]);
+    const suggestions = ref(Array<any>());
     const lastSearchedText = ref("");
 
     const { load, onResult } = useLazyQuery(query)

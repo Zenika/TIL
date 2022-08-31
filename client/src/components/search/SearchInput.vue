@@ -9,11 +9,12 @@
   </AutoComplete>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import gql from 'graphql-tag';
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
 import { useSearchAutoComplete } from '@/composables/useSearchAutoComplete'
+import { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
 
 const { onResult, suggestions, onComplete } = useSearchAutoComplete(gql`
    query SearchTags($search: String!) {
@@ -36,9 +37,8 @@ onResult(({ data: { search_tags } }) => {
   suggestions.value = search_tags
 })
 
-const onItemSelect = ({ value: { name } }) => {
-  console.log(name)
-  console.log("heyo", encodeURIComponent(name))
+const onItemSelect = (event: AutoCompleteItemSelectEvent) => {
+  const { name } = event.value;
   router.push(`/tags/${encodeURIComponent(name)}`);
 }
 </script>

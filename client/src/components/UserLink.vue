@@ -3,14 +3,8 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-    username: {
-        type: String,
-        required: true
-    },
-    id: {
-        type: String,
-        required: true
-    },
-});
+defineProps<{
+    username: string,
+    id: string,
+}>()
 </script>

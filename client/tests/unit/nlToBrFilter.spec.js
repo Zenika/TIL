@@ -1,4 +1,3 @@
-import { config, mount } from '@vue/test-utils'
 import { nlToBr } from "@/filters/nlToBrFilter"
 
 describe('nlToBrFilter', () => {

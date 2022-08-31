@@ -34,7 +34,7 @@ jest.mock('primevue/useconfirm', () => ({
 }));
 
 jest.mock('@/components/comment/CommentSection.vue')
-jest.mock('@/components/BookmarkButton.vue')
+jest.mock('@/components/bookmark/BookmarkButton.vue')
 
 config.global.components = {
     'Card': Card,
@@ -47,11 +47,6 @@ config.global.components = {
 }
 
 describe('PostCard.vue', () => {
-    it('No props', async () => {
-        const wrapper = mount(PostCard)
-        expect(wrapper.html()).toContain('Internal error')
-    })
-
     it('renders a regular post with description', async () => {
         const post = {
             uuid: "6a3139a5-e796-43cc-a6af-b22577933fa8",

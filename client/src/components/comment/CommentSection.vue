@@ -39,9 +39,9 @@ import CommentList from "./CommentList.vue";
 
 const { isAuthenticated } = useAuth0();
 
-const props = defineProps({
-  postId: String,
-});
+const props = defineProps<{
+  postId: string,
+}>()
 
 const { postId } = toRefs(props);
 

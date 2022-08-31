@@ -11,7 +11,7 @@ config.global.components = {
   'PostOptionButton': PostOptionButton
 }
 
-jest.mock('@/components/BookmarkButton.vue')
+jest.mock('@/components/bookmark/BookmarkButton.vue')
 
 jest.mock('@auth0/auth0-vue', () => ({
   __esModule: true,

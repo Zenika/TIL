@@ -9,10 +9,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    post: {
-        type: Object,
-        required: true
-    },
-});
+import { Post } from '@/models/post';
+
+defineProps<{
+  post: Post
+}>()
 </script>

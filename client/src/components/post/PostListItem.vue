@@ -11,7 +11,7 @@
       cursor-hover
     " @click="openArticle(post.uuid)">
     <img class="mb-2 sm:mb-0 sm:mr-3" :src="`https://www.google.com/s2/favicons?sz=256&domain_url=${domainName}`"
-      :alt="post.content" />
+      :alt="domainName" />
     <div class="
         flex flex-column
         w-full
@@ -48,7 +48,7 @@
           <BookmarkButton class="ml-2 mr-2" :bookmarked="post.bookmarks.length !== 0" :uuid="post.uuid" />
         </div>
         <span class="mt-2 sm:mt-0">
-          <TagWrapper class="mr-1 mt-1 sm:mt-0" v-for="tags in post.post_tags" :key="tags.id" :value="tags.tag.name" />
+          <TagWrapper class="mr-1 mt-1 sm:mt-0" v-for="tags in post.post_tags" :key="tags.uuid" :value="tags.tag.name" />
         </span>
       </div>
     </div>
@@ -59,12 +59,13 @@
 
 <script setup lang="ts">
 import TagWrapper from "@/components/tag/TagWrapper.vue";
-import BookmarkButton from "@/components/BookmarkButton.vue";
+import BookmarkButton from "@/components/bookmark/BookmarkButton.vue";
 import PostOptionButton from "@/components/post/PostOptionButton.vue";
 import UserLink from "@/components/UserLink.vue";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { useRouter } from "vue-router";
+import { Post } from "@/models/post";
 
 const emit = defineEmits(["delete-click"]);
 
@@ -72,12 +73,9 @@ const router = useRouter();
 
 const { user } = useAuth0();
 
-const props = defineProps({
-  post: {
-    type: Object,
-    required: true
-  },
-});
+const props = defineProps<{
+  post: Post
+}>()
 
 const domainName = new URL(props.post.url).hostname;
 const openArticle = (id: string) => {

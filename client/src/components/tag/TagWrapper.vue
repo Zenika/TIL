@@ -7,12 +7,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  value: {
-    type: String,
-    default() {
-      return "";
-    }
-  },
-});
+defineProps<{
+  value: string
+}>()
 </script>

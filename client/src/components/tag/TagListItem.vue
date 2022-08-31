@@ -3,12 +3,10 @@
 </template>
 
 <script setup lang="ts">
+import { Tag } from '@/models/tag';
 import TagWrapper from './TagWrapper.vue';
 
-defineProps({
-    tag: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+  tag: Tag
+}>()
 </script>

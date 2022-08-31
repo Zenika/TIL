@@ -26,16 +26,12 @@ import PostListItem from "@/components/post/PostListItem.vue";
 import PostListItemBrief from "@/components/post/PostListItemBrief.vue";
 import gql from 'graphql-tag';
 import { ref, watch } from 'vue';
+import { Post } from '@/models/post';
 
-defineProps({
-  posts: {
-    type: Object,
-    require: true
-  },
-  brief: {
-    type: Boolean
-  }
-});
+defineProps<{
+  posts: Post[],
+  brief?: boolean
+}>()
 
 const emit = defineEmits(["on-refresh", "on-post-nb-change"]);
 

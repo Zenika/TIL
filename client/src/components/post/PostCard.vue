@@ -26,7 +26,7 @@
             </small>
             <div class="flex align-items-center mt-2 mb-1">
               <BookmarkButton :bookmarked="post.bookmarks.length !== 0" :uuid="post.uuid" />
-              <TagWrapper v-for="tags in post.post_tags" :key="tags.id" class="ml-2" :value="tags.tag.name" />
+              <TagWrapper v-for="tags in post.post_tags" :key="tags.uuid" class="ml-2" :value="tags.tag.name" />
             </div>
           </div>
           <PostOptionButton class="col" v-if="post.user.id === user.sub" :postId="postId"
@@ -54,24 +54,22 @@
 import { toRefs } from "@vue/reactivity";
 import CommentSection from "@/components/comment/CommentSection.vue";
 import TagWrapper from "@/components/tag/TagWrapper.vue";
-import BookmarkButton from "@/components/BookmarkButton.vue";
+import BookmarkButton from "@/components/bookmark/BookmarkButton.vue";
 import PostOptionButton from "@/components/post/PostOptionButton.vue";
 import UserLink from "@/components/UserLink.vue";
 import { useRoute } from "vue-router";
 import { nlToBr } from "@/filters/nlToBrFilter";
 import { useAuth0 } from "@auth0/auth0-vue";
+import { Post } from "@/models/post";
 
 const emit = defineEmits(["delete-click"]);
 
 const { user } = useAuth0();
 const postId = useRoute().params.id as string
 
-const props = defineProps({
-  post: {
-    type: Object,
-    required: true
-  },
-});
+const props = defineProps<{
+  post: Post,
+}>()
 
 const { post } = toRefs(props);
 

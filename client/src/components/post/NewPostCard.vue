@@ -46,9 +46,9 @@ import { required, maxLength, url } from "@vuelidate/validators";
 import { escapeHtml } from "@/filters/escapeHtmlFilter";
 import SearchChips from "@/components/search/SearchChips.vue"
 
-defineProps({
-  loading: Boolean,
-});
+defineProps<{
+  loading: boolean,
+}>()
 
 const emit = defineEmits(["post-click"]);
 

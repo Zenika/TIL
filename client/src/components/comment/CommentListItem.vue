@@ -18,15 +18,13 @@
 
 <script setup lang="ts">
 import UserLink from "@/components/UserLink.vue";
+import { Comment } from "@/models/comment";
 import { useAuth0 } from "@auth0/auth0-vue";
 import PostOptionButton from "./CommentOptionButton.vue"
 
-defineProps({
-    comment: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    comment: Comment,
+}>()
 
 const emit = defineEmits(["delete-click"]);
 

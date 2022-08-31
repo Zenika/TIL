@@ -17,7 +17,11 @@ config.global.components = {
 
 describe('NewPostCard.vue', () => {
     it('empty url', () => {
-        const wrapper = mount(NewPostCard)
+        const wrapper = mount(NewPostCard, {
+            props: {
+                loading: false
+            },
+        })
         const submit = wrapper.get('[data-test="submit"]')
         submit.trigger('click')
         expect(wrapper.vm.v$.$error).toBe(true)
@@ -25,7 +29,11 @@ describe('NewPostCard.vue', () => {
     })
 
     it('invalid url', async () => {
-        const wrapper = mount(NewPostCard)
+        const wrapper = mount(NewPostCard, {
+            props: {
+                loading: false
+            },
+        })
         const submit = wrapper.get('[data-test="submit"]')
         const input = wrapper.get('[data-test="url"]')
 
@@ -36,7 +44,11 @@ describe('NewPostCard.vue', () => {
     })
 
     it('valid url', async () => {
-        const wrapper = mount(NewPostCard)
+        const wrapper = mount(NewPostCard, {
+            props: {
+                loading: false
+            },
+        })
         const submit = wrapper.get('[data-test="submit"]')
         const input = wrapper.get('[data-test="url"]')
 

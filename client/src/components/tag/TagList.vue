@@ -12,14 +12,12 @@
 </template>
 
 <script setup lang="ts">
+import { Tag } from '@/models/tag';
 import TagListItem from './TagListItem.vue';
 
-defineProps({
-    tags: {
-        type: Array,
-        required: true
-    }
-});
+defineProps<{
+  tags: Tag[]
+}>()
 </script>
 
 <style>

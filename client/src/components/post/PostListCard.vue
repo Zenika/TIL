@@ -18,13 +18,11 @@
 
 <script setup lang="ts">
 import PostList from "@/components/post/PostList.vue";
+import { Post } from "@/models/post";
 
-defineProps({
-    posts: {
-        type: Array,
-        required: true
-    }
-});
+defineProps<{
+    posts: Post[]
+}>()
 </script>
 
 <style scoped>
